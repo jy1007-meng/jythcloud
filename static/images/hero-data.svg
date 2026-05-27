@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 740 360" width="740" height="360">
+  <defs>
+    <linearGradient id="bg1" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0f172a"/>
+      <stop offset="100%" stop-color="#1e1b4b"/>
+    </linearGradient>
+    <linearGradient id="ac1" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#60a5fa"/>
+      <stop offset="100%" stop-color="#a78bfa"/>
+    </linearGradient>
+  </defs>
+  <rect width="740" height="360" fill="url(#bg1)"/>
+  <circle cx="600" cy="70" r="170" fill="rgba(96,165,250,0.04)"/>
+  <circle cx="120" cy="310" r="130" fill="rgba(34,197,94,0.04)"/>
+  <!-- 柱状图 -->
+  <rect x="100" y="180" width="40" height="120" rx="4" fill="rgba(96,165,250,0.3)"/>
+  <rect x="160" y="140" width="40" height="160" rx="4" fill="rgba(96,165,250,0.5)"/>
+  <rect x="220" y="120" width="40" height="180" rx="4" fill="rgba(167,139,250,0.5)"/>
+  <rect x="280" y="90" width="40" height="210" rx="4" fill="rgba(167,139,250,0.4)"/>
+  <rect x="340" y="110" width="40" height="190" rx="4" fill="rgba(244,114,182,0.4)"/>
+  <rect x="400" y="160" width="40" height="140" rx="4" fill="rgba(244,114,182,0.3)"/>
+  <rect x="460" y="200" width="40" height="100" rx="4" fill="rgba(96,165,250,0.25)"/>
+  <!-- 趋势线 -->
+  <polyline points="120,185 180,165 240,150 300,125 360,145 420,175 480,215" fill="none" stroke="#22c55e" stroke-width="2" stroke-dasharray="6,3" opacity="0.6"/>
+  <!-- 标签 -->
+  <text x="120" y="318" text-anchor="middle" fill="#64748b" font-size="8" font-family="monospace">Q1</text>
+  <text x="180" y="318" text-anchor="middle" fill="#64748b" font-size="8" font-family="monospace">Q2</text>
+  <text x="240" y="318" text-anchor="middle" fill="#64748b" font-size="8" font-family="monospace">Q3</text>
+  <text x="300" y="318" text-anchor="middle" fill="#64748b" font-size="8" font-family="monospace">Q4</text>
+  <text x="360" y="318" text-anchor="middle" fill="#64748b" font-size="8" font-family="monospace">Q5</text>
+  <text x="420" y="318" text-anchor="middle" fill="#64748b" font-size="8" font-family="monospace">Q6</text>
+  <text x="480" y="318" text-anchor="middle" fill="#64748b" font-size="8" font-family="monospace">Q7</text>
+  <!-- Y轴标签 -->
+  <text x="80" y="190" text-anchor="end" fill="#475569" font-size="8" font-family="monospace">10K</text>
+  <text x="80" y="300" text-anchor="end" fill="#475569" font-size="8" font-family="monospace">0</text>
+  <!-- Y轴 -->
+  <line x1="88" y1="185" x2="88" y2="305" stroke="#334155" stroke-width="1"/>
+  <line x1="88" y1="305" x2="510" y2="305" stroke="#334155" stroke-width="1"/>
+  <!-- 数据表 -->
+  <rect x="530" y="100" width="180" height="180" rx="10" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+  <rect x="540" y="110" width="160" height="24" rx="4" fill="rgba(96,165,250,0.1)"/>
+  <text x="620" y="126" text-anchor="middle" fill="#60a5fa" font-size="9" font-family="sans-serif" font-weight="bold">数据概览</text>
+  <line x1="540" y1="140" x2="700" y2="140" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+  <text x="550" y="158" fill="#94a3b8" font-size="8" font-family="monospace">总记录数：98,432</text>
+  <text x="550" y="176" fill="#94a3b8" font-size="8" font-family="monospace">维度：12 列</text>
+  <text x="550" y="194" fill="#94a3b8" font-size="8" font-family="monospace">缺失值：0.3%</text>
+  <text x="550" y="212" fill="#94a3b8" font-size="8" font-family="monospace">均值：2,847</text>
+  <text x="550" y="230" fill="#94a3b8" font-size="8" font-family="monospace">标准差：1,203</text>
+  <text x="550" y="248" fill="#94a3b8" font-size="8" font-family="monospace">清洗耗时：2.3s</text>
+  <text x="550" y="266" fill="#22c55e" font-size="8" font-family="monospace">✓ 清洗完成</text>
+  <!-- 标题 -->
+  <text x="60" y="46" fill="url(#ac1)" font-size="14" font-family="sans-serif" font-weight="bold" letter-spacing="1">数据分析入门</text>
+</svg>

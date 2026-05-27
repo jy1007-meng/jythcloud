@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 740 360" width="740" height="360">
+  <defs>
+    <linearGradient id="bg1" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0f172a"/>
+      <stop offset="100%" stop-color="#1e1b4b"/>
+    </linearGradient>
+    <linearGradient id="ac1" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#60a5fa"/>
+      <stop offset="100%" stop-color="#a78bfa"/>
+    </linearGradient>
+  </defs>
+  <rect width="740" height="360" fill="url(#bg1)"/>
+  <circle cx="600" cy="80" r="180" fill="rgba(96,165,250,0.04)"/>
+  <circle cx="140" cy="300" r="140" fill="rgba(167,139,250,0.04)"/>
+  <!-- 路线图 - 阶段节点 -->
+  <!-- 阶段1 -->
+  <rect x="60" y="90" width="180" height="50" rx="25" fill="rgba(96,165,250,0.1)" stroke="rgba(96,165,250,0.3)" stroke-width="1.5"/>
+  <text x="150" y="115" text-anchor="middle" fill="#60a5fa" font-size="11" font-family="sans-serif" font-weight="bold">Python 基础</text>
+  <text x="150" y="130" text-anchor="middle" fill="#64748b" font-size="8" font-family="sans-serif">语法 · 数据结构 · 基础库</text>
+  <!-- 箭头 -->
+  <line x1="250" y1="115" x2="290" y2="115" stroke="#334155" stroke-width="2"/>
+  <polygon points="290,110 300,115 290,120" fill="#334155"/>
+  <!-- 阶段2 -->
+  <rect x="310" y="90" width="180" height="50" rx="25" fill="rgba(167,139,250,0.1)" stroke="rgba(167,139,250,0.3)" stroke-width="1.5"/>
+  <text x="400" y="115" text-anchor="middle" fill="#a78bfa" font-size="11" font-family="sans-serif" font-weight="bold">数学 &amp; 理论</text>
+  <text x="400" y="130" text-anchor="middle" fill="#64748b" font-size="8" font-family="sans-serif">线性代数 · 概率论 · 统计</text>
+  <!-- 箭头 -->
+  <line x1="500" y1="115" x2="540" y2="115" stroke="#334155" stroke-width="2"/>
+  <polygon points="540,110 550,115 540,120" fill="#334155"/>
+  <!-- 阶段3 -->
+  <rect x="560" y="90" width="130" height="50" rx="25" fill="rgba(244,114,182,0.1)" stroke="rgba(244,114,182,0.3)" stroke-width="1.5"/>
+  <text x="625" y="115" text-anchor="middle" fill="#f472b6" font-size="11" font-family="sans-serif" font-weight="bold">机器学习</text>
+  <text x="625" y="130" text-anchor="middle" fill="#64748b" font-size="8" font-family="sans-serif">Sklearn · 建模</text>
+  <!-- 折线连接下行 -->
+  <path d="M150,140 L150,175 L400,175" fill="none" stroke="#334155" stroke-width="1.5" stroke-dasharray="5,3"/>
+  <path d="M400,140 L400,175" fill="none" stroke="#334155" stroke-width="1.5" stroke-dasharray="5,3"/>
+  <path d="M625,140 L625,175 L400,175" fill="none" stroke="#334155" stroke-width="1.5" stroke-dasharray="5,3"/>
+  <!-- 阶段4 - 中间 -->
+  <rect x="270" y="175" width="260" height="50" rx="25" fill="rgba(34,197,94,0.1)" stroke="rgba(34,197,94,0.3)" stroke-width="1.5"/>
+  <text x="400" y="200" text-anchor="middle" fill="#22c55e" font-size="11" font-family="sans-serif" font-weight="bold">方向选择 &amp; 项目实战</text>
+  <text x="400" y="215" text-anchor="middle" fill="#64748b" font-size="8" font-family="sans-serif">NLP · CV · 数据科学 · 部署</text>
+  <!-- 三条分支 -->
+  <line x1="320" y1="225" x2="160" y2="265" stroke="#334155" stroke-width="1.5" stroke-dasharray="5,3"/>
+  <line x1="400" y1="225" x2="400" y2="265" stroke="#334155" stroke-width="1.5" stroke-dasharray="5,3"/>
+  <line x1="480" y1="225" x2="640" y2="265" stroke="#334155" stroke-width="1.5" stroke-dasharray="5,3"/>
+  <!-- 分支1 -->
+  <rect x="60" y="260" width="200" height="40" rx="20" fill="rgba(96,165,250,0.06)" stroke="rgba(96,165,250,0.15)" stroke-width="1"/>
+  <text x="160" y="285" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="sans-serif">大模型 &amp; API 应用</text>
+  <!-- 分支2 -->
+  <rect x="300" y="260" width="200" height="40" rx="20" fill="rgba(167,139,250,0.06)" stroke="rgba(167,139,250,0.15)" stroke-width="1"/>
+  <text x="400" y="285" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="sans-serif">数据分析 &amp; 可视化</text>
+  <!-- 分支3 -->
+  <rect x="540" y="260" width="150" height="40" rx="20" fill="rgba(244,114,182,0.06)" stroke="rgba(244,114,182,0.15)" stroke-width="1"/>
+  <text x="615" y="285" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="sans-serif">服务器 &amp; 部署</text>
+  <!-- 进度指示 -->
+  <text x="60" y="340" fill="#6b7280" font-size="9" font-family="sans-serif">⏳ 逐阶段学习，循序渐进</text>
+  <text x="500" y="340" fill="#22c55e" font-size="9" font-family="sans-serif">✔ 一年完成三阶段实践</text>
+  <!-- 标题 -->
+  <text x="60" y="46" fill="url(#ac1)" font-size="14" font-family="sans-serif" font-weight="bold" letter-spacing="1">自学 AI 路线图</text>
+</svg>

@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="description" content="JYTHCloud · 大学生AI创业团队 — 湖北工程学院在校生团队，探索大模型应用、智能体开发与数据智能服务">
+<meta property="og:title" content="JYTHCloud · 大学生AI团队">
+<meta property="og:description" content="湖北工程学院在校生AI创业团队 · 大模型应用 · 智能体 · 数据智能">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://jythcloud.cn">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>AI</text></svg>">
+<title>JYTHCloud · 大学生AI创业团队</title>
+<link rel="stylesheet" href="https://cdnjs.loli.net/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#07070d;
+  --bg2:#0c0c18;
+  --surface:rgba(255,255,255,0.03);
+  --surface-hover:rgba(255,255,255,0.06);
+  --border:rgba(255,255,255,0.07);
+  --text:#e0e0e0;
+  --text-dim:#666;
+  --text-mid:#999;
+  --accent:#60a5fa;
+  --accent2:#a78bfa;
+  --accent3:#f472b6;
+  --green:#22c55e;
+  --red:#ef4444;
+  --orange:#f59e0b;
+  --radius:14px;
+  --radius-sm:10px;
+  --nav-h:64px;
+}
+html{scroll-behavior:smooth}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  min-height:100vh;
+  line-height:1.6;
+  overflow-x:hidden;
+}
+#particles{
+  position:fixed;top:0;left:0;width:100%;height:100%;
+  z-index:0;pointer-events:none;overflow:hidden;
+}
+.particle{
+  position:absolute;width:2px;height:2px;
+  background:rgba(96,165,250,0.15);border-radius:50%;
+  animation:float linear infinite;
+}
+@keyframes float{
+  0%{transform:translateY(100vh) rotate(0deg);opacity:0}
+  10%{opacity:1}
+  90%{opacity:1}
+  100%{transform:translateY(-10vh) rotate(720deg);opacity:0}
+}
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  height:var(--nav-h);
+  background:rgba(7,7,13,0.85);
+  backdrop-filter:blur(16px);
+  -webkit-backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 24px;
+}
+.nav-logo{
+  display:flex;align-items:center;gap:10px;
+  font-size:1.15rem;font-weight:700;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+  text-decoration:none;
+}
+.nav-logo i{font-size:1.3rem}
+.nav-links{
+  display:flex;align-items:center;gap:4px;
+  list-style:none;
+}
+.nav-links a{
+  display:flex;align-items:center;gap:6px;
+  padding:8px 14px;
+  color:var(--text-mid);text-decoration:none;
+  font-size:0.88rem;border-radius:var(--radius-sm);
+  transition:all 0.2s;
+}
+.nav-links a:hover,.nav-links a.active{
+  color:var(--text);
+  background:var(--surface-hover);
+}
+.nav-toggle{display:none;background:none;border:none;color:var(--text);font-size:1.4rem;cursor:pointer;padding:4px}
+.hero{
+  position:relative;z-index:1;
+  min-height:100vh;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;
+  padding:120px 24px 80px;
+}
+.hero h1{
+  font-size:clamp(2.8rem,8vw,5.5rem);
+  font-weight:800;
+  background:linear-gradient(135deg,var(--accent) 0%,var(--accent2) 50%,var(--accent3) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+  letter-spacing:-0.03em;
+  margin-bottom:16px;
+  animation:fadeUp 0.8s ease-out;
+}
+.hero .subtitle{
+  font-size:clamp(1rem,2.5vw,1.25rem);
+  color:var(--text-mid);
+  margin-bottom:40px;
+  letter-spacing:0.05em;
+  animation:fadeUp 0.8s ease-out 0.15s both;
+}
+.hero-btns{
+  display:flex;gap:16px;flex-wrap:wrap;justify-content:center;
+  animation:fadeUp 0.8s ease-out 0.3s both;
+}
+.hero-btns a{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:14px 32px;border-radius:50px;font-size:1rem;font-weight:600;
+  text-decoration:none;transition:all 0.3s;cursor:pointer;
+}
+.btn-primary{
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  color:#fff;border:none;
+}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(96,165,250,0.3)}
+.btn-outline{
+  background:transparent;color:var(--text);border:1px solid var(--border);
+}
+.btn-outline:hover{background:var(--surface-hover);border-color:var(--accent);color:var(--accent)}
+.section{
+  position:relative;z-index:1;
+  padding:80px 24px;
+  max-width:1200px;margin:0 auto;
+}
+.section-title{
+  text-align:center;font-size:clamp(1.6rem,4vw,2.2rem);font-weight:700;
+  margin-bottom:12px;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.section-subtitle{
+  text-align:center;color:var(--text-mid);font-size:1rem;
+  margin-bottom:50px;max-width:600px;margin-left:auto;margin-right:auto;
+}
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(30px)}
+  to{opacity:1;transform:translateY(0)}
+}
+.services-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:20px;
+}
+.service-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius);padding:32px 24px;
+  text-align:center;transition:all 0.3s;
+  position:relative;overflow:hidden;
+}
+.service-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,var(--accent),var(--accent2));
+  opacity:0;transition:opacity 0.3s;
+}
+.service-card:hover::before{opacity:1}
+.service-card:hover{background:var(--surface-hover);border-color:var(--accent);transform:translateY(-4px)}
+.service-card .icon{
+  font-size:2.2rem;margin-bottom:14px;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.service-card h3{font-size:1.1rem;margin-bottom:8px;color:var(--text)}
+.service-card p{font-size:0.9rem;color:var(--text-mid);line-height:1.6}
+.service-card .features{margin-top:14px;text-align:left;font-size:0.85rem;color:var(--text-mid);list-style:none}
+.service-card .features li{display:flex;align-items:center;gap:8px;padding:4px 0}
+.service-card .features li i{color:var(--green);font-size:0.75rem}
+.about-cards{
+  display:grid;grid-template-columns:repeat(2,1fr);gap:20px;
+}
+.about-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius);padding:28px 24px;
+  text-align:center;transition:all 0.3s;
+}
+.about-card:hover{background:var(--surface-hover);border-color:var(--accent);transform:translateY(-3px)}
+.about-card .icon{
+  font-size:2rem;margin-bottom:12px;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.about-card h3{font-size:1.05rem;margin-bottom:8px;color:var(--text)}
+.about-card p{font-size:0.9rem;color:var(--text-mid);line-height:1.6}
+.members-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:24px;
+}
+.member-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius);padding:36px 24px 28px;
+  text-align:center;transition:all 0.3s;cursor:pointer;
+  position:relative;overflow:hidden;
+}
+.member-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,var(--accent),var(--accent2),var(--accent3));
+  opacity:0;transition:opacity 0.3s;
+}
+.member-card:hover::before{opacity:1}
+.member-card:hover{background:var(--surface-hover);border-color:var(--accent);transform:translateY(-5px)}
+.avatar{
+  width:80px;height:80px;border-radius:50%;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  display:flex;align-items:center;justify-content:center;
+  margin:0 auto 16px;
+  font-size:2rem;font-weight:700;color:#fff;
+  box-shadow:0 4px 20px rgba(96,165,250,0.2);
+}
+.member-card h3{font-size:1.15rem;margin-bottom:4px}
+.member-card .role{font-size:0.88rem;color:var(--accent);margin-bottom:8px;font-weight:500}
+.member-card .desc{font-size:0.85rem;color:var(--text-mid);margin-bottom:18px;line-height:1.5}
+.member-card .btn-link{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:10px 24px;border-radius:50px;
+  background:transparent;border:1px solid var(--border);
+  color:var(--accent);text-decoration:none;
+  font-size:0.88rem;font-weight:500;transition:all 0.3s;
+}
+.member-card .btn-link:hover{background:var(--surface-hover);border-color:var(--accent);gap:10px}
+.stack-grid{
+  display:flex;flex-wrap:wrap;justify-content:center;gap:12px;
+  max-width:800px;margin:0 auto;
+}
+.stack-item{
+  display:flex;align-items:center;gap:8px;
+  padding:10px 20px;border-radius:50px;
+  background:var(--surface);border:1px solid var(--border);
+  font-size:0.9rem;color:var(--text-mid);transition:all 0.3s;
+}
+.stack-item:hover{background:var(--surface-hover);border-color:var(--accent);color:var(--text);transform:translateY(-2px)}
+.stack-item i{color:var(--accent);font-size:1rem}
+
+/* ── 最新文章卡片 ── */
+.posts-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:20px;
+}
+.post-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius);padding:28px 24px;
+  text-align:left;transition:all 0.3s;cursor:pointer;
+  display:flex;flex-direction:column;position:relative;overflow:hidden;
+}
+.post-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,var(--accent),var(--accent2),var(--accent3));
+  opacity:0;transition:opacity 0.3s;
+}
+.post-card:hover::before{opacity:1}
+.post-card:hover{background:var(--surface-hover);border-color:var(--accent);transform:translateY(-4px)}
+.post-card .post-date{font-size:0.78rem;color:var(--text-dim);margin-bottom:8px}
+.post-card h3{font-size:1.05rem;margin-bottom:10px;color:var(--text);line-height:1.4}
+.post-card p{font-size:0.88rem;color:var(--text-mid);line-height:1.6;flex:1}
+.post-card .post-link{
+  margin-top:16px;font-size:0.85rem;color:var(--accent);
+  display:flex;align-items:center;gap:6px;font-weight:500;
+}
+.post-card:hover .post-link{gap:10px}
+.posts-more{text-align:center;margin-top:32px}
+.posts-more a{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:12px 28px;border-radius:50px;font-size:0.95rem;
+  background:transparent;border:1px solid var(--border);
+  color:var(--text);text-decoration:none;transition:all 0.3s;
+}
+.posts-more a:hover{background:var(--surface-hover);border-color:var(--accent);color:var(--accent);gap:12px}
+
+@media(max-width:768px){
+  .posts-grid{grid-template-columns:1fr}
+}
+
+footer{
+  position:relative;z-index:1;
+  text-align:center;padding:40px 24px;
+  border-top:1px solid var(--border);
+  color:var(--text-dim);font-size:0.85rem;
+}
+@media(max-width:768px){
+  .nav-links{
+    position:fixed;top:var(--nav-h);left:0;right:0;
+    flex-direction:column;background:rgba(7,7,13,0.95);
+    backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+    border-bottom:1px solid var(--border);
+    padding:8px 16px;gap:0;
+    display:none;
+  }
+  .nav-links.open{display:flex}
+  .nav-links a{padding:12px 16px;width:100%;border-radius:var(--radius-sm)}
+  .nav-toggle{display:block}
+  .services-grid,.about-cards,.members-grid{grid-template-columns:1fr}
+  .section{padding:60px 20px}
+  .hero{padding:100px 20px 60px}
+}
+</style>
+</head>
+<body>
+
+<div id="particles"></div>
+
+<!-- 导航栏 -->
+<nav>
+  <a href="#" class="nav-logo"><i class="fas fa-brain"></i> JYTHCloud</a>
+  <button class="nav-toggle" id="navToggle" aria-label="菜单"><i class="fas fa-bars"></i></button>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#services"><i class="fas fa-cogs"></i> 探索方向</a></li>
+    <li><a href="#about"><i class="fas fa-info-circle"></i> 关于我们</a></li>
+    <li><a href="#members"><i class="fas fa-users"></i> 团队</a></li>
+    <li><a href="#techstack"><i class="fas fa-cogs"></i> 工具箱</a></li>
+    <li><a href="#posts"><i class="fas fa-newspaper"></i> 文章</a></li>
+    <li><a href="https://wordpress.jythcloud.cn" target="_blank"><i class="fas fa-blog"></i> 博客</a></li>
+    <li><a href="/dashboard/jy" target="_blank"><i class="fas fa-chart-line"></i> 数据大屏</a></li>
+  </ul>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <h1>从校园出发<br>探索 AI 的无限可能</h1>
+  <p class="subtitle">JYTHCloud · 湖北工程学院数据科学与大数据技术专业 · 大学生创业团队</p>
+  <div class="hero-btns">
+    <a href="#services" class="btn-primary"><i class="fas fa-arrow-down"></i> 了解我们</a>
+    <a href="https://wordpress.jythcloud.cn" target="_blank" class="btn-outline"><i class="fas fa-external-link-alt"></i> 团队博客</a>
+  </div>
+</section>
+
+<!-- 探索方向 -->
+<section class="section" id="services">
+  <h2 class="section-title">我们在探索的方向</h2>
+  <p class="section-subtitle">作为在校生团队，我们在课堂学习之余不断尝试将 AI 技术落地，以下是我们的主要实践方向</p>
+  <div class="services-grid">
+    <div class="service-card" onclick="window.open('/posts/llm-api-guide.html','_blank')" style="cursor:pointer">
+      <div class="icon"><i class="fas fa-comment-dots"></i></div>
+      <h3>大模型应用</h3>
+      <p>学习与探索 GPT / DeepSeek / 文心等大模型 API 的调用与集成，尝试开发智能对话、知识问答等应用原型。</p>
+      <ul class="features">
+        <li><i class="fas fa-check-circle"></i> 大模型 API 调用与 Prompt 调试</li>
+        <li><i class="fas fa-check-circle"></i> 本地知识库问答系统搭建</li>
+        <li><i class="fas fa-check-circle"></i> 多轮对话应用开发实践</li>
+      </ul>
+    </div>
+    <div class="service-card" onclick="window.open('/posts/agent-intro.html','_blank')" style="cursor:pointer">
+      <div class="icon"><i class="fas fa-robot"></i></div>
+      <h3>AI 智能体 (Agent)</h3>
+      <p>研究智能体框架，尝试构建能自主调用工具、执行任务的 AI Agent，探索自动化工作流的可能性。</p>
+      <ul class="features">
+        <li><i class="fas fa-check-circle"></i> LangChain / LangGraph 框架实践</li>
+        <li><i class="fas fa-check-circle"></i> 工具调用与 API 编排</li>
+        <li><i class="fas fa-check-circle"></i> 自动化信息采集与整理</li>
+      </ul>
+    </div>
+    <div class="service-card" onclick="window.open('/posts/data-analysis.html','_blank')" style="cursor:pointer">
+      <div class="icon"><i class="fas fa-chart-bar"></i></div>
+      <h3>数据智能分析</h3>
+      <p>运用课上所学的 Python、Pandas、Scikit-learn 等工具，对公开数据进行清洗、建模与可视化分析。</p>
+      <ul class="features">
+        <li><i class="fas fa-check-circle"></i> Python 数据分析与可视化</li>
+        <li><i class="fas fa-check-circle"></i> 机器学习基础建模实践</li>
+        <li><i class="fas fa-check-circle"></i> 数据大屏与报表开发</li>
+      </ul>
+    </div>
+    <div class="service-card" onclick="window.open('/posts/server-setup.html','_blank')" style="cursor:pointer">
+      <div class="icon"><i class="fas fa-server"></i></div>
+      <h3>网站与云服务</h3>
+      <p>从零搭建服务器架构，学习 Docker、Nginx、数据库部署与运维，把动手实践当作最好的课堂。</p>
+      <ul class="features">
+        <li><i class="fas fa-check-circle"></i> Docker 容器化部署</li>
+        <li><i class="fas fa-check-circle"></i> Nginx 反向代理与 HTTPS</li>
+        <li><i class="fas fa-check-circle"></i> Flask / WordPress 后端开发</li>
+      </ul>
+    </div>
+    <div class="service-card" onclick="window.open('/posts/cv-intro.html','_blank')" style="cursor:pointer">
+      <div class="icon"><i class="fas fa-camera"></i></div>
+      <h3>计算机视觉入门</h3>
+      <p>通过课程项目和实践，学习图像分类、目标检测等基础视觉任务，尝试用开源模型解决小场景问题。</p>
+      <ul class="features">
+        <li><i class="fas fa-check-circle"></i> OpenCV 图像处理基础</li>
+        <li><i class="fas fa-check-circle"></i> 目标检测模型调用</li>
+        <li><i class="fas fa-check-circle"></i> OCR 文字识别实践</li>
+      </ul>
+    </div>
+    <div class="service-card" onclick="window.open('/posts/self-study-roadmap.html','_blank')" style="cursor:pointer">
+      <div class="icon"><i class="fas fa-graduation-cap"></i></div>
+      <h3>技术学习与分享</h3>
+      <p>通过团队博客记录学习历程、分享技术笔记，与更多同学一起交流 AI 学习路上的经验和踩坑记录。</p>
+      <ul class="features">
+        <li><i class="fas fa-check-circle"></i> AI 学习路线与笔记分享</li>
+        <li><i class="fas fa-check-circle"></i> 项目实战经验总结</li>
+        <li><i class="fas fa-check-circle"></i> 大学生技术社区建设</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 关于我们 -->
+<section class="section" id="about">
+  <h2 class="section-title">关于我们</h2>
+  <p class="section-subtitle">我们来自湖北工程学院数据科学与大数据技术专业，三个在校生因为对 AI 的共同热爱走到了一起</p>
+  <div class="about-cards">
+    <div class="about-card">
+      <div class="icon"><i class="fas fa-lightbulb"></i></div>
+      <h3>我们的初心</h3>
+      <p>我们相信 AI 是未来最重要的技术方向之一。作为数据科学专业的学生，我们希望把课堂上学到的知识真正用起来，在实践中加深理解，也为未来积累一些作品和经验。</p>
+    </div>
+    <div class="about-card">
+      <div class="icon"><i class="fas fa-flask"></i></div>
+      <h3>我们在做什么</h3>
+      <p>课余时间自学大模型、智能体、数据分析等前沿技术，动手搭建服务器、开发小项目、写技术博客。所有的项目都是学习驱动的，做出来是结果，学会才是目的。</p>
+    </div>
+    <div class="about-card">
+      <div class="icon"><i class="fas fa-handshake"></i></div>
+      <h3>我们能做什么</h3>
+      <p>虽然还在学习阶段，但我们有热情、肯钻研。如果你有数据相关的需求、想找人一起做项目、或者想交流 AI 学习经验，欢迎联系我们一起探讨。</p>
+    </div>
+    <div class="about-card">
+      <div class="icon"><i class="fas fa-globe"></i></div>
+      <h3>我们的社区</h3>
+      <p>我们在团队博客中持续更新学习笔记和项目复盘，内容涵盖大模型实践、数据分析案例、服务器搭建经验等。希望能帮助到更多同样在自学路上的同学。</p>
+    </div>
+  </div>
+</section>
+
+<!-- 团队成员 -->
+<section class="section" id="members">
+  <h2 class="section-title">团队成员</h2>
+  <p class="section-subtitle">三个方向，一个团队 — 我们各有所长，互相学习，共同成长</p>
+  <div class="members-grid">
+    <div class="member-card" onclick="window.open('https://jy.jythcloud.cn','_blank')">
+      <div class="avatar">吉</div>
+      <h3>吉天宇</h3>
+      <div class="role">技术 &amp; 产品</div>
+      <div class="desc">负责 AI 相关技术研究和产品方向探索，主导大模型应用、智能体开发等技术实践。</div>
+      <a href="https://jy.jythcloud.cn" target="_blank" class="btn-link" onclick="event.stopPropagation()">了解更多 <i class="fas fa-arrow-right"></i></a>
+    </div>
+    <div class="member-card" onclick="window.open('https://tan.jythcloud.cn','_blank')">
+      <div class="avatar">谭</div>
+      <h3>谭海涛</h3>
+      <div class="role">项目 &amp; 执行</div>
+      <div class="desc">负责项目进度管理、任务推进与团队协作，确保学习与实践项目能够按时落地。</div>
+      <a href="https://tan.jythcloud.cn" target="_blank" class="btn-link" onclick="event.stopPropagation()">了解更多 <i class="fas fa-arrow-right"></i></a>
+    </div>
+    <div class="member-card" onclick="window.open('https://hu.jythcloud.cn','_blank')">
+      <div class="avatar">胡</div>
+      <h3>胡子雄</h3>
+      <div class="role">商务 &amp; 运营</div>
+      <div class="desc">负责对外沟通与团队运营，探索技术商业化可能性，维护团队品牌与外部合作关系。</div>
+      <a href="https://hu.jythcloud.cn" target="_blank" class="btn-link" onclick="event.stopPropagation()">了解更多 <i class="fas fa-arrow-right"></i></a>
+    </div>
+  </div>
+</section>
+
+<!-- 技术栈 -->
+<section class="section" id="techstack">
+  <h2 class="section-title">我们的工具箱</h2>
+  <p class="section-subtitle">我们在学习和项目中使用的主要工具与技术</p>
+  <div class="stack-grid" id="techStack"></div>
+</section>
+
+<!-- 最新文章 -->
+<section class="section" id="posts">
+  <h2 class="section-title">最新文章</h2>
+  <p class="section-subtitle">来自团队博客的最新分享 — 点击卡片阅读全文</p>
+  <div class="posts-grid" id="postsGrid"></div>
+  <div class="posts-more">
+    <a href="https://wordpress.jythcloud.cn" target="_blank"><i class="fas fa-external-link-alt"></i> 查看全部文章</a>
+  </div>
+</section>
+
+<!-- 底部 -->
+<footer>
+  <p>© 2026 JYTHCloud · 湖北工程学院数据科学与大数据技术专业 · 大学生创业团队</p>
+</footer>
+
+<script>
+// ── 粒子背景 ──
+(function(){
+  const c=document.getElementById('particles');
+  for(let i=0;i<60;i++){
+    const p=document.createElement('div');
+    p.className='particle';
+    p.style.left=Math.random()*100+'%';
+    p.style.width=p.style.height=(1+Math.random()*2)+'px';
+    p.style.animationDuration=(15+Math.random()*25)+'s';
+    p.style.animationDelay=Math.random()*20+'s';
+    c.appendChild(p);
+  }
+})();
+
+// ── 导航栏 ──
+document.getElementById('navToggle').addEventListener('click',function(){
+  document.getElementById('navLinks').classList.toggle('open');
+});
+document.querySelectorAll('.nav-links a').forEach(a=>{
+  a.addEventListener('click',()=>{
+    document.getElementById('navLinks').classList.remove('open');
+  });
+});
+
+// ── 技术栈 ──
+const techStack = [
+  {name:'Python',icon:'fab fa-python'},{name:'Pandas',icon:'fas fa-table'},
+  {name:'Scikit-learn',icon:'fas fa-chart-line'},{name:'Flask',icon:'fas fa-flask'},
+  {name:'Docker',icon:'fab fa-docker'},{name:'Nginx',icon:'fas fa-server'},
+  {name:'MySQL',icon:'fas fa-database'},{name:'Redis',icon:'fas fa-bolt'},
+  {name:'Linux',icon:'fab fa-linux'},{name:'Git',icon:'fab fa-git-alt'},
+  {name:'WordPress',icon:'fab fa-wordpress'},{name:'OpenCV',icon:'fas fa-camera'},
+];
+(function(){
+  const el=document.getElementById('techStack');
+  el.innerHTML=techStack.map(t=>
+    `<div class="stack-item"><i class="${t.icon}"></i> ${t.name}</div>`
+  ).join('');
+})();
+
+// ── 加载最新博客文章 ──
+(async function(){
+  const el=document.getElementById('postsGrid');
+  if(!el)return;
+  try{
+    const r=await fetch('https://wordpress.jythcloud.cn/wp-json/wp/v2/posts?per_page=6&_fields=id,title,excerpt,date,slug');
+    const posts=await r.json();
+    if(!posts||posts.length===0)throw new Error('no posts');
+    el.innerHTML=posts.map(p=>{
+      const title=p.title.rendered;
+      const slug=p.slug;
+      const date=p.date.slice(0,10);
+      // 清理 excerpt 的 HTML 标签
+      const excerpt=p.excerpt.rendered.replace(/<[^>]+>/g,'').slice(0,120)+'…';
+      return `<div class="post-card" onclick="window.open('https://wordpress.jythcloud.cn/${slug}','_blank')">
+        <div class="post-date"><i class="far fa-calendar-alt"></i> ${date}</div>
+        <h3>${title}</h3>
+        <p>${excerpt}</p>
+        <div class="post-link">阅读全文 <i class="fas fa-arrow-right"></i></div>
+      </div>`;
+    }).join('');
+  }catch(e){
+    // 降级：显示静态内容
+    el.innerHTML='<div style="text-align:center;color:var(--text-mid);padding:40px;grid-column:1/-1"><i class="fas fa-spinner fa-spin"></i> 加载中… 请<a href="https://wordpress.jythcloud.cn" style="color:var(--accent)">访问博客</a></div>';
+  }
+})();
+</script>
+</body>
+</html>

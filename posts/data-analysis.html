@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<link rel="stylesheet" href="/static/style.css">
+<link rel="stylesheet" href="https://cdnjs.loli.net/ajax/libs/font-awesome/6.5.1/css/all.min.css" media="print" onload="this.media='all'">
+<title>数据分析入门：我用 Pandas 清洗了 10 万条数据 · JYTHCloud</title>
+<meta name="description" content="一个在校生的实战记录">
+
+</head>
+<body>
+
+<div class="article-progress"><div class="bar" id="progressBar"></div></div>
+<script>
+// Progress bar
+window.addEventListener('scroll',function(){var h=document.documentElement;var p=(h.scrollTop/(h.scrollHeight-h.clientHeight))*100;document.getElementById('progressBar').style.width=p+'%'});
+// Code copy
+function copyCode(btn){var codeBlock=btn.closest('.code-block');var text=codeBlock.textContent.replace(/复制$/, '').trim();navigator.clipboard.writeText(text).then(function(){btn.innerHTML='<i class="fas fa-check"></i> 已复制';setTimeout(function(){btn.innerHTML='<i class="far fa-copy"></i> 复制'},2000)})}
+// Image zoom
+document.querySelectorAll('.article-body img').forEach(function(i){i.addEventListener('click',function(e){e.stopPropagation();document.getElementById('imgZoom').src=this.src;document.getElementById('imgOverlay').classList.add('show')})});
+// Back to top visibility
+window.addEventListener('scroll',function(){var btn=document.getElementById('articleTop');if(btn){btn.classList.toggle('show',window.scrollY>400)}});
+</script>
+<div class="article-container">
+  <a href="/" class="article-back"><i class="fas fa-arrow-left"></i> 返回主页</a>
+
+  <div class="article-hero-img">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 740 360" width="100%" height="100%" viewBox="0 0 740 360"><defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#0f172a"/><stop offset="100%" stop-color="#1e1b4b"/></linearGradient><linearGradient id="ac" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#22c55e"/><stop offset="100%" stop-color="#a78bfa"/></linearGradient></defs><rect width="740" height="360" fill="url(#bg)"/><circle cx="600" cy="70" r="170" fill="rgba(96,165,250,0.04)"/><circle cx="120" cy="310" r="130" fill="rgba(34,197,94,0.04)"/><rect x="100" y="180" width="40" height="120" rx="4" fill="rgba(96,165,250,0.3)"/><rect x="160" y="140" width="40" height="160" rx="4" fill="rgba(96,165,250,0.5)"/><rect x="220" y="120" width="40" height="180" rx="4" fill="rgba(167,139,250,0.5)"/><rect x="280" y="90" width="40" height="210" rx="4" fill="rgba(167,139,250,0.4)"/><rect x="340" y="110" width="40" height="190" rx="4" fill="rgba(244,114,182,0.4)"/><rect x="400" y="160" width="40" height="140" rx="4" fill="rgba(244,114,182,0.3)"/><rect x="460" y="200" width="40" height="100" rx="4" fill="rgba(96,165,250,0.25)"/><polyline points="120,185 180,165 240,150 300,125 360,145 420,175 480,215" fill="none" stroke="#22c55e" stroke-width="2" stroke-dasharray="6,3" opacity="0.6"/><text x="120" y="318" text-anchor="middle" fill="#64748b" font-size="8" font-family="monospace">Q1</text><text x="180" y="318" text-anchor="middle" fill="#64748b" font-size="8" font-family="monospace">Q2</text><text x="240" y="318" text-anchor="middle" fill="#64748b" font-size="8" font-family="monospace">Q3</text><text x="300" y="318" text-anchor="middle" fill="#64748b" font-size="8" font-family="monospace">Q4</text><text x="360" y="318" text-anchor="middle" fill="#64748b" font-size="8" font-family="monospace">Q5</text><text x="420" y="318" text-anchor="middle" fill="#64748b" font-size="8" font-family="monospace">Q6</text><text x="480" y="318" text-anchor="middle" fill="#64748b" font-size="8" font-family="monospace">Q7</text><line x1="88" y1="185" x2="88" y2="305" stroke="#334155" stroke-width="1"/><line x1="88" y1="305" x2="510" y2="305" stroke="#334155" stroke-width="1"/><rect x="530" y="100" width="180" height="180" rx="10" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/><rect x="540" y="110" width="160" height="24" rx="4" fill="rgba(96,165,250,0.1)"/><text x="620" y="126" text-anchor="middle" fill="#60a5fa" font-size="9" font-family="sans-serif" font-weight="bold">数据概览</text><line x1="540" y1="140" x2="700" y2="140" stroke="rgba(255,255,255,0.06)" stroke-width="1"/><text x="550" y="158" fill="#94a3b8" font-size="8" font-family="monospace">总记录数：98,432</text><text x="550" y="176" fill="#94a3b8" font-size="8" font-family="monospace">维度：12 列</text><text x="550" y="194" fill="#94a3b8" font-size="8" font-family="monospace">缺失值：0.3%</text><text x="550" y="212" fill="#94a3b8" font-size="8" font-family="monospace">均值：2,847</text><text x="550" y="230" fill="#94a3b8" font-size="8" font-family="monospace">标准差：1,203</text><text x="550" y="248" fill="#94a3b8" font-size="8" font-family="monospace">清洗耗时：2.3s</text><text x="550" y="266" fill="#22c55e" font-size="8" font-family="monospace">✓ 清洗完成</text><text x="60" y="46" fill="url(#ac)" font-size="14" font-family="sans-serif" font-weight="bold" letter-spacing="1">数据分析入门</text></svg>
+  </div>
+
+  <h1 class="article-title">数据分析入门：我用 Pandas 清洗了 10 万条数据</h1>
+  <div class="article-meta">
+    <span><i class="far fa-calendar-alt"></i> 2026-05-26</span>
+    <span><i class="fas fa-tag"></i> 数据分析 · Pandas · Python</span>
+    <span><i class="far fa-clock"></i> 阅读约 6 分钟</span>
+  </div>
+
+  <div class="article-body">
+  <div class="article-toc">
+    <div class="article-toc-title"><i class="fas fa-list"></i> 目录</div>
+    <ul class="article-toc-list">
+      <li><a href="#heading-1"><span class="toc-num">01</span>拿到数据后的第一反应：懵</a></li>
+      <li><a href="#heading-2"><span class="toc-num">02</span>第一关：数据清洗</a></li>
+      <li><a href="#heading-3"><span class="toc-num">03</span>第二关：分析与可视化</a></li>
+      <li><a href="#heading-4"><span class="toc-num">04</span>几个学到的教训</a></li>
+    </ul>
+  </div>
+
+  <p>大二上学期数据科学导论的课程作业是分析一个公开数据集。当时我想着随便找个几百行的 CSV 交差就行，结果老师说"数据集样本量不能少于 1 万条"。于是我从 Kaggle 上找了个 10 万行的电商订单数据，开始了我的第一次"大规模"数据分析。</p>
+    24|
+    25|  <h2 id="heading-1">拿到数据后的第一反应：懵</h2>
+    26|  <p>数据集下载下来是一个 30MB 的 CSV 文件。用 Excel 打开直接卡死了。这才意识到课上学的"用 Excel 分析数据"在真实场景下根本不现实。好在 Python 的 Pandas 处理这种规模的数据完全没问题。</p>
+    27|  <div class="code-block">
+  <button class="code-copy-btn" onclick="copyCode(this)"><i class="far fa-copy"></i> 复制</button>
+    28|    import pandas as pd<br><br>
+    29|    df = pd.read_csv("orders.csv")<br>
+    30|    print(df.shape)&nbsp;&nbsp;<span class="comment"># (102543, 12) — 10万行，12列</span><br>
+    31|    print(df.info())<br>
+    32|    print(df.describe())
+    33|  </div>
+    34|
+    35|  <h2 id="heading-2">第一关：数据清洗</h2>
+    36|  <p>打印出来一看，头都大了：</p>
+    37|  <ul>
+    38|    <li>有 3000 多行的客户姓名是空的</li>
+    39|    <li>订单金额那一列居然混着"¥128.00"这种带货币符号的字符串</li>
+    40|    <li>日期格式不统一，有的写"2024-01-15"，有的写"2024/01/15"，还有的写"2024年1月15日"</li>
+    41|    <li>甚至有几十行的订单金额是负数—应该是退款单混进来了</li>
+    42|  </ul>
+    43|  <p>数据分析里流传着一句话：<strong>数据清洗占整个分析过程的 80% 时间。</strong>这次算是亲身体会到了。</p>
+    44|
+    45|  <h3>处理空值</h3>
+    46|  <div class="code-block">
+  <button class="code-copy-btn" onclick="copyCode(this)"><i class="far fa-copy"></i> 复制</button>
+    47|    <span class="comment"># 客户姓名为空的记录怎么处理？不能直接删，可能还有其他有用信息</span><br>
+    48|    <span class="comment"># 我先看看空值比例</span><br>
+    49|    print(df["customer_name"].isna().sum())&nbsp;&nbsp;<span class="comment"># 3247</span><br>
+    50|    <span class="comment"># 3% 左右，直接删除影响不大</span><br>
+    51|    df = df.dropna(subset=["customer_name"])<br><br>
+    52|    <span class="comment"># 支付方式为空的行就用"未知"填充</span><br>
+    53|    df["payment_method"] = df["payment_method"].fillna("未知")
+    54|  </div>
+    55|
+    56|  <h3>处理脏数据</h3>
+    57|  <div class="code-block">
+  <button class="code-copy-btn" onclick="copyCode(this)"><i class="far fa-copy"></i> 复制</button>
+    58|    <span class="comment"># 金额列：去掉 '¥' 符号，转成浮点数</span><br>
+    59|    df["amount"] = df["amount"].str.replace("¥", "").astype(float)<br><br>
+    60|    <span class="comment"># 日期统一格式</span><br>
+    61|    df["order_date"] = pd.to_datetime(df["order_date"], errors="coerce")<br><br>
+    62|    <span class="comment"># 过滤负数（退款单单独处理）</span><br>
+    63|    refunds = df[df["amount"] < 0]<br>
+    64|    orders = df[df["amount"] >= 0]
+    65|  </div>
+    66|
+    67|  <div class="highlight">
+    68|    <strong>💡 踩坑：</strong>用 pd.to_datetime() 转换日期的时候，如果遇到无法解析的格式，默认会报错导致程序中断。加个 errors="coerce" 参数之后，无法解析的日期会变成 NaT（空值），不影响其他数据的处理。这个小参数帮我省了很多事。
+    69|  </div>
+    70|
+    71|  <h2 id="heading-3">第二关：分析与可视化</h2>
+    72|  <p>数据洗干净之后，就可以开始分析了。我用 Matplotlib 画了几张图：</p>
+    73|  <ul>
+    74|    <li><strong>各月销售额趋势图</strong>—能看到明显的 618 和双 11 高峰</li>
+    75|    <li><strong>商品类别占比饼图</strong>—发现数码产品占了将近一半的销售额</li>
+    76|    <li><strong>客户复购率分析</strong>—大部分客户只买过一次，复购率不到 20%</li>
+    77|  </ul>
+    78|  <p>其实这些分析本身并不难，就是 groupby、sum、mean 这些基础操作。但之前的数据清洗很关键——如果数据是脏的，再好看的分析也只是 garbage in, garbage out。</p>
+    79|  <div class="code-block">
+  <button class="code-copy-btn" onclick="copyCode(this)"><i class="far fa-copy"></i> 复制</button>
+    80|    <span class="comment"># 月度销售额</span><br>
+    81|    monthly = orders.copy()<br>
+    82|    monthly["month"] = monthly["order_date"].dt.to_period("M")<br>
+    83|    monthly_sales = monthly.groupby("month")["amount"].sum()<br><br>
+    84|    <span class="comment"># 画图</span><br>
+    85|    import matplotlib.pyplot as plt<br>
+    86|    monthly_sales.plot(kind="line", figsize=(10, 5))<br>
+    87|    plt.title("各月销售额趋势")<br>
+    88|    plt.show()
+    89|  </div>
+    90|
+    91|  <h2 id="heading-4">几个学到的教训</h2>
+    92|  <ol>
+    93|    <li><strong>先看数据长什么样再写代码。</strong> 不要上来就写复杂的分析逻辑。先 .head()、.info()、.describe() 看看数据长什么样，心里有个底。</li>
+    94|    <li><strong>数据清洗比分析更花时间。</strong> 这次作业 80% 的时间花在了清洗上，但这也是最有收获的部分。真实的业务数据永远不会像教科书上那么干净。</li>
+    95|    <li><strong>学会查文档比背 API 有用。</strong> Pandas 的 API 太多了，根本记不住。重要的是知道"这个场景应该用 groupby"还是"pivot_table"，具体参数查官方文档就好。</li>
+    96|    <li><strong>保存清洗后的中间结果。</strong> 每次清洗操作之后保存一个副本，方便回溯。不然做到后面发现前面的步骤有问题，又要重新跑一遍。</li>
+    97|  </ol>
+    98|  <p>第一次做完完整的分析流程之后，再去看那些数据分析的课程，感觉理解深了很多。果然还是动手做项目才是最好的学习方式。</p>
+    99|
+   100|
+  </div>
+
+  <div class="article-footer">
+    <a href="/"><i class="fas fa-arrow-left"></i> 返回主页</a>
+    <span style="color:var(--text-dim);margin:0 12px">·</span>
+    <a href="https://wordpress.jythcloud.cn" target="_blank">团队博客 <i class="fas fa-external-link-alt"></i></a>
+  </div>
+</div>
+<!-- Image zoom overlay -->
+<div class="img-overlay" id="imgOverlay" onclick="this.classList.remove('show')"><img id="imgZoom" src="" alt=""></div>
+<!-- Back to top button -->
+<button class="article-top-btn" id="articleTop" onclick="window.scrollTo({top:0,behavior:'smooth'})"><i class="fas fa-arrow-up"></i></button>
+</body>
+</html>

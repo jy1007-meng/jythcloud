@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<link rel="stylesheet" href="/static/style.css">
+<link rel="stylesheet" href="https://cdnjs.loli.net/ajax/libs/font-awesome/6.5.1/css/all.min.css" media="print" onload="this.media='all'">
+<title>我们的社区 · JYTHCloud</title>
+<meta name="description" content="JYTHCloud技术社区的故事——博客分享、学习交流、开源项目，以及欢迎每一位热爱AI的朋友加入。独学而无友，则孤陋寡闻。">
+</head>
+<body>
+
+<div class="article-progress"><div class="bar" id="progressBar"></div></div>
+<script>
+// Progress bar
+window.addEventListener('scroll',function(){var h=document.documentElement;var p=(h.scrollTop/(h.scrollHeight-h.clientHeight))*100;document.getElementById('progressBar').style.width=p+'%'});
+// Code copy
+function copyCode(btn){var codeBlock=btn.closest('.code-block');var text=codeBlock.textContent.replace(/复制$/, '').trim();navigator.clipboard.writeText(text).then(function(){btn.innerHTML='<i class="fas fa-check"></i> 已复制';setTimeout(function(){btn.innerHTML='<i class="far fa-copy"></i> 复制'},2000)})}
+// Image zoom
+document.querySelectorAll('.article-body img').forEach(function(i){i.addEventListener('click',function(e){e.stopPropagation();document.getElementById('imgZoom').src=this.src;document.getElementById('imgOverlay').classList.add('show')})});
+// Back to top visibility
+window.addEventListener('scroll',function(){var btn=document.getElementById('articleTop');if(btn){btn.classList.toggle('show',window.scrollY>400)}});
+</script>
+<div class="article-container">
+  <a href="/" class="article-back"><i class="fas fa-arrow-left"></i> 返回主页</a>
+
+  <div class="article-hero-img">
+    <img src="/posts/about-community.svg" alt="我们的社区" style="width:100%;height:100%;object-fit:cover">
+  </div>
+
+  <h1 class="article-title">我们的社区</h1>
+  <div class="article-meta">
+    <span><i class="far fa-calendar-alt"></i> 2026-05-27</span>
+    <span><i class="fas fa-tag"></i> 关于我们</span>
+    <span><i class="far fa-clock"></i> 阅读约 6 分钟</span>
+  </div>
+
+  <div class="article-body">
+  <div class="article-toc">
+    <div class="article-toc-title"><i class="fas fa-list"></i> 目录</div>
+    <ul class="article-toc-list">
+      <li><a href="#heading-1"><span class="toc-num">01</span>为什么需要一个社区</a></li>
+      <li><a href="#heading-2"><span class="toc-num">02</span>博客分享：为谁而写，写了什么</a></li>
+      <li><a href="#heading-3"><span class="toc-num">03</span>学习交流：一起走，走得远</a></li>
+      <li><a href="#heading-4"><span class="toc-num">04</span>开源与分享：让代码说话</a></li>
+      <li><a href="#heading-5"><span class="toc-num">05</span>欢迎加入：如果你也在自学AI</a></li>
+      <li><a href="#heading-6"><span class="toc-num">06</span>一个人走得快，一群人走得远</a></li>
+    </ul>
+  </div>
+
+
+    <p>去年冬天，团队群里有人发了这样一段话：<strong>"我发现一个问题——我做项目遇到坑的时候，翻来覆去找不到答案。但等我终于爬出来之后，那个坑和爬坑的过程，也就烂在我自己肚子里了。"</strong></p>
+
+    <p>这句话引起了所有人的共鸣。吉天宇紧跟着回了一句："那咱们为什么不把这些东西写出来？反正都要踩坑，让别人少踩一个算一个。"于是就有了这个社区的雏形——不是从什么宏伟规划开始的，就是从几个深夜群里的一条消息。</p>
+
+    <p><span class="inline-code">独学而无友，则孤陋寡闻。</span>这句话出自《礼记·学记》，两千多年前的道理，放在今天的AI学习之路上依然锋利如初。我们建这个社区，就是不想做那个"孤陋寡闻"的人——也不想让和我们一样的自学者，在黑暗中自己摸墙。</p>
+
+    <h2 id="heading-1">为什么需要一个社区</h2>
+
+    <p>学AI这件事，孤独感来得比想象中更快。当你一个人对着屏幕调了三个小时的参数，模型损失就是不下降；当你读到一篇论文感觉懂了，合上书又什么都说不出来；当你兴奋地做了一个小demo，却发现身边没有人能看懂你在做什么——这些时刻，一个人扛着真的挺累的。</p>
+
+    <p>前阵子谭海涛在群里分享了一个故事。他说他大二刚开始学机器学习的时候，花了两周时间硬啃《统计学习方法》的前三章，啃完之后做课后题，一道题卡了整整一个周末。后来他把问题发到了某个技术论坛，一个素不相识的人回复了一段话，指出了他理解偏差的地方——就这么一个回复，帮他节省了至少一周的时间。</p>
+
+    <blockquote>
+      <strong>📌 谭海涛的原话：</strong><br>
+      "那种感觉就像是你一个人在黑屋子里摸索了很久，突然有人帮你把灯打开了。<br>
+      后来我就想——如果有一天我能帮别人打开那盏灯，我一定会的。"
+    </blockquote>
+
+    <p>这就是我们做社区最根本的动力。我们深知自学的路上有多少坑、多少迷茫、多少"我是不是不适合学这个"的自我怀疑。<strong>一个社区的意义，不只是分享知识，更是告诉每一个正在路上的人：你不是一个人。</strong></p>
+
+    <div class="highlight">
+      <strong>🤝 社区的三个核心理念：</strong><br>
+      • 真实——不端着，不装懂，踩过的坑一个不落地写出来<br>
+      • 互帮——每个人都是学习者，每个人也都是分享者<br>
+      • 成长——不追求一步登天，相信持续的积累终会开花
+    </div>
+
+    <h2 id="heading-2">博客分享：为谁而写，写了什么</h2>
+
+    <p>我们的技术博客目前已经发布了十多篇文章，覆盖了从AI入门到项目实战的方方面面。每次写文章之前，我们都会问自己一个问题：<strong>如果半年前的自己看到这篇文章，会不会觉得有用？</strong></p>
+
+    <p>我们不是为了填充内容而写，而是为了解决真实的问题而写。比如胡老师在部署服务器的时候踩过Nginx配置的坑，就把整个过程梳理成了《服务器搭建与部署踩坑实录》；比如吉天宇在设计和实现量化回测系统时走过弯路，就有了那篇《从零搭建量化回测系统》；再比如那位自学AI的朋友的故事，被我们写成了《自学AI这一年》，发出去之后收到了很多读者的留言——说"看到有人和我一样，我就放心了"。</p>
+
+    <p>下面是目前博客的主要内容和分类，一目了然：</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>分类</th>
+          <th>代表文章</th>
+          <th>适合谁看</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>🚀 入门指引</td>
+          <td>自学AI路线图 · CV入门指南 · LLM API调用指南</td>
+          <td>刚接触AI、不知道从哪开始的初学者</td>
+        </tr>
+        <tr>
+          <td>🛠️ 项目实战</td>
+          <td>量化回测系统 · Agent开发入门 · 数据分析实战</td>
+          <td>想动手做项目但缺方向的人</td>
+        </tr>
+        <tr>
+          <td>🏗️ 架构与部署</td>
+          <td>JYTHCloud技术栈全景 · 服务器部署踩坑记</td>
+          <td>想把项目上线、需要实战经验的人</td>
+        </tr>
+        <tr>
+          <td>💭 思考与成长</td>
+          <td>自学AI这一年 · AI创业的一些思考 · 从课堂到世界</td>
+          <td>对AI行业和职业发展有困惑的人</td>
+        </tr>
+        <tr>
+          <td>📖 团队故事</td>
+          <td>我们的初心 · 我们的社区 · 我们能做什么</td>
+          <td>想了解JYTHCloud和背后团队的朋友</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>文章不求长，但求有用。我们更愿意花时间把一个小问题讲透，而不是堆砌一大堆似懂非懂的概念。<strong>每一篇文章都经过至少两个人的审阅——写的人负责真诚，看的人负责挑刺。</strong></p>
+
+    <p>未来我们还会继续写下去。计划中的选题包括：<span class="tag">RAG实战</span> <span class="tag">AI Agent进阶</span> <span class="tag">MCP协议解析</span> <span class="tag">模型微调入门</span>。如果你有什么想看的内容，欢迎告诉我们——你的需求就是我们的选题方向。</p>
+
+    <h2 id="heading-3">学习交流：一起走，走得远</h2>
+
+    <p>博客是单向的输出，但学习从来不是。所以我们做了一系列面对面的交流活动，让知识真正流动起来。</p>
+
+    <p><strong>每周分享会</strong>是我们坚持最久的一件事。每周末晚上九点，团队加上社区里感兴趣的朋友，在腾讯会议上花一个小时左右的时间。分享的主题五花八门——有人讲最近读到的一篇好论文，有人复盘项目踩过的坑，有人分享新发现的好工具。没有KPI，没有压力，讲得好大家鼓掌，讲得不好也没关系，重要的是"我在输出"这件事本身。</p>
+
+    <p>有一次分享会，吉天宇讲了他做的一个小工具——用Python脚本自动化处理实验室的数据报表。讲完之后一个学弟私聊他，说他们实验室也有同样的需求，想借用他的思路。两个人聊了一个晚上，最后那个学弟基于吉天宇的代码做了改进，又反过来贡献了一个新功能。<strong>这就是我们最想看到的场景——知识不是单向流动的，它在循环中变得越来越好。</strong></p>
+
+    <div class="highlight">
+      <strong>💡 一个真实的例子：</strong><br>
+      代码Review是我们内部坚持的另一个习惯。每段合入主分支的代码，至少经过一个人的Review。最开始大家觉得麻烦，但慢慢地发现——<br>
+      • 别人一眼就能看出你自己看了十遍都没发现的bug<br>
+      • 别人的实现思路往往比你更简洁<br>
+      • 写代码的人会更认真，因为知道有人在看<br>
+      现在这已经变成了我们下意识的习惯了。
+    </div>
+
+    <p><strong>结对编程</strong>是我们最近开始尝试的交流方式。两个人坐在同一台电脑前（或者用VS Code的Live Share），一个人写代码，一个人看，每十五分钟换一次。听起来效率不高，但实际上——当你要边写边解释的时候，你的思路会变得更清晰；而看你写代码的那个人，往往会在你还没意识到问题的时候就喊停。</p>
+
+    <blockquote>
+      <strong>🌟 一位社区成员的心声：</strong><br>
+      "加入JYTHCloud社区之前，我习惯了一个人学，一个人写，一个人debug。<br>
+      现在我发现，把代码给别人看这件事本身，就是最好的学习方式——<br>
+      因为你会逼着自己把代码写得更干净，把逻辑想得更清楚。"
+    </blockquote>
+
+    <h2 id="heading-4">开源与分享：让代码说话</h2>
+
+    <p>我们在GitHub上开源了一些项目，谈不上多大，但每一个都是我们真实用过、真实解决问题的产物。我们认为<strong>开源不只是把代码放上去，而是把思考过程也同步出来</strong>——为什么要这么设计、当时有什么备选方案、最后为什么选了这条路，这些"元信息"往往比代码本身更有价值。</p>
+
+    <p>目前我们在GitHub上维护的项目包括：</p>
+
+    <ul>
+      <li><strong>jyquant</strong> — 一个轻量级的量化回测框架，支持多策略回测和绩效分析。这个项目的初衷是谭海涛做课程设计时发现市面上的回测框架要么太重（适合专业量化团队），要么太简单（只能算收益率）。他想要一个"中间态"的东西——能跑策略、能出报告、但代码量控制在三千行以内。目前这个项目已经有20多个Star，收到了几份来自其他学校的PR。</li>
+      <li><strong>jyth-tools</strong> — 日常开发中积累的小工具集合，包括数据处理脚本、自动化部署模板、API封装等。每个工具都对应一个我们在项目中遇到过的真实问题。比如其中有一个"服务器日志分析器"，就是胡老师凌晨三点排查线上问题时写的——后来我们觉得别人可能也用得上，就整理了一下开源了。</li>
+      <li><strong>awesome-self-taught-ai</strong> — 自学AI的资源清单，包含课程推荐、书单、项目练习、社区链接等。这是我们社区里大家共同维护的一份清单，任何人都可以提PR补充内容。我们希望它成为中文互联网上最好的自学AI资源导航之一。</li>
+    </ul>
+
+    <p>除了自己的项目，我们也积极参与其他开源社区的贡献。吉天宇给某个流行的Python Web框架提过文档翻译的PR，谭海涛在某个机器学习库的issue区帮忙回答过技术问题，胡老师给一个容器化部署工具贡献过配置模板。<strong>我们相信，开源社区的本质不是"我写了多牛的代码"，而是"我用我的能力让别人的工作变得容易了一点"。</strong></p>
+
+    <div class="highlight">
+      <strong>📊 一键数据：</strong><br>
+      截至2026年5月，JYTHCloud在GitHub上共有 <strong>3个主要开源项目</strong>，累计 <strong>150+ Stars</strong>，收到过 <strong>12份外部贡献者的PR</strong>。<br>
+      数字不大，但每一个Star和PR背后都是一个真实的人、一个真实的连接——这比数字本身更让我们珍视。
+    </div>
+
+    <h2 id="heading-5">欢迎加入：如果你也在自学AI</h2>
+
+    <p>写到这里，我想直接对正在读这篇文章的你说几句话。</p>
+
+    <p>如果你也和我们一样——可能是数据科学或计算机专业的学生，也可能是完全跨专业自学AI的爱好者——如果你曾经在深夜对着报错的终端发呆，如果你也有过"我是不是永远学不会"的瞬间，如果你也希望身边有一群既能聊技术又能聊人生的朋友——<strong>那么这个社区就是为你准备的。</strong></p>
+
+    <p>我们不设门槛。不需要你有多好的学历，不需要你发过论文，甚至不需要你写过几行代码。我们只希望你来的时候带着一个心态：<strong>我愿意分享，也愿意学习。</strong></p>
+
+    <p>你可以通过以下方式找到我们：</p>
+
+    <ul>
+      <li><strong>访问主页</strong> — jythcloud.com 上有我们的全部文章和项目链接，每篇文章底部都有评论区，欢迎留下你的想法</li>
+      <li><strong>GitHub Discussions</strong> — 我们在每个开源项目里都开启了Discussions功能，技术问题、学习困惑、甚至职业选择上的疑问，都可以在那里提出来</li>
+      <li><strong>加入交流群</strong> — 主页上有入群方式，群里目前有几十个来自不同学校、不同背景的AI学习者。没有广告，没有营销，只有纯粹的技术交流和偶尔的深夜emo</li>
+      <li><strong>提PR或Issue</strong> — 如果你发现我们的文章有错误，或者对开源项目有改进建议，非常欢迎提PR。我们对待每一份贡献都充满感激</li>
+    </ul>
+
+    <blockquote>
+      <strong>💬 来自一位社区成员的话：</strong><br>
+      "我刚进群的时候什么都不会，连Git都不太会用。<br>
+      群里的人没有嫌弃我，而是直接甩了一个Git教程链接，说'先看这个，看完有问题再问'。<br>
+      两个月后，我给他们的一个开源项目提了第一个PR。虽然只是修了一个拼写错误，但那种感觉——<br>
+      就像是终于从一个旁观者变成了一个参与者。"<br>
+      <span style="display:block;text-align:right;color:var(--text-dim);margin-top:8px;">—— 某位不愿意透露姓名的群友</span>
+    </blockquote>
+
+    <h2 id="heading-6">一个人走得快，一群人走得远</h2>
+
+    <p>这句话被无数人说过，但我们真正理解它的含义，是在社区慢慢成型之后。</p>
+
+    <p>一个人走得快——当你独自学习的时候，你可以按照自己的节奏来，想学什么学什么，不想学就休息。但一个人也容易走偏、走累、走不下去。没有反馈、没有讨论、没有那种"原来你也这样想"的共鸣，学习就变成了一场漫长的苦行。</p>
+
+    <p>一群人走得远——当你身边有人和你一起的时候，你会多一份坚持的理由。今天你帮我Review代码，明天我帮你Debug；今天你分享了一个好工具，明天我发现了一个更好的替代方案。这些微小的互动累积起来，就是一条远比一个人走得更远的路。</p>
+
+    <div class="highlight">
+      <strong>🌱 写在最后：</strong><br>
+      JYTHCloud社区还很小。我们不是什么大组织，没有全职运营，没有资本支持。我们只是一群相信"技术应该被分享"的人，在业余时间做着自认为有意义的事情。<br><br>
+      但我们已经看到了一些变化：有人在这里找到了第一份实习，有人从这里出发做了自己的第一个开源项目，有人从"在群里问问题"变成了"在群里回答问题"——每一个这样的瞬间，都让我们觉得这件事值得做下去。<br><br>
+      <strong>如果你也认同这件事，欢迎加入我们。</strong><br>
+      不需要准备什么，带着你的好奇心和一点点勇敢，来就好。
+    </div>
+
+    <p style="text-align:center;color:var(--text-dim);margin-top:40px;">
+      从一个人到一群人，从课堂到世界。<br>
+      这是我们社区的故事，也希望成为你的故事。
+    </p>
+
+    <hr>
+
+    <p style="text-align:center;font-size:0.9rem;color:var(--text-mid);">
+      📬 如果你想投稿、分享你的学习故事，或者对我们的社区有任何建议，<br>
+      欢迎通过主页联系我们。每一封邮件我们都会认真回复。
+    </p>
+
+  </div>
+
+  <div class="article-footer">
+    <a href="/"><i class="fas fa-arrow-left"></i> 返回主页</a>
+  </div>
+</div>
+
+<!-- Image zoom overlay -->
+<div class="img-overlay" id="imgOverlay" onclick="this.classList.remove('show')"><img id="imgZoom" src="" alt=""></div>
+<!-- Back to top button -->
+<button class="article-top-btn" id="articleTop" onclick="window.scrollTo({top:0,behavior:'smooth'})"><i class="fas fa-arrow-up"></i></button>
+</body>
+</html>

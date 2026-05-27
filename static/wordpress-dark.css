@@ -1,0 +1,400 @@
+/* ═══════════════════════════════════════════
+   JYTHCloud WordPress 暗色主题
+   适配 Twenty Twenty-Five 主题
+   匹配 jythcloud.cn 主站风格
+   ═══════════════════════════════════════════ */
+
+/* ── 全局 ── */
+:root {
+  --wp--preset--color--base: #07070d;
+  --wp--preset--color--contrast: #e0e0e0;
+  --wp--preset--color--accent: #60a5fa;
+  --wp--preset--color--accent-2: #a78bfa;
+  --wp--preset--color--accent-3: #f472b6;
+  --wp--preset--color--surface: rgba(255,255,255,0.03);
+  --wp--preset--color--surface-hover: rgba(255,255,255,0.06);
+  --wp--preset--color--border: rgba(255,255,255,0.07);
+  --wp--preset--color--text-mid: #999;
+  --wp--preset--color--text-dim: #666;
+  --wp--preset--gradient--accent-gradient: linear-gradient(135deg, #60a5fa, #a78bfa);
+}
+
+body {
+  background-color: #07070d !important;
+  color: #e0e0e0 !important;
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+}
+
+/* ── 页面背景 ── */
+.wp-site-blocks, 
+.wp-block-group,
+.wp-block-group__inner-container,
+.wp-block-column,
+.wp-block-post-content {
+  background-color: transparent !important;
+}
+
+/* ── 标题 ── */
+h1, h2, h3, h4, h5, h6,
+.wp-block-post-title a,
+.wp-block-heading {
+  color: #e0e0e0 !important;
+}
+
+.wp-block-post-title a:hover {
+  color: #60a5fa !important;
+}
+
+h1, .wp-block-post-title {
+  background: linear-gradient(135deg, #60a5fa, #a78bfa);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── 段落和文本 ── */
+p, .wp-block-post-excerpt__excerpt, .has-contrast-color {
+  color: #999 !important;
+}
+
+.has-base-color {
+  color: #e0e0e0 !important;
+}
+
+/* ── 链接 ── */
+a, .wp-block-post-title a, .entry-title a {
+  color: #60a5fa !important;
+  text-decoration: none;
+}
+
+a:hover, .wp-block-post-title a:hover {
+  color: #a78bfa !important;
+  text-decoration: underline;
+}
+
+/* ── 文章列表 ── */
+.wp-block-post {
+  background: rgba(255,255,255,0.03) !important;
+  border: 1px solid rgba(255,255,255,0.07) !important;
+  border-radius: 14px !important;
+  padding: 24px !important;
+  transition: all 0.2s ease;
+}
+
+.wp-block-post:hover {
+  background: rgba(255,255,255,0.06) !important;
+  border-color: rgba(96,165,250,0.2) !important;
+}
+
+.wp-block-post .wp-block-post-title {
+  margin-top: 12px;
+  font-size: 1.3rem;
+}
+
+.wp-block-post .wp-block-post-title a {
+  background: none;
+  -webkit-text-fill-color: #e0e0e0;
+  color: #e0e0e0 !important;
+}
+
+.wp-block-post .wp-block-post-title a:hover {
+  color: #60a5fa !important;
+}
+
+.wp-block-post-date {
+  color: #666 !important;
+  font-size: 0.85rem;
+}
+
+.wp-block-post-excerpt__excerpt {
+  color: #999 !important;
+  font-size: 0.92rem;
+  line-height: 1.6;
+}
+
+/* ── 分页导航 ── */
+.wp-block-query-pagination a {
+  color: #60a5fa !important;
+}
+
+.wp-block-query-pagination .page-numbers.current {
+  color: #e0e0e0 !important;
+  background: rgba(255,255,255,0.06);
+  border-radius: 8px;
+  padding: 4px 12px;
+}
+
+/* ── 头部 ── */
+.wp-block-template-part header,
+.wp-block-navigation,
+.wp-block-site-header {
+  background: rgba(7,7,13,0.85) !important;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(255,255,255,0.07) !important;
+}
+
+.wp-block-site-title a {
+  background: linear-gradient(135deg, #60a5fa, #a78bfa);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 700;
+  font-size: 1.15rem;
+}
+
+.wp-block-navigation-item a,
+.wp-block-page-list a,
+.wp-block-navigation__container a {
+  color: #999 !important;
+  font-size: 0.88rem;
+  padding: 8px 14px;
+  border-radius: 10px;
+  transition: all 0.2s;
+}
+
+.wp-block-navigation-item a:hover,
+.wp-block-navigation__container a:hover {
+  color: #e0e0e0 !important;
+  background: rgba(255,255,255,0.06) !important;
+}
+
+.wp-block-navigation__responsive-container {
+  background: #07070d !important;
+}
+
+/* ── 底部 ── */
+.wp-block-template-part footer,
+.wp-block-site-footer {
+  background: transparent !important;
+  border-top: 1px solid rgba(255,255,255,0.07) !important;
+  color: #666 !important;
+  font-size: 0.85rem;
+  padding-top: 24px;
+  margin-top: 48px;
+}
+
+/* ── 搜索框 ── */
+.wp-block-search__input {
+  background: rgba(255,255,255,0.03) !important;
+  border: 1px solid rgba(255,255,255,0.07) !important;
+  border-radius: 10px !important;
+  color: #e0e0e0 !important;
+  padding: 10px 16px !important;
+  font-size: 0.9rem;
+}
+
+.wp-block-search__input:focus {
+  border-color: #60a5fa !important;
+  outline: none !important;
+}
+
+.wp-block-search__button {
+  background: rgba(96,165,250,0.1) !important;
+  border: 1px solid rgba(96,165,250,0.2) !important;
+  border-radius: 10px !important;
+  color: #60a5fa !important;
+  padding: 10px 16px !important;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.wp-block-search__button:hover {
+  background: rgba(96,165,250,0.2) !important;
+}
+
+/* ── 按钮 ── */
+.wp-block-button__link {
+  background: linear-gradient(135deg, #60a5fa, #a78bfa) !important;
+  border-radius: 10px !important;
+  color: #fff !important;
+  padding: 12px 24px !important;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.wp-block-button__link:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+.wp-block-button.is-style-outline .wp-block-button__link {
+  background: transparent !important;
+  border: 1px solid rgba(96,165,250,0.3) !important;
+  color: #60a5fa !important;
+}
+
+.wp-block-button.is-style-outline .wp-block-button__link:hover {
+  background: rgba(96,165,250,0.1) !important;
+}
+
+/* ── 文章详情 ── */
+.wp-block-post-content p {
+  color: #999 !important;
+  font-size: 1rem;
+  line-height: 1.9;
+}
+
+.wp-block-post-content h2 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin: 48px 0 16px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  color: #e0e0e0 !important;
+}
+
+.wp-block-post-content h3 {
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin: 32px 0 12px;
+  color: #e0e0e0 !important;
+}
+
+.wp-block-post-content code {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 4px;
+  padding: 2px 8px;
+  font-size: 0.85em;
+  color: #60a5fa;
+}
+
+.wp-block-post-content pre {
+  background: #0d0d1a !important;
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 10px;
+  padding: 20px 24px;
+  overflow-x: auto;
+  font-size: 0.85rem;
+  line-height: 1.7;
+  color: #e2e8f0;
+}
+
+.wp-block-post-content blockquote {
+  border-left: 3px solid #a78bfa;
+  background: rgba(167,139,250,0.06);
+  border-radius: 0 10px 10px 0;
+  padding: 16px 20px;
+  color: #999;
+}
+
+.wp-block-post-content img {
+  border-radius: 10px;
+  max-width: 100%;
+}
+
+/* ── 文章元信息 ── */
+.wp-block-post-author,
+.wp-block-post-terms,
+.wp-block-post-terms a {
+  color: #666 !important;
+  font-size: 0.85rem;
+}
+
+.wp-block-post-terms a:hover {
+  color: #60a5fa !important;
+}
+
+/* ── 注释 ── */
+.wp-block-comments {
+  border-top: 1px solid rgba(255,255,255,0.07);
+}
+
+.wp-block-comment {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 10px;
+  padding: 16px;
+  margin-bottom: 12px;
+}
+
+.wp-block-comment__author {
+  color: #e0e0e0 !important;
+  font-weight: 600;
+}
+
+.wp-block-comment__date {
+  color: #666 !important;
+  font-size: 0.8rem;
+}
+
+.comment-reply-title {
+  color: #e0e0e0 !important;
+}
+
+/* ── 标签 ── */
+.wp-block-post-terms a {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 50px;
+  font-size: 0.78rem;
+  background: rgba(96,165,250,0.1);
+  color: #60a5fa !important;
+  border: 1px solid rgba(96,165,250,0.2);
+  margin-right: 4px;
+  margin-bottom: 4px;
+  text-decoration: none !important;
+}
+
+.wp-block-post-terms a:hover {
+  background: rgba(96,165,250,0.2);
+}
+
+/* ── Cover 块 ── */
+.wp-block-cover {
+  border-radius: 14px;
+}
+
+/* ── 分隔线 ── */
+.wp-block-separator {
+  border-color: rgba(255,255,255,0.07) !important;
+}
+
+/* ── 代码表格 ── */
+.wp-block-table {
+  border-color: rgba(255,255,255,0.07) !important;
+}
+
+.wp-block-table td,
+.wp-block-table th {
+  border-color: rgba(255,255,255,0.07) !important;
+  color: #999 !important;
+}
+
+.wp-block-table thead th {
+  color: #e0e0e0 !important;
+}
+
+.wp-block-table tbody tr:hover {
+  background: rgba(255,255,255,0.03) !important;
+}
+
+/* ── 页脚站点信息 ── */
+footer .wp-block-site-title a {
+  -webkit-text-fill-color: #60a5fa;
+  color: #60a5fa !important;
+  background: none;
+}
+
+/* ── 无文章提示 ── */
+.wp-block-query-no-results {
+  color: #666 !important;
+  text-align: center;
+  padding: 40px;
+}
+
+/* ── 响应式 ── */
+@media (max-width: 768px) {
+  .wp-block-post {
+    padding: 16px !important;
+  }
+  
+  .wp-block-post .wp-block-post-title {
+    font-size: 1.1rem;
+  }
+  
+  .wp-block-site-header {
+    padding: 8px 16px;
+  }
+}

@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 740 360" width="740" height="360">
+  <defs>
+    <linearGradient id="bg1" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0f172a"/>
+      <stop offset="100%" stop-color="#1e1b4b"/>
+    </linearGradient>
+    <linearGradient id="ac1" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#60a5fa"/>
+      <stop offset="100%" stop-color="#a78bfa"/>
+    </linearGradient>
+  </defs>
+  <rect width="740" height="360" fill="url(#bg1)"/>
+  <circle cx="640" cy="60" r="190" fill="rgba(96,165,250,0.04)"/>
+  <circle cx="100" cy="300" r="140" fill="rgba(244,114,182,0.04)"/>
+  <!-- 图片输入 -->
+  <rect x="80" y="90" width="120" height="100" rx="10" fill="rgba(96,165,250,0.08)" stroke="rgba(96,165,250,0.25)" stroke-width="1.5"/>
+  <rect x="100" y="110" width="80" height="60" rx="6" fill="rgba(96,165,250,0.15)"/>
+  <!-- 人脸轮廓 -->
+  <circle cx="140" cy="125" r="12" fill="none" stroke="#60a5fa" stroke-width="1" opacity="0.5"/>
+  <rect x="130" y="140" width="20" height="12" rx="6" fill="none" stroke="#60a5fa" stroke-width="1" opacity="0.5"/>
+  <text x="140" y="108" text-anchor="middle" fill="#60a5fa" font-size="7" font-family="monospace">input.jpg</text>
+  <!-- 箭头 -->
+  <line x1="210" y1="140" x2="260" y2="140" stroke="#334155" stroke-width="2"/>
+  <polygon points="260,135 270,140 260,145" fill="#334155"/>
+  <text x="240" y="130" text-anchor="middle" fill="#64748b" font-size="8" font-family="monospace">分析</text>
+  <!-- 处理管线 -->
+  <rect x="280" y="100" width="140" height="80" rx="10" fill="rgba(167,139,250,0.08)" stroke="rgba(167,139,250,0.25)" stroke-width="1.5"/>
+  <text x="350" y="125" text-anchor="middle" fill="#a78bfa" font-size="9" font-family="sans-serif" font-weight="bold">OpenCV</text>
+  <text x="350" y="142" text-anchor="middle" fill="#94a3b8" font-size="8" font-family="monospace">灰度化</text>
+  <text x="350" y="155" text-anchor="middle" fill="#94a3b8" font-size="8" font-family="monospace">边缘检测</text>
+  <text x="350" y="168" text-anchor="middle" fill="#94a3b8" font-size="8" font-family="monospace">特征提取</text>
+  <!-- 箭头 -->
+  <line x1="430" y1="140" x2="480" y2="140" stroke="#334155" stroke-width="2"/>
+  <polygon points="480,135 490,140 480,145" fill="#334155"/>
+  <!-- 输出结果 -->
+  <rect x="500" y="90" width="160" height="100" rx="10" fill="rgba(244,114,182,0.08)" stroke="rgba(244,114,182,0.25)" stroke-width="1.5"/>
+  <text x="580" y="115" text-anchor="middle" fill="#f472b6" font-size="9" font-family="sans-serif" font-weight="bold">检测结果</text>
+  <rect x="515" y="125" width="130" height="24" rx="4" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+  <text x="580" y="141" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="monospace">人脸数：3</text>
+  <rect x="515" y="155" width="130" height="24" rx="4" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+  <text x="580" y="171" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="monospace">置信度：96.7%</text>
+  <!-- 底部代码 -->
+  <text x="80" y="280" fill="#6b7280" font-size="11" font-family="monospace">&gt; import cv2</text>
+  <text x="80" y="297" fill="#60a5fa" font-size="11" font-family="monospace">&gt; face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')</text>
+  <text x="80" y="314" fill="#22c55e" font-size="11" font-family="monospace">&gt; faces = face_cascade.detectMultiScale(gray, 1.1, 4)</text>
+  <text x="80" y="331" fill="#f59e0b" font-size="11" font-family="monospace">&gt; print(f'检测到 {len(faces)} 张人脸')</text>
+  <!-- 标题 -->
+  <text x="60" y="46" fill="url(#ac1)" font-size="14" font-family="sans-serif" font-weight="bold" letter-spacing="1">计算机视觉入门</text>
+</svg>

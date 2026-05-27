@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<link rel="stylesheet" href="/static/style.css">
+<link rel="stylesheet" href="https://cdnjs.loli.net/ajax/libs/font-awesome/6.5.1/css/all.min.css" media="print" onload="this.media='all'">
+<title>从课堂到世界：我们的初心 · JYTHCloud</title>
+<meta name="description" content="作为数据科学专业的大学生，我们相信AI是未来最重要的技术方向，希望把课堂上学到的知识真正用起来——从被动学知识到主动做项目的心态转变故事。">
+</head>
+<body>
+
+<div class="article-progress"><div class="bar" id="progressBar"></div></div>
+<script>
+// Progress bar
+window.addEventListener('scroll',function(){var h=document.documentElement;var p=(h.scrollTop/(h.scrollHeight-h.clientHeight))*100;document.getElementById('progressBar').style.width=p+'%'});
+// Code copy
+function copyCode(btn){var codeBlock=btn.closest('.code-block');var text=codeBlock.textContent.replace(/复制$/, '').trim();navigator.clipboard.writeText(text).then(function(){btn.innerHTML='<i class="fas fa-check"></i> 已复制';setTimeout(function(){btn.innerHTML='<i class="far fa-copy"></i> 复制'},2000)})}
+// Image zoom
+document.querySelectorAll('.article-body img').forEach(function(i){i.addEventListener('click',function(e){e.stopPropagation();document.getElementById('imgZoom').src=this.src;document.getElementById('imgOverlay').classList.add('show')})});
+// Back to top visibility
+window.addEventListener('scroll',function(){var btn=document.getElementById('articleTop');if(btn){btn.classList.toggle('show',window.scrollY>400)}});
+</script>
+<div class="article-container">
+  <a href="/" class="article-back"><i class="fas fa-arrow-left"></i> 返回主页</a>
+
+  <div class="article-hero-img">
+    <img src="/posts/about-origin.svg" alt="从课堂到世界：我们的初心" style="width:100%;height:100%;object-fit:cover">
+  </div>
+
+  <h1 class="article-title">从课堂到世界：我们的初心</h1>
+  <div class="article-meta">
+    <span><i class="far fa-calendar-alt"></i> 2026-05-27</span>
+    <span><i class="fas fa-tag"></i> 关于我们</span>
+    <span><i class="far fa-clock"></i> 阅读约 5 分钟</span>
+  </div>
+
+  <div class="article-body">
+  <div class="article-toc">
+    <div class="article-toc-title"><i class="fas fa-list"></i> 目录</div>
+    <ul class="article-toc-list">
+      <li><a href="#heading-1"><span class="toc-num">01</span>为什么是数据科学？为什么是AI？</a></li>
+      <li><a href="#heading-2"><span class="toc-num">02</span>从课堂到课外：知识开始"活"起来</a></li>
+      <li><a href="#heading-3"><span class="toc-num">03</span>迈出第一步：第一次调用大模型API</a></li>
+      <li><a href="#heading-4"><span class="toc-num">04</span>三个人的相遇：吉天宇、谭海涛、胡子雄</a></li>
+      <li><a href="#heading-5"><span class="toc-num">05</span>我们相信的未来</a></li>
+    </ul>
+  </div>
+
+
+    <p>这学期的Python课最后一节，老师说了一句话，我一直记着：<strong>"你们现在学的东西，五年后有一半会过时。只有一件事不会过时——学会自己去学新东西的能力。"</strong></p>
+
+    <p>那天晚上我躺在床上翻来覆去睡不着。打开电脑看了一眼课表——下学期的机器学习、数据库原理、数据可视化……一门接一门。我突然意识到一个有点扎心的事实：课堂教的是知识框架，但真正能让我们和这个世界发生连接的，是把这些知识变成<strong>作品</strong>的能力。</p>
+
+    <p>这就是JYTHCloud故事的起点。不是什么宏大的创业宣言，而是一个很简单的念头：<span class="inline-code">我们能不能把课堂上学到的东西，真正用起来？</span></p>
+
+    <h2 id="heading-1">为什么是数据科学？为什么是AI？</h2>
+
+    <p>大一的时候选专业，我在计算机科学和数据科学之间犹豫了很久。计算机科学听起来"硬核"，数据科学听起来"有点虚"。后来一位学长跟我说了一句话，直接点醒了我：<strong>"未来十年，最重要的不是你写了多少行代码，而是你能不能从数据里找到答案。"</strong></p>
+
+    <p>这句话在我心里扎下了根。大二开始接触机器学习的课程，从线性回归到决策树，从SVM到神经网络——每一次推导公式的时候，我都在想：这些东西真的能在现实中发挥作用吗？</p>
+
+    <div class="highlight">
+      <strong>🤔 一个关键的问题：</strong>学完监督学习、无监督学习、强化学习，我们能做什么？不是考试，不是作业——是真正能帮到别人的东西。
+    </div>
+
+    <p>碰巧那段时间ChatGPT火得一塌糊涂，大模型的能力超出了所有人的想象。我突然意识到：<strong>AI不是未来的技术，AI就是现在的技术。</strong>那些在课本上学到的Transformer架构、注意力机制、反向传播——它们不再只是期末试卷上的考点，而是正在改变世界的真实力量。</p>
+
+    <p>下面这张表是我当时给自己列的一份"课堂vs现实"对照清单，现在看来依然很说明问题：</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>课程</th>
+          <th>课堂学到</th>
+          <th>现实对应</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Python程序设计</td>
+          <td>语法、数据结构、文件IO</td>
+          <td>数据处理脚本、API调用、自动化工具</td>
+        </tr>
+        <tr>
+          <td>概率论与数理统计</td>
+          <td>分布、假设检验、贝叶斯</td>
+          <td>A/B测试、置信区间、推荐系统</td>
+        </tr>
+        <tr>
+          <td>机器学习</td>
+          <td>算法原理、模型评估</td>
+          <td>分类预测、异常检测、模型部署</td>
+        </tr>
+        <tr>
+          <td>数据库原理</td>
+          <td>ER图、SQL、范式设计</td>
+          <td>数据仓库、ETL、OLAP分析</td>
+        </tr>
+        <tr>
+          <td>数据可视化</td>
+          <td>图表类型、设计原则</td>
+          <td>BI看板、交互式报表、数据故事</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>每一门课都能找到明确的现实落点。缺的从来不是知识——缺的是<strong>把知识串起来做一件事</strong>的勇气。</p>
+
+    <h2 id="heading-2">从课堂到课外：知识开始"活"起来</h2>
+
+    <p>真正让我心态发生转变的，是大二下学期的一个偶然尝试。当时机器学习课刚讲完文本分类，作业是用朴素贝叶斯做垃圾邮件识别。我做完之后觉得不过瘾——能不能拿这个思路做点更有意思的东西？</p>
+
+    <p>于是我开始自己鼓捣一个项目：<strong>用爬虫抓取知乎上关于"人工智能"话题下的回答，然后用学过的NLP方法做情感分析和关键词提取。</strong>第一次跑了将近两万条数据，看到生成的可视化图表时，那种感觉很难形容——<span class="inline-code">课本上的分类准确率终于不再是0.85这样的抽象数字了，它变成了"68%的用户对AI持积极态度"这样一个有血有肉的结论。</span></p>
+
+    <div class="code-block">
+  <button class="code-copy-btn" onclick="copyCode(this)"><i class="far fa-copy"></i> 复制</button>
+      <span class="comment"># 那段日子写的第一个"正经"脚本的雏形</span><br><br>
+      <span class="keyword">import</span> pandas <span class="keyword">as</span> pd<br>
+      <span class="keyword">from</span> sklearn.feature_extraction.text <span class="keyword">import</span> TfidfVectorizer<br>
+      <span class="keyword">from</span> sklearn.naive_bayes <span class="keyword">import</span> MultinomialNB<br><br>
+      <span class="comment"># 加载爬虫采集到的数据</span><br>
+      df = pd.read_csv(<span class="string">"zhihu_ai_posts.csv"</span>)<br>
+      <span class="comment"># 文本特征提取 + 分类</span><br>
+      vec = TfidfVectorizer(max_features=<span class="number">3000</span>)<br>
+      X = vec.fit_transform(df[<span class="string">'content'</span>])<br>
+      model = MultinomialNB().fit(X, df[<span class="string">'sentiment'</span>])<br>
+      <span class="comment"># 输出各类别高频词</span><br>
+      <span class="keyword">for</span> i, cat <span class="keyword">in</span> enumerate(model.classes_):<br>
+      &nbsp;&nbsp;  top = vec.get_feature_names_out()[model.feature_count_[i].argsort()[-<span class="number">10</span>:]]<br>
+      &nbsp;&nbsp;  print(<span class="string">f"{cat}: {', '.join(top)}"</span>)
+    </div>
+
+    <p>这段代码现在看来很粗糙——连超参数都没调，只是用了默认参数。但正是这个小小的项目让我体会到一件事：<strong>课堂知识不是终点，它应该是起点。</strong></p>
+
+    <p>从那以后，我开始有意识地做更多课外项目。每一次把课堂上学到的某个算法、某个框架用到真实数据上，都会有新的发现。知识不再是孤立的知识点，而是一个可以自由组合的<strong>工具箱</strong>。</p>
+
+    <blockquote>
+      <strong>📌 一个深刻的体会：</strong><br>
+      在课堂上学到的东西，往往要经过三次转化才能真正变成自己的——<br>
+      第一次是听懂（课堂上），第二次是做对（作业里），第三次是创造（项目中）。<br>
+      第三次才是质变发生的地方。
+    </blockquote>
+
+    <h2 id="heading-3">迈出第一步：第一次调用大模型API</h2>
+
+    <p>如果说前面的小项目让我尝到了实践的甜头，那第一次调用大模型API的经历，彻底打开了我对AI的想象空间。</p>
+
+    <p>那是一个周末的下午，我坐在图书馆的角落，打开OpenAI的文档，注册API Key，写下了人生第一行调用大模型API的代码：</p>
+
+    <div class="code-block">
+  <button class="code-copy-btn" onclick="copyCode(this)"><i class="far fa-copy"></i> 复制</button>
+      <span class="comment"># 第一次调用大模型API —— 那种紧张感现在还记忆犹新</span><br><br>
+      <span class="keyword">from</span> openai <span class="keyword">import</span> OpenAI<br><br>
+      client = OpenAI(api_key=<span class="string">"sk-..."</span>)&nbsp;&nbsp;<span class="comment"># 当时手抖着复制粘贴的key</span><br><br>
+      response = client.chat.completions.create(<br>
+      &nbsp;&nbsp;  model=<span class="string">"gpt-3.5-turbo"</span>,<br>
+      &nbsp;&nbsp;  messages=[<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;    {<span class="string">"role"</span>: <span class="string">"user"</span>, <span class="string">"content"</span>: <span class="string">"你好，请用一句话解释什么是机器学习。"</span>}<br>
+      &nbsp;&nbsp;  ]<br>
+      )<br><br>
+      print(response.choices[<span class="number">0</span>].message.content)
+    </div>
+
+    <p>按下回车的那一瞬间，我屏住了呼吸。几秒钟后，屏幕上出现了一段流畅的中文回复。那个时刻——<strong>一个我自己写的程序，调用了一个部署在云端的、经过千亿参数训练的人工智能模型，并且得到了一个有意义的回答。</strong></p>
+
+    <div class="highlight">
+      <strong>🚀 心态转变的关键：</strong>从"使用AI产品"到"用代码调用AI能力"，中间只隔了一个API Key的距离。但就是这一步，让我从一个"AI用户"变成了一个"AI开发者"。这个身份的转变，远比学会某个框架更重要。
+    </div>
+
+    <p>那天下午我坐在图书馆一直坐到闭馆，实验了十几个不同的Prompt，从文本摘要到代码生成，从翻译到创意写作。我第一次真切地感受到：<strong>未来的软件都会是AI原生的，而我们这一代人，正好站在这个转折点上。</strong></p>
+
+    <p>更让我兴奋的是——课堂上学的那些东西突然有了用武之地。理解Transformer的注意力机制让我知道为什么模型能处理长文本；概率论的基础让我能理解模型输出里的置信度；而对Python的掌握让我能把这些能力整合到自己的项目里。<strong>课堂和世界之间的那堵墙，正在一块砖一块砖地拆掉。</strong></p>
+
+    <h2 id="heading-4">三个人的相遇：吉天宇、谭海涛、胡子雄</h2>
+
+    <p>一个人的力量终究有限。当我开始做一些稍微大一点的项目时，很快就发现自己的短板：后端架构设计、数据库优化、部署运维……一个人很难面面俱到。</p>
+
+    <p>吉天宇是我第一个拉进伙的人。我们在同一个实验室待了大半年，平时各做各的项目，偶尔交流技术。他擅长<strong>全栈开发和系统架构</strong>，能把一个模糊的想法变成结构清晰、可运行的代码。有一次我跟他聊起想做一个AI数据分析工具，他听完直接在白板上画了一套系统架构图和API设计草图——那一刻我就知道，这个人是我需要的搭档。</p>
+
+    <p>谭海涛是后来通过实验室的同学介绍认识的。他在<strong>数据科学和算法</strong>方面的深度让我印象深刻——当我们在讨论"要不要用XGBoost还是LightGBM"的时候，他已经把两个模型在测试集上各跑了五折交叉验证，把结果贴到了群里。他有一种把事情做到底的执念，从不满足于"差不多就好"。</p>
+
+    <p>胡子雄是我们当中的<strong>DevOps和云原生部署专家</strong>。他是那种会在半夜两点回复你"发一下服务器日志，我帮你看看"的人。他一手搭起了我们的服务器基础设施——从Linux环境配置、Docker容器化到Nginx反向代理，让我们的项目真正变成了可以在公网上访问的服务。</p>
+
+    <p>三个人的技能矩阵刚好互补：</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>成员</th>
+          <th>💪 核心优势</th>
+          <th>🛠️ 负责方向</th>
+          <th>🎯 口头禅</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>吉天宇</strong></td>
+          <td>全栈开发 · 架构设计</td>
+          <td>前端界面 · API设计 · 产品逻辑</td>
+          <td>"先想清楚再做，别急着写代码"</td>
+        </tr>
+        <tr>
+          <td><strong>谭海涛</strong></td>
+          <td>数据分析 · 机器学习</td>
+          <td>模型训练 · 数据清洗 · 实验分析</td>
+          <td>"数据不会骗人，但你要会问对的问题"</td>
+        </tr>
+        <tr>
+          <td><strong>胡子雄</strong></td>
+          <td>DevOps · 云原生</td>
+          <td>服务器运维 · CI/CD · 安全加固</td>
+          <td>"本地能跑不算，上线不崩才算"</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>我们三个人第一次正式坐下来谈合作，是在学校旁边那家24小时营业的麦当劳。那天晚上从八点谈到凌晨一点，聊技术、聊AI的未来、聊我们到底想做什么。最后我们达成了一个共识：<strong>与其等毕业了再去"做点东西"，不如现在就开始。</strong>做的东西可能很小、很不成熟，但至少是真刀真枪地去解决一个真实的问题。</p>
+
+    <blockquote>
+      <strong>🌟 那次对话里我最喜欢的一句话，是谭海涛说的：</strong><br>
+      "我们没有大公司的资源，也没有大厂的履历。但我们有一样东西他们可能没有——<br>
+      我们是真的相信这件事，而且不怕一开始做得很烂。"
+    </blockquote>
+
+    <p>于是就有了JYTHCloud——名字取自我们三个人名字的首字母，<span class="inline-code">J(吉) Y(于) T(谭) H(胡)</span>，加上Cloud代表云原生的方向。这不是什么高大上的品牌命名策略，就是一个简单直白的标记：<strong>这是我们三个人一起做的东西。</strong></p>
+
+    <h2 id="heading-5">我们相信的未来</h2>
+
+    <p>站在2026年的节点上往回看，AI的发展速度远远超出了大多数人的预期。从GPT-3到GPT-4再到各类开源大模型的百花齐放，<span class="tag">LLM</span> <span class="tag">Agent</span> <span class="tag">RAG</span> <span class="tag">MCP</span>……新的概念和框架几乎每个月都在刷新。</p>
+
+    <p>但我们最深的感受是：<strong>技术本身从来不是壁垒，真正的壁垒在于——你有没有理解真实世界的需求，并且用技术去回应它。</strong></p>
+
+    <p>我们对未来的判断有几点：</p>
+
+    <ul>
+      <li><strong>AI Agent 将重塑软件交互方式。</strong>未来的应用不再是"用户点按钮-后端返回数据"的单向模式，而是AI主动理解意图、调度工具、完成任务的多轮协作。这需要的不是单一模型的能力，而是系统工程的能力。</li>
+      <li><strong>数据智能化的需求将爆发式增长。</strong>越来越多的中小企业发现他们积累了大量数据，但不知道如何利用。我们认为"轻量级AI+垂直场景"是大学生团队最能发挥优势的方向——不需要大模型从零训练，而是用现有模型能力去解决特定行业的具体问题。</li>
+      <li><strong>AI原生的学习方式正在重塑教育。</strong>从前我们学编程要翻书、看视频、写作业。现在AI可以当你的私人老师、代码审查员、debug助手。这极大降低了"从知道到做到"的门槛。学会用AI学AI，本身就是这个时代最重要的元技能。</li>
+      <li><strong>大学生在AI时代有独特的生态位。</strong>我们离校园近，离年轻人的真实需求近，试错成本低，学习速度快。大厂在做通用平台，我们可以做那些"大厂看不上、用户又确实需要"的细分场景。</li>
+    </ul>
+
+    <div class="highlight">
+      <strong>💭 写在最后：</strong><br>
+      这篇文章没有什么宏大的故事。没有融资、没有爆款产品、没有光鲜的履历——只有三个大学生，从课堂开始，一步一步走向更大世界的过程。<br><br>
+      我们不知道这条路能走多远。但我们知道，如果不迈出这一步，四年后走出校门的时候，我们一定会有遗憾。<br><br>
+      <strong>从课堂到世界，从被动学习到主动创造——这就是我们的初心。</strong>
+    </div>
+
+    <p style="text-align:center;color:var(--text-dim);margin-top:40px;">
+      如果你也和我们一样，正在学习数据科学或AI相关方向，<br>
+      试着从现在开始做一个自己的小项目吧。<br>
+      不需要完美，只需要开始。
+    </p>
+
+    <hr>
+
+    <p style="text-align:center;font-size:0.9rem;color:var(--text-mid);">
+      📬 有任何想法、建议或合作意向，欢迎通过主页联系。<br>
+      我们很乐意和同路人交流。
+    </p>
+
+  </div>
+
+  <div class="article-footer">
+    <a href="/"><i class="fas fa-arrow-left"></i> 返回主页</a>
+  </div>
+</div>
+
+<!-- Image zoom overlay -->
+<div class="img-overlay" id="imgOverlay" onclick="this.classList.remove('show')"><img id="imgZoom" src="" alt=""></div>
+<!-- Back to top button -->
+<button class="article-top-btn" id="articleTop" onclick="window.scrollTo({top:0,behavior:'smooth'})"><i class="fas fa-arrow-up"></i></button>
+</body>
+</html>

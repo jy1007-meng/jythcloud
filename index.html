@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="description" content="JYTHCloud · 湖北工程学院大学生AI创业团队">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>AI</text></svg>">
+<title>JYTHCloud · 大学生AI创业团队</title>
+<link rel="stylesheet" href="/static/style.css">
+<link rel="stylesheet" href="https://cdnjs.loli.net/ajax/libs/font-awesome/6.5.1/css/all.min.css" media="print" onload="this.media='all'">
+<link rel="preload" href="/static/style.css" as="style">
+</head>
+<body>
+
+<nav>
+  <a href="#" class="nav-logo">JYTHCloud</a>
+  <button class="nav-toggle" id="navToggle" aria-label="菜单"><i class="fas fa-bars"></i></button>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#services"><i class="fas fa-th-large"></i> 探索方向</a></li>
+    <li><a href="#about"><i class="fas fa-info-circle"></i> 关于</a></li>
+    <li><a href="#members"><i class="fas fa-users"></i> 团队</a></li>
+    <li><a href="#members-detail"><i class="fas fa-id-card"></i> 成员详情</a></li>
+    <li><a href="#techstack"><i class="fas fa-cogs"></i> 工具箱</a></li>
+    <li><a href="#posts"><i class="fas fa-newspaper"></i> 文章</a></li>
+  </ul>
+</nav>
+
+<!-- ═══ 成员个人主页（全屏遮罩层）═══ -->
+<div id="memberPage" class="member-overlay" style="display:none">
+  <div class="member-overlay-bg" onclick="closeMemberPage()"></div>
+  <div class="member-overlay-content" id="memberPageContent"></div>
+</div>
+
+<section class="hero">
+  <h1>从校园出发<br>探索 AI 的无限可能</h1>
+  <p class="subtitle">JYTHCloud · 湖北工程学院 · 大学生AI创业团队</p>
+  <div class="hero-btns">
+    <a href="#services" class="btn-primary"><i class="fas fa-arrow-down"></i> 了解我们</a>
+    <a href="#posts" class="btn-outline"><i class="fas fa-newspaper"></i> 阅读文章</a>
+  </div>
+</section>
+
+<div id="app-root"></div>
+
+<script>
+// ═══ 区块数据 ═══
+var S = {};
+
+// 成员数据（被多个区块引用）
+S.members = [
+  {id:'jy', name:'吉天宇', avatar:'吉', role:'数据科学 & AI 创业者', accent:'#059669',
+   about:'吉天宇是JYTHCloud团队的技术核心，主导了团队AI产品方向的确立和技术架构的搭建。从大二开始自学AI，一年内掌握了从模型调用到应用开发的完整链路。',
+   edu:'湖北工程学院 · 数据科学与大数据技术（本科）',
+   skills:['Python','机器学习','大模型API','数据分析','PyTorch','Docker','Linux','Git'],
+   exp:[{t:'JYTHCloud · AI 技术负责人', p:'2025 - 至今', d:'负责团队AI技术方向探索、大模型应用开发与智能体构建，搭建了团队网站和API服务。'},
+        {t:'量化交易回测系统', p:'2025 个人项目', d:'使用 Python + Pandas 搭建了A股量化回测系统，支持多因子策略回测。'},
+        {t:'AI 自学与实践', p:'2024 - 至今', d:'自学大模型API调用、LangChain框架、机器学习建模，完成多个AI应用原型项目。'}],
+   contact:{gh:'https://github.com/ji-tianyu', email:'ji@jythcloud.cn'}},
+  {id:'tan', name:'谭海涛', avatar:'谭', role:'项目管理 & 执行负责人', accent:'#f59e0b',
+   about:'谭海涛是JYTHCloud团队的项目管理担当。他擅长将复杂任务拆解为可执行的步骤，确保每个项目都能按时高质量交付。',
+   edu:'湖北工程学院 · 数据科学与大数据技术（本科）',
+   skills:['项目管理','敏捷开发','Python','数据分析','团队协作','文档规范'],
+   exp:[{t:'JYTHCloud · 项目执行负责人', p:'2025 - 至今', d:'统筹团队项目进度管理，制定开发计划与里程碑，确保各个项目按时交付。'},
+        {t:'团队网站建设项目', p:'2025', d:'协助搭建JYTHCloud团队官网及三个子站，负责内容规划、进度跟踪与上线验收。'},
+        {t:'数据科学课程项目', p:'2024 - 至今', d:'参与多个数据分析课程项目，完成电商数据清洗、用户行为分析等实践任务。'}],
+   contact:{gh:'https://github.com/tan-haitao', email:'tan@jythcloud.cn'}},
+  {id:'hu', name:'胡子雄', avatar:'胡', role:'商务拓展 & 客户成功', accent:'#db2777',
+   about:'胡子雄是JYTHCloud团队的商务与运营担当。他负责团队对外沟通、品牌建设和商业合作探索，致力于将团队的技术能力转化为实际价值。',
+   edu:'湖北工程学院 · 数据科学与大数据技术（本科）',
+   skills:['商务拓展','客户沟通','Python入门','品牌运营','数据可视化','团队管理'],
+   exp:[{t:'JYTHCloud · 商务与运营负责人', p:'2025 - 至今', d:'负责团队品牌建设、对外沟通与商业合作探索，维护团队网站与社交媒体。'},
+        {t:'校内创业项目', p:'2024 - 2025', d:'参与校内创业竞赛，负责项目路演和商业计划书撰写，积累了创业实战经验。'},
+        {t:'数据可视化实践', p:'2025', d:'学习数据可视化工具，参与团队数据大屏的设计与开发。'}],
+   contact:{gh:'https://github.com/zixiong-hu', email:'hu@jythcloud.cn'}}
+];
+
+// 探索方向卡片
+S.services = [
+  {icon:'fa-comment-dots',title:'大模型应用',href:'/posts/llm-api-guide.html',desc:'学习与探索大模型API的调用与集成，尝试开发智能对话、知识问答等应用原型。',items:['大模型 API 调用与 Prompt 调试','本地知识库问答系统搭建','多轮对话应用开发实践']},
+  {icon:'fa-robot',title:'AI 智能体 (Agent)',href:'/posts/agent-intro.html',desc:'研究智能体框架，尝试构建能自主调用工具的 AI Agent，探索自动化工作流的可能性。',items:['LangChain / LangGraph 框架实践','工具调用与 API 编排','自动化信息采集与整理']},
+  {icon:'fa-chart-bar',title:'数据智能分析',href:'/posts/data-analysis.html',desc:'运用Python、Pandas等工具，对公开数据进行清洗、建模与可视化分析。',items:['Python 数据分析与可视化','机器学习基础建模实践','数据大屏与报表开发']},
+  {icon:'fa-server',title:'网站与云服务',href:'/posts/server-setup.html',desc:'从零搭建服务器架构，学习 Docker、Nginx、数据库部署与运维。',items:['Docker 容器化部署','Nginx 反向代理与 HTTPS','Flask / WordPress 后端开发']},
+  {icon:'fa-camera',title:'计算机视觉入门',href:'/posts/cv-intro.html',desc:'通过课程项目学习图像分类、目标检测等基础视觉任务。',items:['OpenCV 图像处理基础','目标检测模型调用','OCR 文字识别实践']},
+  {icon:'fa-graduation-cap',title:'技术学习与分享',href:'/posts/self-study-roadmap.html',desc:'通过博客记录学习历程，与更多同学交流AI学习路上的经验和踩坑记录。',items:['AI 学习路线与笔记分享','项目实战经验总结','大学生技术社区建设']}
+];
+
+S.about = [
+  {icon:'fa-lightbulb',title:'我们的初心',href:'/posts/about-origin.html',desc:'我们相信 AI 是未来最重要的技术方向之一。作为数据科学专业的学生，我们希望把课堂上学到的知识真正用起来。'},
+  {icon:'fa-flask',title:'我们在做什么',href:'/posts/about-action.html',desc:'课余时间自学大模型、智能体、数据分析等前沿技术，动手搭建服务器、开发小项目、写技术博客。'},
+  {icon:'fa-handshake',title:'我们能做什么',href:'/posts/about-can-do.html',desc:'如果你有数据相关的需求、想找人一起做项目、或者想交流 AI 学习经验，欢迎联系我们一起探讨。'},
+  {icon:'fa-globe',title:'我们的社区',href:'/posts/about-community.html',desc:'我们在团队博客中持续更新学习笔记和项目复盘，希望能帮助到更多同样在自学路上的同学。'}
+];
+
+S.techstack = ['Python','Pandas','Scikit-learn','Flask','Docker','Nginx','MySQL','Redis','Linux','Git','WordPress','OpenCV'];
+
+// ═══ 成员个人主页 ═══
+function openMemberPage(mid){
+  var m = S.members.filter(function(x){return x.id===mid})[0];
+  if(!m) return;
+  var mottos = {jy:'「代码是写给人看的，顺便让机器执行」',tan:'「把复杂的事情拆简单，就是最好的管理」',hu:'「技术创造价值，连接产生机会」'};
+  var projs = {jy:[{n:'量化交易回测系统',d:'A股多因子策略回测引擎',c:'Python/Pandas/NumPy'},{n:'AI 知识问答机器人',d:'本地知识库+大模型RAG问答',c:'LangChain/Embedding/LLM API'},{n:'团队 API 网关',d:'统一API管理与鉴权服务',c:'Flask/Nginx/Docker'}],
+    tan:[{n:'团队网站建设项目',d:'官网+子站全流程管理',c:'项目管理/Git/Nginx'},{n:'电商数据分析',d:'用户行为数据分析报告',c:'Python/Pandas/可视化'},{n:'敏捷开发流程搭建',d:'团队Scrum看板系统',c:'Jira/Notion/飞书'}],
+    hu:[{n:'团队品牌建设',d:'品牌视觉+社交媒体运营',c:'设计/文案/数据分析'},{n:'创业竞赛项目',d:'大学生创业计划书与路演',c:'商业模型/财务分析'},{n:'数据可视化大屏',d:'实时数据展示看板',c:'ECharts/Flask/WebSocket'}]};
+  var proj = projs[mid]||[];
+  var motto = mottos[mid]||'';
+  var exp = m.exp.map(function(e,i){return '<div class="exp-item" style="animation-delay:'+(i*0.1)+'s"><div class="exp-dot" style="background:'+m.accent+'"></div><div class="exp-line"></div><div><div class="exp-title">'+e.t+'</div><div class="exp-period" style="color:'+m.accent+'">'+e.p+'</div><p class="exp-desc">'+e.d+'</p></div></div>'}).join('');
+  var sk = m.skills.map(function(s){return '<span class="tag" style="border-color:'+m.accent+'40;color:'+m.accent+'">'+s+'</span>'}).join('');
+  var pj = proj.map(function(p,i){return '<div class="proj-card" style="animation-delay:'+(0.2+i*0.1)+'s;--accent:'+m.accent+'"><div class="proj-icon" style="background:'+m.accent+'22;color:'+m.accent+'"><i class="fas fa-code-branch"></i></div><div class="proj-info"><div class="proj-name">'+p.n+'</div><div class="proj-desc">'+p.d+'</div><div class="proj-stack">'+p.c+'</div></div></div>'}).join('');
+  document.getElementById('memberPageContent').innerHTML =
+    '<div class="mp-header">'+
+      '<button class="mp-back" onclick="closeMemberPage()"><i class="fas fa-arrow-left"></i> 返回首页</button>'+
+      '<button class="mp-close" onclick="closeMemberPage()"><i class="fas fa-times"></i></button>'+
+    '</div>'+
+    '<div class="mp-body mp-open">'+
+      '<div class="mp-hero" style="background:linear-gradient(135deg,'+m.accent+','+m.accent+'88)">'+
+        '<div class="mp-particles"></div>'+
+        '<div class="mp-avatar">'+m.avatar+'</div>'+
+        '<h1>'+m.name+'</h1>'+
+        '<div class="mp-role" style="color:'+m.accent+'">'+m.role+'</div>'+
+        (motto?'<div class="mp-motto">'+motto+'</div>':'')+
+        '<div class="mp-stats"><div><span class="stat-num">'+m.skills.length+'</span><span class="stat-lbl">技能</span></div><div><span class="stat-num">'+m.exp.length+'</span><span class="stat-lbl">经历</span></div><div><span class="stat-num">'+proj.length+'</span><span class="stat-lbl">项目</span></div></div>'+
+      '</div>'+
+      '<div class="mp-inner">'+
+        '<div class="mp-section"><h4 style="border-left:3px solid '+m.accent+';padding-left:12px"><i class="fas fa-user" style="color:'+m.accent+'"></i> 关于我</h4><p>'+m.about+'</p></div>'+
+        '<div class="mp-section"><h4 style="border-left:3px solid '+m.accent+';padding-left:12px"><i class="fas fa-graduation-cap" style="color:'+m.accent+'"></i> 教育背景</h4><p>'+m.edu+'</p></div>'+
+        '<div class="mp-section"><h4 style="border-left:3px solid '+m.accent+';padding-left:12px"><i class="fas fa-cog" style="color:'+m.accent+'"></i> 技能</h4><div class="panel-skills">'+sk+'</div></div>'+
+        '<div class="mp-section"><h4 style="border-left:3px solid '+m.accent+';padding-left:12px"><i class="fas fa-briefcase" style="color:'+m.accent+'"></i> 经历</h4><div class="timeline">'+exp+'</div></div>'+
+        (proj.length?'<div class="mp-section"><h4 style="border-left:3px solid '+m.accent+';padding-left:12px"><i class="fas fa-rocket" style="color:'+m.accent+'"></i> 项目作品</h4><div class="proj-grid">'+pj+'</div></div>':'')+
+        '<div class="mp-section mp-contact">'+
+          '<h4 style="border-left:3px solid '+m.accent+';padding-left:12px"><i class="fas fa-link" style="color:'+m.accent+'"></i> 联系方式</h4>'+
+          '<div class="contact-links">'+
+            '<a href="'+m.contact.gh+'" target="_blank" rel="noopener" class="contact-btn" style="--btn-accent:'+m.accent+'"><i class="fab fa-github"></i> GitHub</a>'+
+            '<a href="mailto:'+m.contact.email+'" class="contact-btn" style="--btn-accent:'+m.accent+'"><i class="fas fa-envelope"></i> '+m.contact.email+'</a>'+
+          '</div>'+
+        '</div>'+
+      '</div>'+
+    '</div>';
+  var page=document.getElementById('memberPage');page.style.display='block';document.body.style.overflow='hidden';
+  // 粒子装饰
+  var pContainer=document.querySelector('.mp-particles');
+  if(pContainer) for(var pi=12;pi--;){var pp=document.createElement('div');pp.className='mp-particle';pp.style.cssText='left:'+Math.random()*100+'%;top:'+Math.random()*100+'%;width:'+(2+Math.random()*3)+'px;height:'+(2+Math.random()*3)+'px;animation:'+(2+Math.random()*3)+'s ease-in-out '+Math.random()*2+'s infinite alternate';pContainer.appendChild(pp)}
+}
+function closeMemberPage(){
+  document.getElementById('memberPage').style.display='none';
+  document.body.style.overflow='';
+}
+
+// ═══ 渲染函数 ═══
+function render(tpl, data){return tpl.replace(/\{(\w+)\}/g,function(m,k){return data[k]||''})}
+
+function section(id, inner){
+  return '<section class="section" id="'+id+'"><h2 class="section-title">'+S[id].title+'</h2><p class="section-subtitle">'+S[id].sub+'</p>'+inner+'</section>';
+}
+
+// 区块生成器
+var BLOCKS = {
+  particles: function(){
+    var c=document.createElement('div'); c.id='particles';
+    for(var i=30;i--;){var p=c.appendChild(document.createElement('div'));p.className='particle';
+    p.style.cssText='left:'+Math.random()*100+'%;width:'+(1+Math.random()*2)+'px;height:'+(1+Math.random()*2)+'px;animation:'+(15+Math.random()*25)+'s linear '+Math.random()*20+'s infinite'}
+    document.body.prepend(c);
+  },
+  services: function(){
+    var cards = S.services.map(function(c){return '<div class="service-card" onclick="window.open(\''+c.href+'\',\'_blank\')"><div class="icon"><i class="fas '+c.icon+'"></i></div><h3>'+c.title+'</h3><p>'+c.desc+'</p><ul class="features">'+c.items.map(function(i){return '<li><i class="fas fa-check-circle"></i> '+i+'</li>'}).join('')+'</ul></div>'}).join('');
+    return '<section class="section" id="services"><h2 class="section-title">我们在探索的方向</h2><p class="section-subtitle">作为在校生团队，我们在课堂学习之余不断尝试将 AI 技术落地</p><div class="services-grid">'+cards+'</div></section>';
+  },
+  about: function(){
+    var cards = S.about.map(function(c){var h=c.href?('onclick="window.open(\''+c.href+'\',\'_blank\')"'):'';return '<div class="about-card" '+h+'><div class="icon"><i class="fas '+c.icon+'"></i></div><h3>'+c.title+'</h3><p>'+c.desc+'</p><div class="about-readmore" style="margin-top:14px;font-size:0.82rem;color:var(--accent);display:flex;align-items:center;gap:6px;justify-content:center">阅读全文 <i class="fas fa-arrow-right"></i></div></div>'}).join('');
+    return '<section class="section" id="about"><h2 class="section-title">关于我们</h2><p class="section-subtitle">三个在校生因为对 AI 的共同热爱走到了一起</p><div class="about-cards">'+cards+'</div></section>';
+  },
+  members: function(){
+    var cards = S.members.map(function(m){return '<div class="member-card"><div class="avatar">'+m.avatar+'</div><h3>'+m.name+'</h3><div class="role">'+m.role+'</div><div class="desc" style="color:var(--text-mid);font-size:0.85rem;margin-bottom:18px;line-height:1.5">'+m.about.slice(0,60)+'…</div><div class="btn-link member-page-btn" data-mid="'+m.id+'" style="cursor:pointer">个人主页 <i class="fas fa-arrow-right"></i></div></div>'}).join('');
+    return '<section class="section" id="members"><h2 class="section-title">团队成员</h2><p class="section-subtitle">三个方向，一个团队 — 我们各有所长</p><div class="members-grid">'+cards+'</div></section>';
+  },
+  members_detail: function(){
+    var tabs = S.members.map(function(m,i){var a=i?'':'opacity:1;border-color:'+m.accent+';color:'+m.accent;return '<button class="member-tab" data-id="'+m.id+'" data-accent="'+m.accent+'" style="'+a+'"><span class="tab-avatar">'+m.avatar+'</span>'+m.name+'</button>'}).join('');
+    var panels = S.members.map(function(m,i){
+      var exp = m.exp.map(function(e){return '<div class="exp-item"><div class="exp-dot" style="background:'+m.accent+';"></div><div><div class="exp-title">'+e.t+'</div><div class="exp-period" style="color:'+m.accent+';-">'+e.p+'</div><p class="exp-desc">'+e.d+'</p></div></div>'}).join('');
+      var sk = m.skills.map(function(s){return '<span class="tag" style="border-color:'+m.accent+'40;color:'+m.accent+'">'+s+'</span>'}).join('');
+      return '<div class="member-panel" data-id="'+m.id+'" style="display:'+(i?'none':'block')+'"><div class="panel-header"><div class="panel-avatar" style="background:linear-gradient(135deg,'+m.accent+','+m.accent+'88)">'+m.avatar+'</div><div><h3>'+m.name+'</h3><div class="panel-role" style="color:'+m.accent+'">'+m.role+'</div><div class="panel-location"><i class="fas fa-map-marker-alt" style="color:'+m.accent+'"></i> 湖北工程学院 · 数据科学与大数据技术</div><div class="panel-links"><button class="btn-link member-page-btn" data-mid="'+m.id+'" style="cursor:pointer;border:none;background:transparent;padding:0;font-size:0.9rem;display:inline-flex;align-items:center;gap:6px;color:var(--accent)"><i class="fas fa-user"></i> 个人主页 <i class="fas fa-arrow-right"></i></button></div></div></div><p class="panel-about">'+m.about+'</p><div class="panel-section"><h4><i class="fas fa-graduation-cap" style="color:'+m.accent+'"></i> 教育背景</h4><p>'+m.edu+'</p></div><div class="panel-section"><h4><i class="fas fa-cog" style="color:'+m.accent+'"></i> 技能</h4><div class="panel-skills">'+sk+'</div></div><div class="panel-section"><h4><i class="fas fa-briefcase" style="color:'+m.accent+'"></i> 经历</h4>'+exp+'</div></div>';
+    }).join('');
+    return '<section class="section" id="members-detail"><h2 class="section-title">成员详情</h2><p class="section-subtitle">点开选项卡了解每个成员的详细背景</p><div class="member-tabs">'+tabs+'</div>'+panels+'</section>';
+  },
+  techstack: function(){
+    var items = S.techstack.map(function(t){return '<div class="stack-item"><i class="fas fa-cog"></i> '+t+'</div>'}).join('');
+    return '<section class="section" id="techstack"><h2 class="section-title">我们的工具箱</h2><p class="section-subtitle">我们在学习和项目中使用的主要工具与技术</p><div class="stack-grid">'+items+'</div></section>';
+  },
+  posts: function(){
+    var articles = [
+      {title:'JYTHCloud 团队正式成立 — 用数据驱动未来',date:'2026-05-26',cat:'团队动态',href:'/posts/jythcloud-launch.html',desc:'我们很兴奋地宣布，JYTHCloud 团队正式成立了！由三位湖北工程学院数据科学与大数据技术专业的同学共同创立。'},
+      {title:'JYTHCloud 技术栈揭秘：我们用什么构建网站和服务',date:'2026-05-26',cat:'技术',href:'/posts/jythcloud-tech-stack.html',desc:'很多朋友问我们团队用什么技术栈。今天写一篇文章，详细介绍一下 JYTHCloud 背后的技术选型。'},
+      {title:'大二自学 AI 一年，我给自己的学习路线做了个复盘',date:'2026-05-26',cat:'学习笔记',href:'/posts/self-taught-ai-journey.html',desc:'大二那年我开始自学 AI。回头看一年多的学习历程，最大的感悟是：光看教程没用，动手才是硬道理。'},
+      {title:'2025 年 AI 创业的几点思考：小团队如何找到切入点',date:'2026-05-26',cat:'创业思考',href:'/posts/ai-startup-thoughts-2025.html',desc:'作为在校生做 AI 创业，我们面临很多现实问题。但这一年多的摸索，我们总结出几条适合小团队的切入点。'},
+      {title:'从零搭建量化交易回测系统：我的技术选型与踩坑记录',date:'2026-05-26',cat:'项目实战',href:'/posts/building-quant-backtest-system.html',desc:'量化交易一直是我感兴趣的方向。这篇文章分享我用 Python 搭建量化回测系统的全过程。'},
+      {title:'LLM API 接入指南：从注册到第一个对话应用',date:'2026-05-26',cat:'教程',href:'/posts/llm-api-guide.html',desc:'本指南将带你从零开始，完成大模型 API 的注册、调试，并搭建你的第一个 AI 对话应用。'},
+      {title:'AI Agent 入门：从概念到实践',date:'2026-05-26',cat:'教程',href:'/posts/agent-intro.html',desc:'AI Agent 是当下最热门的方向之一。这篇文章带你理解 Agent 的核心概念并动手实践。'}
+    ];
+    var cards = articles.map(function(a){
+      return '<div class="post-card" data-link="'+a.href+'"><div class="post-date"><i class="far fa-calendar-alt"></i> '+a.date+' <span class="post-cat">'+a.cat+'</span></div><h3>'+a.title+'</h3><p>'+a.desc.slice(0,100)+'…</p><div class="post-link">阅读全文 <i class="fas fa-arrow-right"></i></div></div>';
+    }).join('');
+    return '<section class="section" id="posts"><h2 class="section-title">最新文章</h2><p class="section-subtitle">我们的技术分享与成长记录 — 点击卡片阅读全文</p><div class="posts-grid">'+cards+'</div></section>';
+  },
+  footer: function(){
+    return '<footer><p>© 2026 JYTHCloud · 湖北工程学院数据科学与大数据技术专业 · 大学生创业团队</p></footer>';
+  }
+};
+
+// ═══ 所有区块直接渲染 ═══
+var root = document.getElementById('app-root');
+var allBlocks = ['services','about','members','members_detail','techstack','posts','footer'];
+for(var i=0;i<allBlocks.length;i++) root.insertAdjacentHTML('beforeend',BLOCKS[allBlocks[i]]());
+
+// 粒子（立即）
+BLOCKS.particles();
+
+// 事件委托
+document.addEventListener('click',function(e){
+  // 文章卡片跳转
+  var pc=e.target.closest('.post-card');
+  if(pc){var lk=pc.getAttribute('data-link');if(lk)window.location=lk;return}
+  // 成员个人主页（按钮/卡片点击均可）
+  var mpb=e.target.closest('.member-page-btn');
+  if(mpb){var mid=mpb.getAttribute('data-mid');if(mid)openMemberPage(mid);return}
+  // 成员卡片点按 -> 打开个人主页
+  var mc=e.target.closest('.member-card');
+  if(mc){var mid2=mc.querySelector('.member-page-btn').getAttribute('data-mid');if(mid2)openMemberPage(mid2);return}
+});
+
+// 选项卡切换（委托）
+document.addEventListener('click',function(e){
+  var tab=e.target.closest('.member-tab');
+  if(!tab) return;
+  var id=tab.getAttribute('data-id'), ac=tab.getAttribute('data-accent');
+  document.querySelectorAll('.member-tab').forEach(function(t){t.style.opacity='0.6';t.style.borderColor='';t.style.color=''});
+  tab.style.opacity='1';tab.style.borderColor=ac;tab.style.color=ac;
+  document.querySelectorAll('.member-panel').forEach(function(p){p.style.display=p.getAttribute('data-id')===id?'block':'none'});
+});
+
+// 导航菜单
+document.getElementById('navToggle').addEventListener('click',function(){
+  document.getElementById('navLinks').classList.toggle('open');
+});
+document.querySelectorAll('.nav-links a').forEach(function(a){
+  a.addEventListener('click',function(e){
+    document.getElementById('navLinks').classList.remove('open');
+    var href=a.getAttribute('href');
+    if(!href||href==='#'||href.startsWith('http')) return;
+    var id=href.slice(1).replace('-detail','_detail');
+    var el=document.getElementById(id);
+    if(el) el.scrollIntoView({behavior:'smooth'});
+  });
+});
+
+// ESC 关闭成员页面
+document.addEventListener('keydown',function(e){if(e.key==='Escape')closeMemberPage()});
+</script>
+
+/* ═══ 成员个人主页 CSS ═══ */
+<style>
+/* ── 遮罩层 ── */
+.member-overlay{position:fixed;top:0;left:0;width:100%;height:100%;z-index:9999;display:none}
+.member-overlay-bg{position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(7,7,13,0.8);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.member-overlay-content{position:relative;z-index:1;width:100%;height:100%;overflow-y:auto;max-width:680px;margin:0 auto}
+
+/* ── 页面头栏 ── */
+.mp-header{position:sticky;top:0;z-index:10;display:flex;align-items:center;justify-content:space-between;padding:12px 24px;background:rgba(7,7,13,0.92);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid rgba(255,255,255,0.06)}
+.mp-back{display:flex;align-items:center;gap:8px;background:none;border:none;color:var(--text-mid);font-size:0.88rem;cursor:pointer;padding:8px 14px;border-radius:10px;transition:all 0.25s}
+.mp-back:hover{background:var(--surface-hover);color:var(--accent)}
+.mp-back i{font-size:0.82rem}
+.mp-close{display:flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);color:var(--text-dim);font-size:1rem;cursor:pointer;transition:all 0.25s}
+.mp-close:hover{background:var(--surface-hover);color:var(--text);border-color:rgba(255,255,255,0.15)}
+
+/* ── 头部英雄区 ── */
+.mp-hero{text-align:center;padding:64px 24px 48px;border-radius:0 0 28px 28px;position:relative;overflow:hidden}
+.mp-particles{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none}
+.mp-particle{position:absolute;border-radius:50%;background:rgba(255,255,255,0.3);animation:mpFloat 3s ease-in-out infinite alternate}
+@keyframes mpFloat{from{transform:translateY(0);opacity:0.3}to{transform:translateY(-20px);opacity:0.8}}
+.mp-avatar{width:96px;height:96px;border-radius:50%;background:rgba(255,255,255,0.12);display:flex;align-items:center;justify-content:center;font-size:2.6rem;font-weight:700;color:#fff;margin:0 auto 18px;backdrop-filter:blur(6px);border:3px solid rgba(255,255,255,0.15);position:relative;z-index:1;animation:mpBounce 0.6s cubic-bezier(0.34,1.56,0.64,1)}
+@keyframes mpBounce{0%{transform:scale(0)}50%{transform:scale(1.1)}100%{transform:scale(1)}}
+.mp-hero h1{font-size:1.9rem;font-weight:700;color:#fff;margin-bottom:8px;position:relative;z-index:1;animation:mpFadeUp 0.5s ease-out both}
+.mp-role{font-size:1rem;font-weight:500;position:relative;z-index:1;animation:mpFadeUp 0.5s ease-out 0.15s both}
+.mp-motto{font-size:0.9rem;color:rgba(255,255,255,0.6);font-style:italic;margin-top:14px;position:relative;z-index:1;animation:mpFadeUp 0.5s ease-out 0.25s both;letter-spacing:0.03em}
+@keyframes mpFadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── 统计卡片 ── */
+.mp-stats{display:flex;justify-content:center;gap:24px;margin-top:28px;position:relative;z-index:1;animation:mpFadeUp 0.5s ease-out 0.35s both}
+.mp-stats div{display:flex;flex-direction:column;align-items:center;gap:4px;padding:14px 28px;background:rgba(255,255,255,0.06);border-radius:16px;backdrop-filter:blur(4px);min-width:90px}
+.stat-num{font-size:1.6rem;font-weight:700;color:#fff;line-height:1}
+.stat-lbl{font-size:0.78rem;color:rgba(255,255,255,0.5);letter-spacing:0.05em}
+
+/* ── 内容区 ── */
+.mp-body{animation:mpSlideIn 0.4s cubic-bezier(0.16,1,0.3,1) both}
+@keyframes mpSlideIn{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+.mp-inner{padding:28px 24px 60px}
+.mp-section{margin-bottom:32px}
+.mp-section h4{font-size:1rem;font-weight:600;margin-bottom:16px;display:flex;align-items:center;gap:10px;color:var(--text);padding-bottom:8px;border-bottom:1px solid rgba(255,255,255,0.05)}
+.mp-section h4 i{font-size:0.95rem}
+.mp-section p{font-size:0.92rem;color:var(--text-mid);line-height:1.85}
+
+/* ── 时间轴 ── */
+.timeline{position:relative;padding-left:28px}
+.timeline::before{content:'';position:absolute;left:5px;top:8px;bottom:8px;width:2px;background:rgba(255,255,255,0.06);border-radius:2px}
+.exp-item{display:flex;gap:16px;margin-bottom:20px;padding:18px 16px;background:var(--surface);border-radius:var(--radius-sm);border:1px solid var(--border);transition:all 0.25s;position:relative;animation:mpFadeUp 0.4s ease-out both}
+.exp-item:hover{background:var(--surface-hover);border-color:rgba(255,255,255,0.12)}
+.exp-dot{width:14px;height:14px;border-radius:50%;flex-shrink:0;margin-top:4px;position:relative;z-index:1;box-shadow:0 0 8px rgba(0,0,0,0.3)}
+.exp-line{display:none}
+.exp-item .exp-title{font-weight:600;font-size:0.95rem}
+.exp-item .exp-period{font-size:0.82rem;font-weight:500;margin:6px 0}
+.exp-item .exp-desc{font-size:0.85rem;color:var(--text-mid);line-height:1.6}
+
+/* ── 项目卡片 ── */
+.proj-grid{display:flex;flex-direction:column;gap:12px}
+.proj-card{display:flex;gap:16px;align-items:center;padding:18px 20px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);transition:all 0.25s;animation:mpFadeUp 0.4s ease-out both}
+.proj-card:hover{background:var(--surface-hover);border-color:var(--accent);transform:translateX(4px)}
+.proj-icon{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0}
+.proj-info{flex:1;min-width:0}
+.proj-name{font-weight:600;font-size:0.92rem;margin-bottom:4px}
+.proj-desc{font-size:0.82rem;color:var(--text-mid);margin-bottom:6px}
+.proj-stack{font-size:0.72rem;color:var(--text-dim);font-family:'SF Mono','Consolas',monospace;background:rgba(255,255,255,0.03);padding:3px 8px;border-radius:4px;display:inline-block}
+
+/* ── 联系方式 ── */
+.mp-contact .contact-links{display:flex;gap:14px;flex-wrap:wrap}
+.contact-btn{display:inline-flex;align-items:center;gap:8px;padding:12px 24px;border-radius:50px;background:var(--surface);border:1px solid var(--border);color:var(--text-mid);font-size:0.88rem;text-decoration:none;transition:all 0.25s;cursor:pointer}
+.contact-btn:hover{background:rgba(255,255,255,0.06);border-color:var(--btn-accent);color:var(--btn-accent);transform:translateY(-2px);box-shadow:0 4px 16px rgba(0,0,0,0.2)}
+
+/* ── 技能标签 ── */
+.mp-section .panel-skills .tag{animation:mpFadeUp 0.3s ease-out both}
+.mp-section .panel-skills .tag:nth-child(1){animation-delay:0.1s}
+.mp-section .panel-skills .tag:nth-child(2){animation-delay:0.15s}
+.mp-section .panel-skills .tag:nth-child(3){animation-delay:0.2s}
+.mp-section .panel-skills .tag:nth-child(4){animation-delay:0.25s}
+.mp-section .panel-skills .tag:nth-child(5){animation-delay:0.3s}
+.mp-section .panel-skills .tag:nth-child(6){animation-delay:0.35s}
+.mp-section .panel-skills .tag:nth-child(7){animation-delay:0.4s}
+.mp-section .panel-skills .tag:nth-child(8){animation-delay:0.45s}
+
+/* ── 手机适配 ── */
+@media(max-width:768px){
+  .member-overlay-content{max-width:100%}
+  .mp-header{padding:10px 16px}
+  .mp-back{font-size:0.82rem;padding:6px 10px}
+  .mp-hero{padding:40px 20px 32px}
+  .mp-avatar{width:72px;height:72px;font-size:2rem;margin-bottom:14px}
+  .mp-hero h1{font-size:1.5rem}
+  .mp-role{font-size:0.9rem}
+  .mp-motto{font-size:0.82rem;margin-top:10px}
+  .mp-stats{gap:14px;margin-top:20px}
+  .mp-stats div{padding:10px 18px;min-width:70px}
+  .stat-num{font-size:1.3rem}
+  .stat-lbl{font-size:0.7rem}
+  .mp-inner{padding:20px 16px 40px}
+  .mp-section{margin-bottom:24px}
+  .mp-section h4{font-size:0.92rem;margin-bottom:12px}
+  .mp-section p{font-size:0.88rem}
+  .timeline{padding-left:24px}
+  .exp-item{padding:14px 12px;margin-bottom:14px}
+  .exp-dot{width:12px;height:12px}
+  .exp-item .exp-title{font-size:0.88rem}
+  .exp-item .exp-period{font-size:0.78rem}
+  .exp-item .exp-desc{font-size:0.82rem}
+  .proj-card{padding:14px 14px;gap:12px}
+  .proj-icon{width:36px;height:36px;font-size:0.95rem;border-radius:10px}
+  .proj-name{font-size:0.85rem}
+  .proj-desc{font-size:0.78rem}
+  .proj-stack{font-size:0.65rem}
+  .contact-btn{padding:10px 18px;font-size:0.82rem;flex:1;justify-content:center}
+}
+</style>
+</body>
+</html>

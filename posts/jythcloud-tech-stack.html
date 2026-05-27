@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<link rel="stylesheet" href="/static/style.css">
+<link rel="stylesheet" href="https://cdnjs.loli.net/ajax/libs/font-awesome/6.5.1/css/all.min.css" media="print" onload="this.media='all'">
+<title>JYTHCloud 技术栈揭秘：我们用什么构建网站和服务 · JYTHCloud</title>
+<meta name="description" content="全面解析 JYTHCloud 的技术架构：传统多站点架构、纯静态前端、Flask+Nginx 后端、腾讯云部署与性能优化方案。">
+
+</head>
+<body>
+
+<div class="article-progress"><div class="bar" id="progressBar"></div></div>
+<script>
+// Progress bar
+window.addEventListener('scroll',function(){var h=document.documentElement;var p=(h.scrollTop/(h.scrollHeight-h.clientHeight))*100;document.getElementById('progressBar').style.width=p+'%'});
+// Code copy
+function copyCode(btn){var codeBlock=btn.closest('.code-block');var text=codeBlock.textContent.replace(/复制$/, '').trim();navigator.clipboard.writeText(text).then(function(){btn.innerHTML='<i class="fas fa-check"></i> 已复制';setTimeout(function(){btn.innerHTML='<i class="far fa-copy"></i> 复制'},2000)})}
+// Image zoom
+document.querySelectorAll('.article-body img').forEach(function(i){i.addEventListener('click',function(e){e.stopPropagation();document.getElementById('imgZoom').src=this.src;document.getElementById('imgOverlay').classList.add('show')})});
+// Back to top visibility
+window.addEventListener('scroll',function(){var btn=document.getElementById('articleTop');if(btn){btn.classList.toggle('show',window.scrollY>400)}});
+</script>
+<div class="article-container">
+  <a href="/" class="article-back"><i class="fas fa-arrow-left"></i> 返回主页</a>
+
+  <div class="article-hero-img">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 740 360" width="100%" height="100%" viewBox="0 0 740 360">
+      <defs>
+        <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#0f172a"/>
+          <stop offset="100%" stop-color="#1e1b4b"/>
+        </linearGradient>
+        <!-- 各层渐变色 -->
+        <linearGradient id="layer-nginx" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stop-color="#22d3ee"/>
+          <stop offset="100%" stop-color="#06b6d4"/>
+        </linearGradient>
+        <linearGradient id="layer-flask" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stop-color="#60a5fa"/>
+          <stop offset="100%" stop-color="#3b82f6"/>
+        </linearGradient>
+        <linearGradient id="layer-docker" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stop-color="#a78bfa"/>
+          <stop offset="100%" stop-color="#8b5cf6"/>
+        </linearGradient>
+        <linearGradient id="layer-wp" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stop-color="#f472b6"/>
+          <stop offset="100%" stop-color="#ec4899"/>
+        </linearGradient>
+        <linearGradient id="arrow-grad" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stop-color="#334155"/>
+          <stop offset="50%" stop-color="#64748b"/>
+          <stop offset="100%" stop-color="#334155"/>
+        </linearGradient>
+        <!-- 发光滤镜 -->
+        <filter id="glow-point">
+          <feGaussianBlur stdDeviation="4" result="blur"/>
+          <feMerge>
+            <feMergeNode in="blur"/>
+            <feMergeNode in="SourceGraphic"/>
+          </feMerge>
+        </filter>
+        <filter id="glow-card">
+          <feGaussianBlur stdDeviation="6" result="blur"/>
+          <feMerge>
+            <feMergeNode in="blur"/>
+            <feMergeNode in="SourceGraphic"/>
+          </feMerge>
+        </filter>
+        <!-- 网格图案 -->
+        <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+          <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(148,163,184,0.04)" stroke-width="0.5"/>
+        </pattern>
+        <pattern id="grid-dot" width="8" height="8" patternUnits="userSpaceOnUse">
+          <circle cx="2" cy="2" r="0.5" fill="rgba(148,163,184,0.06)"/>
+        </pattern>
+      </defs>
+      <rect width="740" height="360" fill="url(#bg)"/>
+      <rect width="740" height="360" fill="url(#grid)"/>
+      <rect width="740" height="360" fill="url(#grid-dot)"/>
+      <!-- 背景光晕 -->
+      <circle cx="180" cy="100" r="120" fill="rgba(34,211,238,0.04)"/>
+      <circle cx="370" cy="180" r="100" fill="rgba(96,165,250,0.04)"/>
+      <circle cx="530" cy="140" r="130" fill="rgba(167,139,250,0.04)"/>
+      <circle cx="370" cy="300" r="110" fill="rgba(244,114,182,0.04)"/>
+      <!-- ============ 第一层：Nginx ============ -->
+      <!-- 发光点 -->
+      <circle cx="160" cy="60" r="6" fill="#22d3ee" opacity="0.6" filter="url(#glow-point)">
+        <animate attributeName="r" values="6;10;6" dur="2s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="0.6;1;0.6" dur="2s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="160" cy="60" r="10" fill="#22d3ee" opacity="0.15" filter="url(#glow-point)">
+        <animate attributeName="r" values="10;16;10" dur="2s" repeatCount="indefinite"/>
+      </circle>
+      <!-- 卡片 -->
+      <rect x="65" y="75" width="190" height="64" rx="10" fill="rgba(34,211,238,0.08)" stroke="rgba(34,211,238,0.35)" stroke-width="1.5"/>
+      <rect x="65" y="75" width="190" height="64" rx="10" fill="none" stroke="url(#layer-nginx)" stroke-width="0.5" opacity="0.5"/>
+      <text x="108" y="105" font-size="20">🌐</text>
+      <text x="160" y="105" text-anchor="middle" fill="#22d3ee" font-size="13" font-family="sans-serif" font-weight="bold">Nginx</text>
+      <text x="160" y="122" text-anchor="middle" fill="#5eead4" font-size="9" font-family="sans-serif" opacity="0.8">反向代理 · SSL 终结</text>
+
+      <!-- 箭头 1：Nginx → Flask -->
+      <line x1="260" y1="107" x2="325" y2="107" stroke="url(#arrow-grad)" stroke-width="2" stroke-dasharray="4,3"/>
+      <polygon points="325,102 335,107 325,112" fill="#64748b"/>
+      <!-- 流动小点 -->
+      <circle r="2.5" fill="#22d3ee" opacity="0.8">
+        <animateMotion dur="2.5s" repeatCount="indefinite" path="M265,107 L325,107"/>
+      </circle>
+
+      <!-- ============ 第二层：Flask ============ -->
+      <circle cx="420" cy="60" r="6" fill="#60a5fa" opacity="0.6" filter="url(#glow-point)">
+        <animate attributeName="r" values="6;9;6" dur="2.8s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="0.6;1;0.6" dur="2.8s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="420" cy="60" r="10" fill="#60a5fa" opacity="0.15" filter="url(#glow-point)">
+        <animate attributeName="r" values="10;15;10" dur="2.8s" repeatCount="indefinite"/>
+      </circle>
+      <rect x="335" y="75" width="190" height="64" rx="10" fill="rgba(96,165,250,0.08)" stroke="rgba(96,165,250,0.35)" stroke-width="1.5"/>
+      <rect x="335" y="75" width="190" height="64" rx="10" fill="none" stroke="url(#layer-flask)" stroke-width="0.5" opacity="0.5"/>
+      <text x="378" y="105" font-size="20">⚙️</text>
+      <text x="430" y="105" text-anchor="middle" fill="#60a5fa" font-size="13" font-family="sans-serif" font-weight="bold">Flask API</text>
+      <text x="430" y="122" text-anchor="middle" fill="#93c5fd" font-size="9" font-family="sans-serif" opacity="0.8">统一后端 · 内存缓存</text>
+
+      <!-- 箭头 2：Flask → Docker（斜线） -->
+      <line x1="370" y1="140" x2="340" y2="175" stroke="url(#arrow-grad)" stroke-width="2" stroke-dasharray="4,3"/>
+      <polygon points="340,170 335,180 345,178" fill="#64748b"/>
+      <circle r="2.5" fill="#60a5fa" opacity="0.8">
+        <animateMotion dur="2.8s" repeatCount="indefinite" path="M365,140 L340,175"/>
+      </circle>
+
+      <!-- ============ 第三层：Docker ============ -->
+      <circle cx="260" cy="210" r="6" fill="#a78bfa" opacity="0.6" filter="url(#glow-point)">
+        <animate attributeName="r" values="6;10;6" dur="3.2s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="0.6;1;0.6" dur="3.2s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="260" cy="210" r="10" fill="#a78bfa" opacity="0.15" filter="url(#glow-point)">
+        <animate attributeName="r" values="10;16;10" dur="3.2s" repeatCount="indefinite"/>
+      </circle>
+      <rect x="150" y="185" width="220" height="64" rx="10" fill="rgba(167,139,250,0.08)" stroke="rgba(167,139,250,0.35)" stroke-width="1.5"/>
+      <rect x="150" y="185" width="220" height="64" rx="10" fill="none" stroke="url(#layer-docker)" stroke-width="0.5" opacity="0.5"/>
+      <text x="198" y="215" font-size="20">🐳</text>
+      <text x="260" y="215" text-anchor="middle" fill="#a78bfa" font-size="13" font-family="sans-serif" font-weight="bold">Docker</text>
+      <text x="260" y="232" text-anchor="middle" fill="#c4b5fd" font-size="9" font-family="sans-serif" opacity="0.8">容器化 · 资源限制 · 可复现</text>
+
+      <!-- 箭头 3：Docker → WordPress -->
+      <line x1="375" y1="217" x2="440" y2="217" stroke="url(#arrow-grad)" stroke-width="2" stroke-dasharray="4,3"/>
+      <polygon points="440,212 450,217 440,222" fill="#64748b"/>
+      <circle r="2.5" fill="#a78bfa" opacity="0.8">
+        <animateMotion dur="3s" repeatCount="indefinite" path="M380,217 L440,217"/>
+      </circle>
+
+      <!-- ============ 第四层：WordPress ============ -->
+      <circle cx="530" cy="210" r="6" fill="#f472b6" opacity="0.6" filter="url(#glow-point)">
+        <animate attributeName="r" values="6;9;6" dur="3.5s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="0.6;1;0.6" dur="3.5s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="530" cy="210" r="10" fill="#f472b6" opacity="0.15" filter="url(#glow-point)">
+        <animate attributeName="r" values="10;15;10" dur="3.5s" repeatCount="indefinite"/>
+      </circle>
+      <rect x="455" y="185" width="190" height="64" rx="10" fill="rgba(244,114,182,0.08)" stroke="rgba(244,114,182,0.35)" stroke-width="1.5"/>
+      <rect x="455" y="185" width="190" height="64" rx="10" fill="none" stroke="url(#layer-wp)" stroke-width="0.5" opacity="0.5"/>
+      <text x="498" y="215" font-size="20">📝</text>
+      <text x="550" y="215" text-anchor="middle" fill="#f472b6" font-size="13" font-family="sans-serif" font-weight="bold">WordPress</text>
+      <text x="550" y="232" text-anchor="middle" fill="#f9a8d4" font-size="9" font-family="sans-serif" opacity="0.8">动态博客 · FastCGI 缓存</text>
+
+      <!-- 数据流反馈箭头（Docker → Nginx 回环） -->
+      <path d="M160,250 L160,290 L580,290 L580,140" fill="none" stroke="rgba(148,163,184,0.15)" stroke-width="1" stroke-dasharray="3,4"/>
+      <polygon points="580,135 585,145 575,145" fill="rgba(148,163,184,0.15)"/>
+      <text x="370" y="305" text-anchor="middle" fill="#64748b" font-size="9" font-family="monospace" opacity="0.6">统一流量入口 → 按域名分发</text>
+
+      <!-- 底部标签 -->
+      <text x="370" y="340" text-anchor="middle" fill="#475569" font-size="10" font-family="sans-serif">腾讯云 · OpenCloudOS · 4 核 3.6G 服务器</text>
+    </svg>
+  </div>
+
+  <h1 class="article-title">JYTHCloud 技术栈揭秘：我们用什么构建网站和服务</h1>
+  <div class="article-meta">
+    <span><i class="far fa-calendar-alt"></i> 2026-05-26</span>
+    <span><i class="fas fa-tag"></i> 技术 · 架构 · 部署 · 性能优化</span>
+    <span><i class="far fa-clock"></i> 阅读约 8 分钟</span>
+  </div>
+
+  <div class="article-body">
+  <div class="article-toc">
+    <div class="article-toc-title"><i class="fas fa-list"></i> 目录</div>
+    <ul class="article-toc-list">
+      <li><a href="#heading-1"><span class="toc-num">01</span>整体架构：传统多站点 + 统一后端</a></li>
+      <li><a href="#heading-2"><span class="toc-num">02</span>前端：纯静态 HTML + CSS + JS</a></li>
+      <li><a href="#heading-3"><span class="toc-num">03</span>后端：Flask + Nginx 反代</a></li>
+      <li><a href="#heading-4"><span class="toc-num">04</span>部署与运维</a></li>
+      <li><a href="#heading-5"><span class="toc-num">05</span>性能优化</a></li>
+      <li><a href="#heading-6"><span class="toc-num">06</span>总结</a></li>
+    </ul>
+  </div>
+
+
+    <p>JYTHCloud 从最初的一个简单静态页面，逐步演变成了如今包含主站、团队博客、API 服务在内的一个小型技术生态。这篇文章完整记录了我们当前的技术栈选型、架构思路和踩过的坑，希望能给同样在搞自建站点的同学一些参考。</p>
+
+    <h2 id="heading-1">整体架构：传统多站点 + 统一后端</h2>
+    <p>我们的整体架构并不追求微服务或 Serverless 这些时髦概念，而是采用了更务实的方式——<strong>传统多站点 + 统一后端</strong>。</p>
+    <p>具体来说，一台腾讯云服务器上运行着三个站点：</p>
+    <ul>
+      <li><strong>主站（jythcloud.cn）</strong> — 团队展示页面，纯静态 HTML</li>
+      <li><strong>团队博客（wordpress.jythcloud.cn）</strong> — WordPress 动态博客</li>
+      <li><strong>API 服务（api.jythcloud.cn）</strong> — Flask 提供统一后端能力</li>
+    </ul>
+    <p>所有流量统一经过 Nginx 反向代理，根据域名和路径分发到不同的后端服务。这样做的好处是：运维极度简单，一台机器搞定所有服务；SSL 证书只需在 Nginx 层面统一配置，免去每个服务各自折腾证书的麻烦。</p>
+
+    <div class="highlight">
+      <strong>🔑 架构原则：</strong>够用就好，不引入不必要的复杂度。对于我们的团队规模和流量，单机多站点架构是最务实的选择。等哪天真的扛不住了再考虑拆分，不提前优化。
+    </div>
+
+    <h2 id="heading-2">前端：纯静态 HTML + CSS + JS</h2>
+    <p>主站的前端选择了最朴素的技术方案——<strong>纯静态 HTML + CSS + JavaScript</strong>，没有使用 React、Vue 等框架。</p>
+    <p>选择纯静态的原因很直接：</p>
+    <ul>
+      <li><strong>加载速度极快</strong> — 没有框架运行时，没有构建产物，浏览器直接解析原生 HTML</li>
+      <li><strong>部署极其简单</strong> — 文件丢到服务器上就能跑，无需 npm install、无需构建步骤</li>
+      <li><strong>维护成本低</strong> — 不会出现依赖版本冲突、构建失败等问题</li>
+      <li><strong>SEO 友好</strong> — 搜索引擎可以直接抓取完整内容</li>
+    </ul>
+    <p>样式方面使用了统一的 <span class="inline-code">/static/style.css</span>，深色背景（<span class="inline-code">#07070d</span>）配蓝色强调色（<span class="inline-code">#60a5fa</span>），所有页面共享同一套视觉风格。图标字体使用 Font Awesome，通过 CDN 引入。</p>
+    <p>这种做法对于内容展示型网站来说完全够用。如果将来需要复杂的交互状态管理，可能会引入框架，但目前没有这个必要。</p>
+
+    <h2 id="heading-3">后端：Flask + Nginx 反代</h2>
+    <p>后端选型花了一些时间考虑。最终选择了 <strong>Flask + Nginx 反向代理</strong> 的组合。</p>
+
+    <h3>为什么选择 Flask</h3>
+    <ul>
+      <li><strong>轻量灵活</strong> — Flask 是一个微型框架，核心功能简单，按需扩展。对于我们的 API 服务来说足够了</li>
+      <li><strong>Python 生态</strong> — 团队对 Python 最熟悉，周边库（SQLAlchemy、Celery、Redis）生态成熟</li>
+      <li><strong>团队友好</strong> — 在校生团队以 Python 为主要语言，Flask 的学习曲线几乎为零</li>
+    </ul>
+
+    <h3>Nginx 反向代理</h3>
+    <p>Nginx 在我们的架构中承担了多重角色：</p>
+    <ul>
+      <li><strong>流量分发</strong> — 根据 server_name 将请求路由到对应站点</li>
+      <li><strong>SSL 终结</strong> — 统一管理 HTTPS 证书，后端服务无需处理 TLS</li>
+      <li><strong>静态文件服务</strong> — HTML、CSS、JS、图片等由 Nginx 直接处理，不经过 Flask</li>
+      <li><strong>FastCGI 缓存</strong> — 对 WordPress 站点开启页面缓存，减少 PHP 进程负载</li>
+    </ul>
+    <p>Nginx 的配置大概是这样的思路：</p>
+    <div class="code-block">
+  <button class="code-copy-btn" onclick="copyCode(this)"><i class="far fa-copy"></i> 复制</button>
+      <span class="comment"># 主站 — 静态文件直接返回</span><br>
+      server {<br>
+      &nbsp;&nbsp;  listen 443 ssl;<br>
+      &nbsp;&nbsp;  server_name jythcloud.cn;<br>
+      &nbsp;&nbsp;  root /www/wwwroot/jythcloud;<br>
+      &nbsp;&nbsp;  <span class="keyword">index</span> index.html;<br>
+      }<br><br>
+      <span class="comment"># API 服务 — 反向代理到 Flask</span><br>
+      server {<br>
+      &nbsp;&nbsp;  listen 443 ssl;<br>
+      &nbsp;&nbsp;  server_name api.jythcloud.cn;<br>
+      &nbsp;&nbsp;  <span class="keyword">location</span> / {<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;    proxy_pass http://127.0.0.1:5000;<br>
+      &nbsp;&nbsp;  }<br>
+      }
+    </div>
+
+    <h2 id="heading-4">部署与运维</h2>
+    <p>部署和运维方面，我们的目标是：<strong>低成本、低维护、高可靠性</strong>。毕竟团队人少精力有限，不能花太多时间在运维上。</p>
+
+    <h3>服务器：腾讯云 4 核 3.6G</h3>
+    <p>服务器用的是腾讯云的轻量应用服务器，配置是 <strong>4 核 CPU + 3.6GB 内存</strong>。这个配置对于同时运行 Nginx、Flask、WordPress（PHP+MySQL）来说完全够用，价格也在学生团队的承受范围内。</p>
+
+    <h3>操作系统：OpenCloudOS</h3>
+    <p>选择了腾讯云的 <strong>OpenCloudOS</strong> 作为操作系统。这是腾讯云基于 CentOS 上游开发的发行版，兼容 CentOS 生态，但更新更及时，而且针对云环境做了优化。选择它的原因很简单：兼容性好、社区活跃、腾讯云原生支持度最佳。</p>
+
+    <h3>容器化：Docker</h3>
+    <p>Flask API 服务跑在 Docker 容器中。使用 Docker 的好处：</p>
+    <ul>
+      <li><strong>环境隔离</strong> — 依赖不会与宿主机或其他服务冲突</li>
+      <li><strong>可复现部署</strong> — 有 Dockerfile 就能在任何机器上跑出一模一样的环境</li>
+      <li><strong>资源限制</strong> — 通过 <span class="inline-code">--memory</span> 参数限制容器内存，防止某个服务耗尽服务器资源</li>
+    </ul>
+    <p>启动 Flask 容器的命令大致如下：</p>
+    <div class="code-block">
+  <button class="code-copy-btn" onclick="copyCode(this)"><i class="far fa-copy"></i> 复制</button>
+      docker run -d \<br>
+      &nbsp;&nbsp;  --name jythcloud-api \<br>
+      &nbsp;&nbsp;  --restart unless-stopped \<br>
+      &nbsp;&nbsp;  --memory 512m \<br>
+      &nbsp;&nbsp;  -p 127.0.0.1:5000:5000 \<br>
+      &nbsp;&nbsp;  jythcloud-api:latest
+    </div>
+
+    <h3>SSL 证书：acme.sh 自动续签</h3>
+    <p>使用 <strong>acme.sh</strong> 来自动申请和续签 Let's Encrypt SSL 证书。acme.sh 是一个纯 Shell 脚本的 ACME 客户端，安装配置后会在证书到期前自动续签，并 reload Nginx 使新证书生效。全程不需要手动干预。</p>
+    <div class="code-block">
+  <button class="code-copy-btn" onclick="copyCode(this)"><i class="far fa-copy"></i> 复制</button>
+      <span class="comment"># 申请证书</span><br>
+      acme.sh --issue -d jythcloud.cn \<br>
+      &nbsp;&nbsp;  --nginx /usr/local/nginx/conf/nginx.conf<br><br>
+      <span class="comment"># 安装证书（reload Nginx）</span><br>
+      acme.sh --install-cert -d jythcloud.cn \<br>
+      &nbsp;&nbsp;  --reloadcmd <span class="string">"systemctl reload nginx"</span>
+    </div>
+
+    <h3>每日备份</h3>
+    <p>数据安全不容忽视。我们写了一个备份脚本 <span class="inline-code">backup.py</span>，通过 cron 定时执行，实现每日自动备份：</p>
+    <ul>
+      <li><strong>数据库备份</strong> — WordPress 的 MySQL 数据库完整导出</li>
+      <li><strong>文件备份</strong> — 站点文件（包括文章、图片、配置）打包归档</li>
+      <li><strong>远程存储</strong> — 备份文件上传到腾讯云 COS 对象存储，防止服务器故障导致数据丢失</li>
+    </ul>
+    <p>cron 配置：</p>
+    <div class="code-block">
+  <button class="code-copy-btn" onclick="copyCode(this)"><i class="far fa-copy"></i> 复制</button>
+      <span class="comment"># 每天凌晨 1 点执行备份</span><br>
+      0 1 * * * /usr/bin/python3 /www/wwwroot/jythcloud/backup.py
+    </div>
+
+    <h2 id="heading-5">性能优化</h2>
+    <p>虽然我们的流量不大，但性能优化从项目一开始就纳入了考量。好的架构习惯在流量增长时能省去很多重构工作。</p>
+
+    <h3>FastCGI 缓存</h3>
+    <p>对于 WordPress 博客站点，开启了 Nginx 的 FastCGI 缓存功能。当一个页面被第一次访问后，Nginx 会将 PHP 生成的页面缓存起来，后续请求直接返回缓存结果，无需再经过 PHP 和 MySQL 处理。</p>
+    <p>配置核心思路：</p>
+    <div class="code-block">
+  <button class="code-copy-btn" onclick="copyCode(this)"><i class="far fa-copy"></i> 复制</button>
+      <span class="comment"># 定义缓存路径和参数</span><br>
+      fastcgi_cache_path /var/run/nginx-cache levels=1:2 keys_zone=WORDPRESS:10m inactive=60m;<br><br>
+      <span class="comment"># 在 location 中启用缓存</span><br>
+      <span class="keyword">location</span> ~ \.php$ {<br>
+      &nbsp;&nbsp;  fastcgi_cache WORDPRESS;<br>
+      &nbsp;&nbsp;  fastcgi_cache_valid 200 60m;<br>
+      &nbsp;&nbsp;  fastcgi_cache_bypass $no_cache;<br>
+      &nbsp;&nbsp;  add_header X-Cache $upstream_cache_status;<br>
+      }
+    </div>
+    <p>开启后 WordPress 的响应时间从平均 200-400ms 降到了 1-5ms（缓存命中时），效果显著。而且对于评论等动态内容，可以通过 cookie 判断登录用户跳过缓存，确保功能正常。</p>
+
+    <h3>Flask 内存缓存</h3>
+    <p>Flask API 服务中用到了一些外部数据（如大模型 API 的返回结果、配置数据等），这些数据不需要每次都重新获取。我们在应用层实现了一个<strong>简单的内存缓存</strong>：</p>
+    <div class="code-block">
+  <button class="code-copy-btn" onclick="copyCode(this)"><i class="far fa-copy"></i> 复制</button>
+      <span class="keyword">from</span> functools <span class="keyword">import</span> lru_cache<br>
+      <span class="keyword">from</span> datetime <span class="keyword">import</span> timedelta<br>
+      <span class="keyword">import</span> time<br><br>
+      <span class="comment"># 带过期时间的缓存装饰器</span><br>
+      <span class="keyword">def</span> <span class="string">ttl_cache</span>(seconds=<span class="number">300</span>):<br>
+      &nbsp;&nbsp;  <span class="keyword">def</span> <span class="string">decorator</span>(func):<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;    cache = {}<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;    <span class="keyword">def</span> <span class="string">wrapper</span>(*args, **kwargs):<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;      key = (args, tuple(sorted(kwargs.items())))<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;      <span class="keyword">if</span> key <span class="keyword">in</span> cache:<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;        val, ts = cache[key]<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;        <span class="keyword">if</span> time.time() - ts &lt; seconds:<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;          <span class="keyword">return</span> val<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;      result = func(*args, **kwargs)<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;      cache[key] = (result, time.time())<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;      <span class="keyword">return</span> result<br>
+      &nbsp;&nbsp;    <span class="keyword">return</span> wrapper<br>
+      &nbsp;&nbsp;  <span class="keyword">return</span> decorator
+    </div>
+    <p>对于频繁请求且允许一定延迟的数据，使用这个缓存装饰器可以将响应时间从秒级降到毫秒级。当然，如果需要跨进程共享缓存（比如多个 Flask worker），还是得上 Redis，目前单容器场景下内存缓存完全够用。</p>
+
+    <h3>Docker 内存限制</h3>
+    <p>前面提到过，我们通过 Docker 的 <span class="inline-code">--memory</span> 参数限制每个容器的最大内存使用量：</p>
+    <ul>
+      <li>Flask API 容器 — 限制 <strong>512MB</strong></li>
+      <li>其他辅助容器 — 视情况设定</li>
+    </ul>
+    <p>这样做的好处是：即使某个服务的代码出现内存泄漏（比如 Python 进程没有释放大对象），也不会拖垮整台服务器。Docker 的 OOM Killer 会帮你杀掉出问题的容器，而其他服务依然正常运行。</p>
+    <p>此外，还可以设置 <span class="inline-code">--memory-reservation</span>（软限制）和 <span class="inline-code">--memory-swap</span>（交换分区限制）来做更精细的控制。</p>
+
+    <div class="highlight">
+      <strong>📊 效果数据：</strong>在启用上述所有优化后，主站首页加载时间约 200ms（静态页面，主要是网络传输时间），WordPress 博客缓存命中时约 5ms，Flask API 缓存命中时约 10ms。服务器内存使用率长期稳定在 50% 左右，CPU 空闲率 90%+。对于学生团队的网站来说，这个表现已经绰绰有余。
+    </div>
+
+    <h2 id="heading-6">总结</h2>
+    <p>回顾整个技术栈的选型过程，核心思路就是一句话：<strong>选择简单的方案，把复杂留给业务。</strong></p>
+    <p>纯静态前端 + Flask 后端 + Nginx 反代 + Docker 部署，这套组合没有什么炫酷的新技术，但每一层都经过了实际检验，足够稳定、足够高效。对于预算有限、人力有限的学生团队来说，这或许是最优解。</p>
+    <p>当然，技术栈不是一成不变的。随着团队发展和业务增长，未来可能会引入更多组件。但无论怎么演进，务实和简洁会是我们一直坚持的原则。</p>
+    <p>如果你也在做类似的项目，欢迎交流。下一篇打算写 Docker 部署 Flask 的一些踩坑记录，敬请期待。</p>
+
+  </div>
+
+  <div class="article-footer">
+    <a href="/"><i class="fas fa-arrow-left"></i> 返回主页</a>
+  </div>
+</div>
+<!-- Image zoom overlay -->
+<div class="img-overlay" id="imgOverlay" onclick="this.classList.remove('show')"><img id="imgZoom" src="" alt=""></div>
+<!-- Back to top button -->
+<button class="article-top-btn" id="articleTop" onclick="window.scrollTo({top:0,behavior:'smooth'})"><i class="fas fa-arrow-up"></i></button>
+</body>
+</html>

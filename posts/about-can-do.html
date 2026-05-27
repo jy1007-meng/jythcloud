@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<link rel="stylesheet" href="/static/style.css">
+<link rel="stylesheet" href="https://cdnjs.loli.net/ajax/libs/font-awesome/6.5.1/css/all.min.css" media="print" onload="this.media='all'">
+<title>我们能做什么 · JYTHCloud</title>
+<meta name="description" content="作为大学生技术团队——数据清洗分析、AI应用开发、网站建设、技术文档输出，我们用真实项目证明：小团队也能做出大价值。">
+</head>
+<body>
+
+<div class="article-progress"><div class="bar" id="progressBar"></div></div>
+<script>
+// Progress bar
+window.addEventListener('scroll',function(){var h=document.documentElement;var p=(h.scrollTop/(h.scrollHeight-h.clientHeight))*100;document.getElementById('progressBar').style.width=p+'%'});
+// Code copy
+function copyCode(btn){var codeBlock=btn.closest('.code-block');var text=codeBlock.textContent.replace(/复制$/, '').trim();navigator.clipboard.writeText(text).then(function(){btn.innerHTML='<i class="fas fa-check"></i> 已复制';setTimeout(function(){btn.innerHTML='<i class="far fa-copy"></i> 复制'},2000)})}
+// Image zoom
+document.querySelectorAll('.article-body img').forEach(function(i){i.addEventListener('click',function(e){e.stopPropagation();document.getElementById('imgZoom').src=this.src;document.getElementById('imgOverlay').classList.add('show')})});
+// Back to top visibility
+window.addEventListener('scroll',function(){var btn=document.getElementById('articleTop');if(btn){btn.classList.toggle('show',window.scrollY>400)}});
+</script>
+
+<div class="article-container">
+  <a href="/" class="article-back"><i class="fas fa-arrow-left"></i> 返回主页</a>
+
+  <div class="article-hero-img">
+    <img src="/posts/about-can-do.svg" alt="我们能做什么" style="width:100%;height:100%;object-fit:cover">
+  </div>
+
+  <h1 class="article-title">我们能做什么</h1>
+  <div class="article-meta">
+    <span><i class="far fa-calendar-alt"></i> 2026-05-27</span>
+    <span><i class="fas fa-tag"></i> 关于我们</span>
+    <span><i class="far fa-clock"></i> 阅读约 8 分钟</span>
+  </div>
+
+  <div class="article-body">
+  <div class="article-toc">
+    <div class="article-toc-title"><i class="fas fa-list"></i> 目录</div>
+    <ul class="article-toc-list">
+      <li><a href="#heading-1"><span class="toc-num">01</span>数据清洗与分析服务</a></li>
+      <li><a href="#heading-2"><span class="toc-num">02</span>AI应用开发：从知识库问答到智能客服</a></li>
+      <li><a href="#heading-3"><span class="toc-num">03</span>网站建设与运维</a></li>
+      <li><a href="#heading-4"><span class="toc-num">04</span>技术文档与培训服务</a></li>
+      <li><a href="#heading-5"><span class="toc-num">05</span>联系我们：如何开始合作</a></li>
+    </ul>
+  </div>
+
+
+    <p>经常有人问我们：<strong>"你们几个大学生，到底能做什么？"</strong>问这个问题的人，有想做数据分析的初创公司、有需要搭建官网的小商家、有想用AI提高效率的课题组老师。每个人都带着一个具体的问题来，而我们给出的答案也从来不是空泛的承诺——我们会直接说：<span class="inline-code">"这个项目我们做过类似的，你可以看看这个案例。"</span></p>
+
+    <p>JYTHCloud 成立到现在，我们完成的项目类型涵盖数据清洗分析、AI知识问答系统、网站全栈搭建、技术文档输出等多个方向。这篇文章不讲虚的，只讲 <strong>我们具体能做什么、做过什么、用什么方法做</strong>。你可以把它当成一份服务目录，也可以当成判断我们是否靠谱的依据。</p>
+
+    <div class="highlight">
+      <strong>🎯 一句话概括我们的定位：</strong>我们是"大学生技术团队"——这意味着我们的经验可能不如大厂资深工程师丰富，但我们的优势在于<strong>灵活、专注、低成本</strong>。对于预算有限、需求明确的中小项目，我们往往是性价比最高的选择。
+    </div>
+
+    <p>下面这张表可以让你在30秒内了解我们的核心服务：</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>服务方向</th>
+          <th>核心能力</th>
+          <th>适用场景</th>
+          <th>参考价格区间</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>数据清洗与分</strong></td>
+          <td>Pandas · ETL · 可视化报告</td>
+          <td>电商数据、调研数据、日志数据</td>
+          <td>500 - 3000 元/项目</td>
+        </tr>
+        <tr>
+          <td><strong>AI应用开发</strong></td>
+          <td>RAG · LLM API · Agent 框架</td>
+          <td>智能客服、知识库问答、内容生成</td>
+          <td>2000 - 8000 元/项目</td>
+        </tr>
+        <tr>
+          <td><strong>网站建设</strong></td>
+          <td>Flask · FastAPI · Nginx · Docker</td>
+          <td>企业官网、后台管理、API服务</td>
+          <td>1500 - 5000 元/项目</td>
+        </tr>
+        <tr>
+          <td><strong>技术文档</strong></td>
+          <td>API文档 · 教程编写 · AI科普</td>
+          <td>产品手册、课题报告、技术博客</td>
+          <td>200 - 1500 元/篇</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>下面每一个方向，我都会用一个<strong>我们实际做过的真实案例</strong>来说明。没有编造的故事，每一步都可以溯源。</p>
+
+    <h2 id="heading-1">数据清洗与分析服务</h2>
+
+    <p>我们接到的第一个有报酬的数据分析项目，来自一家做跨境电商的小团队。他们运营着一家Shopify店铺，后台导出了一份长达十几万行的订单数据——包含订单ID、客户信息、商品SKU、支付金额、退款记录等几十个字段。他们的需求听起来简单，做起来却相当棘手：<strong>"帮我们把数据整理清楚，看看哪几个品类最赚钱、退款率最高的商品是什么、客户的复购周期是多长。"</strong></p>
+
+    <p>拿到数据后，我们做的第一件事不是跑分析，而是<strong>数据质量审计</strong>。结果发现的问题比预想的多：时间戳格式不统一（有的用 <span class="inline-code">2025-01-15</span>，有的用 <span class="inline-code">01/15/2025</span>）、部分订单缺少客户ID、退款记录和原始订单的对齐关系混乱、存在重复录入的订单行……我们花了整整两天做清洗，然后才进入分析阶段。</p>
+
+    <div class="code-block">
+  <button class="code-copy-btn" onclick="copyCode(this)"><i class="far fa-copy"></i> 复制</button>
+      <span class="comment"># 真实的电商数据清洗片段（已脱敏）</span><br><br>
+      <span class="keyword">import</span> pandas <span class="keyword">as</span> pd<br>
+      <span class="keyword">import</span> numpy <span class="keyword">as</span> np<br><br>
+      <span class="comment"># 加载原始数据</span><br>
+      df = pd.read_csv(<span class="string">"orders_export.csv"</span>, parse_dates=[<span class="string">"created_at"</span>])<br>
+      print(<span class="string">f"原始行数: {len(df)}, 字段数: {len(df.columns)}"</span>)<br><br>
+      <span class="comment"># 统一时间格式</span><br>
+      df[<span class="string">"created_at"</span>] = pd.to_datetime(df[<span class="string">"created_at"</span>], errors=<span class="string">"coerce"</span>)<br><br>
+      <span class="comment"># 剔除缺失关键信息的行</span><br>
+      df = df.dropna(subset=[<span class="string">"order_id"</span>, <span class="string">"customer_id"</span>, <span class="string">"total_price"</span>])<br><br>
+      <span class="comment"># 标记退款订单并关联原始订单</span><br>
+      refunds = df[df[<span class="string">"financial_status"</span>] == <span class="string">"refunded"</span>]<br>
+      df[<span class="string">"is_refund"</span>] = df[<span class="string">"financial_status"</span>] == <span class="string">"refunded"</span><br><br>
+      <span class="comment"># 计算各品类净销售额（扣除退款）</span><br>
+      category_stats = df.groupby(<span class="string">"product_category"</span>).agg({<br>
+      &nbsp;&nbsp;  <span class="string">"total_price"</span>: <span class="string">"sum"</span>,<br>
+      &nbsp;&nbsp;  <span class="string">"order_id"</span>: <span class="string">"count"</span>,<br>
+      &nbsp;&nbsp;  <span class="string">"is_refund"</span>: <span class="string">"mean"</span><br>
+      }).rename(columns={<br>
+      &nbsp;&nbsp;  <span class="string">"total_price"</span>: <span class="string">"总销售额"</span>,<br>
+      &nbsp;&nbsp;  <span class="string">"order_id"</span>: <span class="string">"订单数"</span>,<br>
+      &nbsp;&nbsp;  <span class="string">"is_refund"</span>: <span class="string">"退款率"</span><br>
+      }).sort_values(<span class="string">"总销售额"</span>, ascending=<span class="keyword">False</span>)<br><br>
+      print(category_stats)
+    </div>
+
+    <p>最终我们交付的东西包括：</p>
+
+    <ul>
+      <li><strong>一份清洗后的结构化数据</strong>（CSV格式，可直接导入任何BI工具）</li>
+      <li><strong>一份分析报告</strong>（PDF格式，包含核心指标、趋势图表和业务建议）</li>
+      <li><strong>一个交互式可视化看板</strong>（基于Plotly + HTML，可在浏览器中查看和筛选）</li>
+    </ul>
+
+    <p>这个项目的产出帮客户发现了几个关键洞察：某个听起来很时尚的"设计师联名款"品类，销售额看起来不错但退款率高达23%；相反，一个不起眼的"基础款"品类销售额虽然不高，但复购率是全店最高的62%。客户的反馈是：<strong>"你们不分析，我可能还要烧半年钱推那个联名款。"</strong></p>
+
+    <blockquote>
+      <strong>📊 关于数据分析，我们的理念是：</strong><br>
+      80%的价值来自数据清洗 + 统计描述 + 可视化叙事，只有20%来自复杂模型。绝大多数中小企业需要的不是"上深度学习"，而是先把数据理清楚、把现状看清楚。我们先把这80%做到位。
+    </blockquote>
+
+    <p>我们还可以处理的数据类型包括：<span class="tag">电商订单数据</span> <span class="tag">问卷调研数据</span> <span class="tag">服务器日志数据</span> <span class="tag">公开API数据</span> <span class="tag">社交媒体数据</span>。如果你手头有一堆不知道怎么处理的原始数据，不妨找我们聊聊。</p>
+
+    <h2 id="heading-2">AI应用开发：从知识库问答到智能客服</h2>
+
+    <p>AI是过去一年我们投入精力最多的方向。我们做的第一个AI应用，是帮一位经营留学咨询公司的客户搭建的<strong>"留学政策知识库问答系统"</strong>。他手上有几十份PDF文档——各国签证政策、院校录取要求、奖学金申请指南——他的员工每天要花大量时间翻文档回答客户咨询。</p>
+
+    <p>我们为他搭建了一套基于RAG（检索增强生成）的知识问答系统：</p>
+
+    <ol>
+      <li><strong>文档解析与切分：</strong>将PDF文档解析为纯文本，按语义段落切分成chunk，保留元数据（来源文件名、页码）</li>
+      <li><strong>向量化存储：</strong>使用 text-embedding-3-small 模型将chunk转为向量，存入 Chroma 向量数据库</li>
+      <li><strong>检索问答：</strong>用户提问后，先检索最相关的 top-5 片段，再交由 LLM 基于这些片段生成答案</li>
+      <li><strong>部署为Web服务：</strong>用 FastAPI 封装成 API，前端使用简洁的聊天界面，支持会话历史</li>
+    </ol>
+
+    <div class="code-block">
+  <button class="code-copy-btn" onclick="copyCode(this)"><i class="far fa-copy"></i> 复制</button>
+      <span class="comment"># RAG 系统的核心检索与生成流程</span><br><br>
+      <span class="keyword">from</span> langchain_community.vectorstores <span class="keyword">import</span> Chroma<br>
+      <span class="keyword">from</span> langchain_openai <span class="keyword">import</span> OpenAIEmbeddings, ChatOpenAI<br>
+      <span class="keyword">from</span> langchain_core.prompts <span class="keyword">import</span> ChatPromptTemplate<br><br>
+      <span class="comment"># 加载向量数据库</span><br>
+      embeddings = OpenAIEmbeddings(model=<span class="string">"text-embedding-3-small"</span>)<br>
+      vectordb = Chroma(persist_directory=<span class="string">"./db/study_abroad"</span>, embedding_function=embeddings)<br><br>
+      <span class="comment"># 自定义提示模板，要求基于上下文回答</span><br>
+      template = <span class="string">"""你是留学咨询助手。请仅基于以下上下文回答问题。<br>
+      如果上下文中找不到答案，请明确说"我不确定"。<br><br>
+      上下文：<br>
+      {context}<br><br>
+      问题：{question}<br>
+      回答："""</span><br><br>
+      prompt = ChatPromptTemplate.from_template(template)<br><br>
+      <span class="comment"># 构建 RAG chain</span><br>
+      llm = ChatOpenAI(model=<span class="string">"gpt-4o-mini"</span>, temperature=<span class="number">0.2</span>)<br>
+      retriever = vectordb.as_retriever(search_kwargs={<span class="string">"k"</span>: <span class="number">5</span>})<br><br>
+      <span class="comment"># 用户提问</span><br>
+      question = <span class="string">"加拿大学生签证的GIC要求是多少？"</span><br>
+      docs = retriever.get_relevant_documents(question)<br>
+      context = <span class="string">"\n---\n"</span>.join([d.page_content <span class="keyword">for</span> d <span class="keyword">in</span> docs])<br>
+      response = llm.invoke(prompt.format(context=context, question=question))<br>
+      print(response.content)
+    </div>
+
+    <p>这个系统的落地效果非常显著：客户员工的文档查阅时间从平均每次15分钟缩短到不到30秒，回答质量保持了一致性——不会出现不同员工对同一政策解读不一致的情况。客户后来跟我们说：<strong>"等于我用一个月的工资换来了半个员工的效率。"</strong></p>
+
+    <p>除了RAG知识库，我们还做过：</p>
+
+    <ul>
+      <li><strong>智能客服机器人</strong>（接入微信公众号，自动回复常见问题，处理不了的转人工）</li>
+      <li><strong>商品描述生成工具</strong>（输入商品参数，自动生成多风格文案，帮电商卖家节省写文案时间）</li>
+      <li><strong>会议纪要自动整理</strong>（上传录音转文字，自动提取待办事项和关键决议）</li>
+    </ul>
+
+    <div class="highlight">
+      <strong>🤖 关于AI应用的建议：</strong>2025-2026年的AI技术栈已经足够成熟，大部分场景不需要从零训练模型。我们的做法是——<strong>用成熟的大模型API + 垂直场景数据 + 精心设计的Prompt + 可靠的系统架构</strong>，组合出真正能用的产品。比起"炫技"，我们更关心"好用"。
+    </div>
+
+    <h2 id="heading-3">网站建设与运维</h2>
+
+    <p>网站建设是我们接触最早、项目最多的方向。从大二开始，我们陆续做了企业官网、个人博客、数据可视化看板、后台管理系统等多种类型的Web项目。技术栈以 <span class="tag">Flask</span> <span class="tag">FastAPI</span> <span class="tag">Vue.js</span> 为主，部署层面统一使用 <span class="tag">Docker</span> + <span class="tag">Nginx</span> + <span class="tag">Let's Encrypt</span> 方案。</p>
+
+    <p>一个比较完整的案例是：我们为一个做生物信息学的课题组搭建了一个<strong>"基因表达数据可视化平台"</strong>。课题组的研究员们每天处理大量基因芯片数据，之前一直用Excel画图，效率低、难以复现、更无法分享给合作方。我们做了一套Web平台：后端用FastAPI提供数据查询API，前端用Vue.js + ECharts实现交互式图表，数据存储用PostgreSQL，整个项目打包在Docker中一键部署。</p>
+
+    <p>以下是我们的标准网站部署流程——每个项目都走这个链路：</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>阶段</th>
+          <th>工作内容</th>
+          <th>交付物</th>
+          <th>时间预估</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>需求沟通</td>
+          <td>明确功能边界、页面数量、目标用户</td>
+          <td>需求文档 + 功能清单</td>
+          <td>1-2天</td>
+        </tr>
+        <tr>
+          <td>原型设计</td>
+          <td>页面布局设计、交互流程梳理</td>
+          <td>可点击的Figma原型或手绘线框图</td>
+          <td>2-3天</td>
+        </tr>
+        <tr>
+          <td>前后端开发</td>
+          <td>数据库设计、API开发、前端页面实现</td>
+          <td>可运行的开发版</td>
+          <td>5-15天（视复杂度）</td>
+        </tr>
+        <tr>
+          <td>部署上线</td>
+          <td>Docker打包、Nginx配置、HTTPS证书</td>
+          <td>公网可访问的生产版本</td>
+          <td>1-2天</td>
+        </tr>
+        <tr>
+          <td>维护交付</td>
+          <td>Bug修复、文档编写、运维交接</td>
+          <td>技术文档 + 运维手册</td>
+          <td>持续1个月</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>我们自己的官网 <strong>jythcloud.com</strong> 就是最好的案例——这个站点从设计到部署全部由我们三人完成，前端纯静态HTML + CSS，后端无冗余依赖，加载速度极快，完全符合我们<strong>"轻量、高效、实用"</strong>的工程理念。</p>
+
+    <blockquote>
+      <strong>🌐 关于网站建设，我们坚持的几个原则：</strong><br>
+      1. 不推荐客户用WordPress——臃肿、不安全、维护成本高。我们只做定制开发。<br>
+      2. HTTPS是标配，没有例外。每一台经我们手的服务器都必须配置SSL。<br>
+      3. Docker容器化部署，确保环境一致性和快速回滚能力。<br>
+      4. 优先使用轻量框架——能用Flask不用Django，能用FastAPI不用Spring Boot。
+    </blockquote>
+
+    <h2 id="heading-4">技术文档与培训服务</h2>
+
+    <p>写技术文档这件事，最初是我们给自己团队的"内部需求"——项目做多了，发现如果没有好的文档，三个月后连自己写的代码都看不懂。后来我们把这个能力也变成了服务，帮其他团队写API文档、产品使用手册、技术教程等。</p>
+
+    <p>一个有趣的案例是：一位做AI科普的博主找我们帮他整理<strong>"大模型入门学习路线图"</strong>。他有一系列零散的视频和文章，但缺乏系统的文字材料。我们花了一周时间，帮他整理出了从Python基础 → 机器学习入门 → LLM API调用 → RAG实践 → Agent开发的完整学习路径，每个阶段包含：学习目标、推荐资源、动手项目、常见踩坑点。这篇文档后来成为了他课程的核心讲义，帮助了上千名初学者。</p>
+
+    <p>我们输出的技术文档类型包括：</p>
+
+    <ul>
+      <li><strong>API接口文档：</strong>参考OpenAPI/Swagger规范，确保可读性和可维护性</li>
+      <li><strong>产品使用手册：</strong>面向非技术用户，图文并茂，操作步骤详尽</li>
+      <li><strong>技术教程/博客：</strong>适合对外发布的深度文章，覆盖AI、数据科学、运维等方向</li>
+      <li><strong>课题报告/结项文档：</strong>结构严谨、数据翔实，符合学术规范</li>
+    </ul>
+
+    <div class="code-block">
+  <button class="code-copy-btn" onclick="copyCode(this)"><i class="far fa-copy"></i> 复制</button>
+      <span class="comment"># 我们写API文档时常用的Markdown模板结构</span><br><br>
+      <span class="comment"># API：智能客服消息接口</span><br><br>
+      <span class="comment">## POST /api/v1/chat/message</span><br><br>
+      <span class="comment">### 功能描述</span><br>
+      发送一条用户消息并获取AI回复。<br><br>
+      <span class="comment">### 请求参数</span><br>
+      | 参数名 | 类型 | 必填 | 说明 |<br>
+      |--------|------|------|------|<br>
+      | session_id | string | 是 | 会话标识，由客户端生成UUID |<br>
+      | content | string | 是 | 用户消息内容，不超过2000字 |<br>
+      | user_id | string | 否 | 用户标识，用于记录历史 |<br><br>
+      <span class="comment">### 返回示例</span><br>
+      {<br>
+      &nbsp;&nbsp;  "code": 200,<br>
+      &nbsp;&nbsp;  "data": {<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;    "reply": "您好！根据您的问题，加拿大留学签证的GIC要求是...",<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;    "source_docs": ["签证政策2026.pdf (p.12)", "使馆公告2026-03.pdf (p.5)"]<br>
+      &nbsp;&nbsp;  }<br>
+      }
+    </div>
+
+    <p>除此之外，我们还提供<strong>AI相关的科普培训和分享</strong>。我们曾受学院邀请，为低年级同学做过一次<strong>"大学生如何零基础入门AI"</strong>的分享，从大模型的基本原理讲到API调用实操，再到如何用AI辅助学习和做项目。现场来了六十多人，互动非常热烈。有同学会后跟我们说：<strong>"之前觉得AI是遥不可及的高科技，听完发现我明天就能开始学。"</strong>——这正是我们最想听到的反馈。</p>
+
+    <div class="highlight">
+      <strong>📖 写技术文档的核心理念：</strong><br>
+      好的技术文档不是"把代码注释翻译成中文"，而是站在读者的视角，想清楚"他需要知道什么"和"他在哪里会卡住"。我们每写一篇文档，都会自己照着操作一遍——如果自己都走不通，那读者一定更走不通。这就是我们说的<strong>"可执行文档"</strong>标准。
+    </div>
+
+    <h2 id="heading-5">联系我们：如何开始合作</h2>
+
+    <p>读到这里，你应该对我们能做的事情有了比较清晰的了解。如果你正好有下面的某一种需求，欢迎随时联系我们：</p>
+
+    <ul>
+      <li>📊 <strong>手头有一堆数据不知道怎么分析？</strong>——我们可以帮你清洗、分析、做可视化报告</li>
+      <li>🤖 <strong>想用AI提高业务效率？</strong>——知识库问答、智能客服、内容生成，我们都有落地经验</li>
+      <li>🌐 <strong>需要一个网站？</strong>——企业官网、后台系统、数据看板，从设计到部署全包</li>
+      <li>📝 <strong>需要写技术文档或做培训？</strong>——API文档、使用手册、AI科普分享</li>
+      <li>❓ <strong>不太确定需要什么，但觉得AI/数据可能帮上忙？</strong>——先聊一聊，我们帮你判断</li>
+    </ul>
+
+    <p>联系我们最直接的方式是通过网站的 <a href="/"><strong>主页联系表单</strong></a>，或者发送邮件到我们的团队邮箱。我们通常在<strong>24小时内回复</strong>。首次沟通完全免费——我们会先了解你的需求，评估可行性，给出初步方案和报价，你觉得合适再推进。</p>
+
+    <blockquote>
+      <strong>🤝 合作流程很简单：</strong><br>
+      第一步：你告诉我们需求（几句话描述即可）<br>
+      第二步：我们评估并给出方案和报价（1-2个工作日）<br>
+      第三步：你确认后，我们启动项目，定期同步进度<br>
+      第四步：交付验收，提供后续维护支持<br><br>
+      没有任何隐性费用，没有冗长的合同——<strong>大学生做事，讲究的就是一个靠谱和高效。</strong>
+    </blockquote>
+
+    <p>最后，分享一句我们一直放在心上的话：</p>
+
+    <div class="highlight">
+      <strong>💪 我们不是大公司，所以我们不需要大公司的流程和成本。</strong><br>
+      我们是三个愿意花时间把一个技术问题研究透的大学生。<br>
+      我们能做的，可能比你想的更多。<br><br>
+      <strong>— JYTHCloud 团队</strong>
+    </div>
+
+    <hr>
+
+    <p style="text-align:center;font-size:0.9rem;color:var(--text-mid);">
+      📬 有任何需求或疑问，欢迎通过主页联系我们。<br>
+      首次咨询免费，我们很乐意听听你的想法。
+    </p>
+
+  </div>
+
+  <div class="article-footer">
+    <a href="/"><i class="fas fa-arrow-left"></i> 返回主页</a>
+  </div>
+</div>
+
+<!-- Image zoom overlay -->
+<div class="img-overlay" id="imgOverlay" onclick="this.classList.remove('show')"><img id="imgZoom" src="" alt=""></div>
+<!-- Back to top button -->
+<button class="article-top-btn" id="articleTop" onclick="window.scrollTo({top:0,behavior:'smooth'})"><i class="fas fa-arrow-up"></i></button>
+</body>
+</html>

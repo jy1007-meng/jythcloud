@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 740 360">
+  <defs>
+    <radialGradient id="co" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#1e1b4b"/><stop offset="100%" stop-color="#0f172a"/>
+    </radialGradient>
+  </defs>
+  <rect fill="url(#co)" width="740" height="360"/>
+  <text x="370" y="55" text-anchor="middle" font-size="26" font-weight="700" fill="#fff">🌍 我们的社区</text>
+  <text x="370" y="80" text-anchor="middle" font-size="13" fill="#94a3b8">分享 · 交流 · 共同成长</text>
+  <g transform="translate(130,130)">
+    <circle cx="0" cy="0" r="70" fill="none" stroke="#60a5fa" stroke-opacity="0.2" stroke-width="1">
+      <animate attributeName="r" values="70;90;70" dur="3s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.2;0;0.2" dur="3s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="0" cy="0" r="70" fill="none" stroke="#a78bfa" stroke-opacity="0.15" stroke-width="1">
+      <animate attributeName="r" values="70;95;70" dur="3.5s" begin="0.5s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.15;0;0.15" dur="3.5s" begin="0.5s" repeatCount="indefinite"/>
+    </circle>
+    <text x="0" y="-8" text-anchor="middle" font-size="32">🌐</text>
+    <text x="0" y="35" text-anchor="middle" font-size="12" fill="#94a3b8">JYTHCloud</text>
+  </g>
+  <g transform="translate(370,160)">
+    <rect x="0" y="0" width="220" height="160" rx="14" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.06)"/>
+    <text x="110" y="35" text-anchor="middle" font-size="13" font-weight="600" fill="#e2e8f0">📖 技术博客</text>
+    <text x="110" y="58" text-anchor="middle" font-size="11" fill="#94a3b8">学习笔记 · 项目复盘</text>
+    <text x="110" y="78" text-anchor="middle" font-size="11" fill="#94a3b8">踩坑记录 · 工具推荐</text>
+    <line x1="20" y1="95" x2="200" y2="95" stroke="rgba(255,255,255,0.05)"/>
+    <text x="110" y="120" text-anchor="middle" font-size="13" font-weight="600" fill="#e2e8f0">💬 交流社区</text>
+    <text x="110" y="143" text-anchor="middle" font-size="11" fill="#94a3b8">经验交流 · 问题互助</text>
+  </g>
+  <g transform="translate(50,250)">
+    <text x="0" y="0" font-size="11" fill="#64748b">每周更新</text>
+  </g>
+  <g transform="translate(540,250)">
+    <text x="0" y="0" font-size="11" fill="#64748b">一起学习 🚀</text>
+  </g>
+</svg>

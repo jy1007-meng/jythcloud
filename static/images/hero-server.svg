@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 740 360" width="740" height="360">
+  <defs>
+    <linearGradient id="bg1" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0f172a"/>
+      <stop offset="100%" stop-color="#1e1b4b"/>
+    </linearGradient>
+    <linearGradient id="ac1" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#60a5fa"/>
+      <stop offset="100%" stop-color="#a78bfa"/>
+    </linearGradient>
+  </defs>
+  <rect width="740" height="360" fill="url(#bg1)"/>
+  <circle cx="120" cy="80" r="130" fill="rgba(96,165,250,0.04)"/>
+  <circle cx="620" cy="290" r="150" fill="rgba(167,139,250,0.04)"/>
+  <!-- 服务器 -->
+  <rect x="100" y="110" width="200" height="140" rx="12" fill="rgba(96,165,250,0.06)" stroke="rgba(96,165,250,0.2)" stroke-width="1.5"/>
+  <rect x="120" y="120" width="80" height="20" rx="4" fill="rgba(96,165,250,0.15)"/>
+  <text x="160" y="134" text-anchor="middle" fill="#60a5fa" font-size="9" font-family="sans-serif" font-weight="bold">Nginx</text>
+  <rect x="210" y="120" width="70" height="20" rx="4" fill="rgba(167,139,250,0.15)"/>
+  <text x="245" y="134" text-anchor="middle" fill="#a78bfa" font-size="9" font-family="sans-serif" font-weight="bold">Docker</text>
+  <!-- 内部组件 -->
+  <rect x="120" y="155" width="160" height="28" rx="6" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+  <text x="200" y="173" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="monospace">Flask API (:5002)</text>
+  <rect x="120" y="190" width="160" height="28" rx="6" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+  <text x="200" y="208" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="monospace">MySQL / Redis</text>
+  <!-- 指示灯 -->
+  <circle cx="120" cy="110" r="3" fill="#22c55e"/>
+  <circle cx="130" cy="110" r="3" fill="#22c55e" opacity="0.5"/>
+  <circle cx="140" cy="110" r="3" fill="#22c55e" opacity="0.3"/>
+  <!-- 连接箭头到客户端 -->
+  <line x1="300" y1="150" x2="380" y2="150" stroke="#334155" stroke-width="2"/>
+  <polygon points="380,145 390,150 380,155" fill="#334155"/>
+  <line x1="300" y1="190" x2="380" y2="190" stroke="#334155" stroke-width="2"/>
+  <polygon points="380,185 390,190 380,195" fill="#334155"/>
+  <!-- 客户端设备 -->
+  <rect x="400" y="120" width="100" height="70" rx="12" fill="rgba(167,139,250,0.06)" stroke="rgba(167,139,250,0.2)" stroke-width="1.5"/>
+  <text x="450" y="150" text-anchor="middle" fill="#a78bfa" font-size="9" font-family="sans-serif" font-weight="bold">用户端</text>
+  <text x="450" y="170" text-anchor="middle" fill="#94a3b8" font-size="8" font-family="monospace">HTTPS</text>
+  <!-- 安全锁 -->
+  <rect x="345" y="80" width="20" height="20" rx="4" fill="rgba(34,197,94,0.1)" stroke="rgba(34,197,94,0.3)" stroke-width="1"/>
+  <text x="355" y="94" text-anchor="middle" fill="#22c55e" font-size="10" font-family="sans-serif">🔒</text>
+  <!-- 底部 CLI 提示 -->
+  <rect x="100" y="270" width="580" height="50" rx="10" fill="rgba(255,255,255,0.02)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+  <text x="120" y="290" fill="#6b7280" font-size="10" font-family="monospace">&gt; docker ps | grep jythcloud</text>
+  <text x="120" y="306" fill="#22c55e" font-size="10" font-family="monospace">  ✓ 7 containers running (uptime: 14d)</text>
+  <!-- 标题 -->
+  <text x="60" y="46" fill="url(#ac1)" font-size="14" font-family="sans-serif" font-weight="bold" letter-spacing="1">从零搭服务器</text>
+</svg>

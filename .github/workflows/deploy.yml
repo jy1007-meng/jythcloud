@@ -1,0 +1,30 @@
+name: Deploy JYTHCloud
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Deploy to Server via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          port: ${{ secrets.SERVER_PORT || 22 }}
+          script: |
+            cd /www/wwwroot/jythcloud
+            git pull origin main
+            # 检查 Flask 进程并重启
+            if pgrep -f 'python3 app.py'; then
+              pkill -f 'python3 app.py'
+              sleep 2
+            fi
+            cd /www/wwwroot/jythcloud/api && nohup python3 app.py > /tmp/flask.log 2>&1 &
+            echo "✅ 部署完成: $(date)"

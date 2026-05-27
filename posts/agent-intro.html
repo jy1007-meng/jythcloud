@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<link rel="stylesheet" href="/static/style.css">
+<link rel="stylesheet" href="https://cdnjs.loli.net/ajax/libs/font-awesome/6.5.1/css/all.min.css" media="print" onload="this.media='all'">
+<title>AI 智能体初体验：用 LangChain 搭了一个自动查天气的 Agent · JYTHCloud</title>
+<meta name="description" content="一个在校生尝试用 LangChain 搭建 AI Agent 的实战记录，从概念理解到让 Agent 自主调用天气 API 的完整过程。">
+
+</head>
+<body>
+
+<div class="article-progress"><div class="bar" id="progressBar"></div></div>
+<script>
+// Progress bar
+window.addEventListener('scroll',function(){var h=document.documentElement;var p=(h.scrollTop/(h.scrollHeight-h.clientHeight))*100;document.getElementById('progressBar').style.width=p+'%'});
+// Code copy
+function copyCode(btn){var codeBlock=btn.closest('.code-block');var text=codeBlock.textContent.replace(/复制$/, '').trim();navigator.clipboard.writeText(text).then(function(){btn.innerHTML='<i class="fas fa-check"></i> 已复制';setTimeout(function(){btn.innerHTML='<i class="far fa-copy"></i> 复制'},2000)})}
+// Image zoom
+document.querySelectorAll('.article-body img').forEach(function(i){i.addEventListener('click',function(e){e.stopPropagation();document.getElementById('imgZoom').src=this.src;document.getElementById('imgOverlay').classList.add('show')})});
+// Back to top visibility
+window.addEventListener('scroll',function(){var btn=document.getElementById('articleTop');if(btn){btn.classList.toggle('show',window.scrollY>400)}});
+</script>
+<div class="article-container">
+  <a href="/" class="article-back"><i class="fas fa-arrow-left"></i> 返回主页</a>
+  
+  <div class="article-hero-img">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 740 360" width="100%" height="100%" viewBox="0 0 740 360">
+      <defs>
+        <linearGradient id="bgAgent" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#0f172a"/>
+          <stop offset="100%" stop-color="#1e1b4b"/>
+        </linearGradient>
+        <linearGradient id="acAgent" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stop-color="#60a5fa"/>
+          <stop offset="100%" stop-color="#a78bfa"/>
+        </linearGradient>
+      </defs>
+      <rect width="740" height="360" fill="url(#bgAgent)"/>
+      <circle cx="560" cy="100" r="160" fill="rgba(96,165,250,0.04)"/>
+      <circle cx="180" cy="300" r="120" fill="rgba(167,139,250,0.04)"/>
+      <circle cx="120" cy="160" r="6" fill="#60a5fa" opacity="0.8"/>
+      <circle cx="220" cy="120" r="5" fill="#a78bfa" opacity="0.7"/>
+      <circle cx="320" cy="160" r="6" fill="#f472b6" opacity="0.8"/>
+      <circle cx="370" cy="240" r="5" fill="#60a5fa" opacity="0.7"/>
+      <circle cx="470" cy="140" r="6" fill="#a78bfa" opacity="0.8"/>
+      <circle cx="570" cy="200" r="5" fill="#f472b6" opacity="0.7"/>
+      <line x1="120" y1="160" x2="220" y2="120" stroke="rgba(96,165,250,0.2)" stroke-width="1.5"/>
+      <line x1="220" y1="120" x2="320" y2="160" stroke="rgba(167,139,250,0.2)" stroke-width="1.5"/>
+      <line x1="320" y1="160" x2="470" y2="140" stroke="rgba(244,114,182,0.2)" stroke-width="1.5"/>
+      <line x1="470" y1="140" x2="570" y2="200" stroke="rgba(96,165,250,0.2)" stroke-width="1.5"/>
+      <line x1="320" y1="160" x2="370" y2="240" stroke="rgba(244,114,182,0.2)" stroke-width="1.5"/>
+      <line x1="120" y1="160" x2="260" y2="220" stroke="rgba(96,165,250,0.2)" stroke-width="1.5"/>
+      <line x1="260" y1="220" x2="370" y2="240" stroke="rgba(167,139,250,0.2)" stroke-width="1.5"/>
+      <text x="120" y="180" text-anchor="middle" fill="#64748b" font-size="7" font-family="monospace">感知</text>
+      <text x="320" y="150" text-anchor="middle" fill="#64748b" font-size="7" font-family="monospace">推理</text>
+      <text x="470" y="130" text-anchor="middle" fill="#64748b" font-size="7" font-family="monospace">记忆</text>
+      <text x="570" y="190" text-anchor="middle" fill="#64748b" font-size="7" font-family="monospace">行动</text>
+      <rect x="80" y="255" width="580" height="50" rx="10" fill="rgba(96,165,250,0.06)" stroke="rgba(96,165,250,0.15)" stroke-width="1"/>
+      <rect x="100" y="265" width="100" height="30" rx="6" fill="rgba(96,165,250,0.12)" stroke="rgba(96,165,250,0.3)" stroke-width="1"/>
+      <text x="150" y="284" text-anchor="middle" fill="#60a5fa" font-size="10" font-family="sans-serif">理解</text>
+      <line x1="210" y1="280" x2="230" y2="280" stroke="#334155" stroke-width="1.5"/>
+      <rect x="240" y="265" width="100" height="30" rx="6" fill="rgba(167,139,250,0.12)" stroke="rgba(167,139,250,0.3)" stroke-width="1"/>
+      <text x="290" y="284" text-anchor="middle" fill="#a78bfa" font-size="10" font-family="sans-serif">规划</text>
+      <line x1="350" y1="280" x2="370" y2="280" stroke="#334155" stroke-width="1.5"/>
+      <rect x="380" y="265" width="100" height="30" rx="6" fill="rgba(244,114,182,0.12)" stroke="rgba(244,114,182,0.3)" stroke-width="1"/>
+      <text x="430" y="284" text-anchor="middle" fill="#f472b6" font-size="10" font-family="sans-serif">执行</text>
+      <line x1="490" y1="280" x2="510" y2="280" stroke="#334155" stroke-width="1.5"/>
+      <rect x="520" y="265" width="100" height="30" rx="6" fill="rgba(34,197,94,0.12)" stroke="rgba(34,197,94,0.3)" stroke-width="1"/>
+      <text x="570" y="284" text-anchor="middle" fill="#22c55e" font-size="10" font-family="sans-serif">反馈</text>
+      <text x="60" y="46" fill="url(#acAgent)" font-size="14" font-family="sans-serif" font-weight="bold" letter-spacing="1">AI 智能体 (Agent) 入门</text>
+    </svg>
+  </div>
+
+  <h1 class="article-title">AI 智能体初体验：用 LangChain 搭了一个自动查天气的 Agent</h1>
+  <div class="article-meta">
+    <span><i class="far fa-calendar-alt"></i> 2026-05-26</span>
+    <span><i class="fas fa-tag"></i> <span class="tag">AI Agent</span> <span class="tag">LangChain</span> <span class="tag">Python</span></span>
+    <span><i class="far fa-clock"></i> 阅读约 7 分钟</span>
+  </div>
+
+  <div class="article-body">
+  <div class="article-toc">
+    <div class="article-toc-title"><i class="fas fa-list"></i> 目录</div>
+    <ul class="article-toc-list">
+      <li><a href="#heading-1"><span class="toc-num">01</span>AI Agent 到底是什么？</a></li>
+      <li><a href="#heading-2"><span class="toc-num">02</span>选框架：为什么用 LangChain</a></li>
+      <li><a href="#heading-3"><span class="toc-num">03</span>搭建过程</a></li>
+      <li><a href="#heading-4"><span class="toc-num">04</span>遇到的问题</a></li>
+      <li><a href="#heading-5"><span class="toc-num">05</span>对 Agent 的几点感受</a></li>
+    </ul>
+  </div>
+
+  <p>学完大模型 API 调用之后，我一直在想一个问题：大模型只能回答问题，它又不能自己去查资料、执行操作，那有什么用呢？后来了解到 AI Agent（智能体）这个概念，才明白原来可以让大模型"调用工具"。这篇文章记录了我第一次用 LangChain 搭建一个能自动查天气的 Agent 的完整过程。</p>
+
+  <h2 id="heading-1">AI Agent 到底是什么？</h2>
+  <p>用大白话讲，<strong>Agent = 大模型 + 工具 + 自主决策</strong>。</p>
+  <p>普通的聊天机器人是这样的：你问一句，它答一句。而 Agent 是这样的：你给它一个任务，它自己决定需要调用什么工具、按什么顺序调用、拿到结果后怎么整合，最后给你一个完整的回答。</p>
+  <p>举个例子，你问 Agent "北京明天适合出去玩吗？"——它会先调用天气 API 查北京明天的天气，可能还会查一下空气质量，然后综合这些信息给你一个建议。整个过程不需要你一步一步教它，它自己会规划。</p>
+
+  <div class="highlight">
+    <strong>🤔 我的理解过程：</strong>刚接触这个概念时我觉得很玄乎。后来想明白了——Agent 本质上就是一个循环：大模型生成思考 → 决定调用哪个工具 → 拿到工具返回结果 → 继续思考 → 直到完成任务。就这么简单。
+  </div>
+
+  <h2 id="heading-2">选框架：为什么用 LangChain</h2>
+  <p>市面上 Agent 框架不少，LangChain、AutoGPT、MetaGPT、CrewAI 等等。最终选了 LangChain，原因是：</p>
+  <ul>
+    <li><strong>社区最大，文档相对全。</strong> 出问题了 Stack Overflow 上基本能搜到答案。</li>
+    <li><strong>上手简单。</strong> 核心代码不超过 30 行就能跑起来一个简单的 Agent。</li>
+    <li><strong>工具生态好。</strong> 内置了很多工具，比如搜索引擎、计算器、Python REPL，直接 import 就能用。</li>
+  </ul>
+  <p>当然 LangChain 也有缺点，后面我会说。</p>
+
+  <h2 id="heading-3">搭建过程</h2>
+  <p>首先装包：</p>
+  <div class="code-block">
+  <button class="code-copy-btn" onclick="copyCode(this)"><i class="far fa-copy"></i> 复制</button>
+    pip install langchain langchain-openai python-dotenv
+  </div>
+
+  <h3>第一步：定义工具</h3>
+  <p>Agent 需要"工具"才能干活。我先写了一个简单的天气查询函数作为工具：</p>
+  <div class="code-block">
+  <button class="code-copy-btn" onclick="copyCode(this)"><i class="far fa-copy"></i> 复制</button>
+    <span class="comment"># 模拟查天气的函数</span><br>
+    def get_weather(city):<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<span class="comment"># 实际开发中这里调的是开放天气 API</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;weather_data = {<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"北京": "晴，20-28°C，空气质量良",<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"上海": "多云，22-30°C",<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"广州": "阵雨，25-32°C"<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;}<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;return weather_data.get(city, f"暂无{city}的数据")
+  </div>
+
+  <h3>第二步：把函数包装成 LangChain 工具</h3>
+  <div class="code-block">
+  <button class="code-copy-btn" onclick="copyCode(this)"><i class="far fa-copy"></i> 复制</button>
+    from langchain.tools import tool<br><br>
+    @tool<br>
+    def check_weather(city: str) -> str:<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">"""查询指定城市的天气情况，输入城市名称"""</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;return get_weather(city)
+  </div>
+  <p>这个 @tool 装饰器是关键——它告诉 LangChain："这是一个工具，它的描述是 xxx，参数是 xxx"。大模型就是根据这个描述来决定什么时候调用这个工具的。</p>
+
+  <h3>第三步：创建 Agent</h3>
+  <div class="code-block">
+  <button class="code-copy-btn" onclick="copyCode(this)"><i class="far fa-copy"></i> 复制</button>
+    from langchain_openai import ChatOpenAI<br>
+    from langchain.agents import create_tool_calling_agent, AgentExecutor<br><br>
+    llm = ChatOpenAI(<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;model="deepseek-chat",<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;api_key="sk-xxxx",<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;base_url="https://api.deepseek.com/v1"<br>
+    )<br><br>
+    agent = create_tool_calling_agent(llm, [check_weather])<br>
+    agent_executor = AgentExecutor(agent=agent, verbose=True)<br><br>
+    result = agent_executor.invoke({"input": "北京明天天气怎么样？适合出去跑步吗？"})<br>
+    print(result["output"])
+  </div>
+
+  <div class="highlight">
+    <strong>💡 第一次跑通的过程：</strong>设置 verbose=True 之后，终端会打印 Agent 的"思考过程"。我看到它先判断"用户问的是北京的天气"→调用 check_weather("北京")→拿到"晴，20-28°C"→然后自己推理说"20-28°C 适合跑步"→最后生成完整的回答。整个过程就像在看一个机器人在脑子里自言自语，还挺震撼的。
+  </div>
+
+  <h2 id="heading-4">遇到的问题</h2>
+  <p>搭建过程不是一帆风顺的，记录几个坑：</p>
+  <ul>
+    <li><strong>工具描述要写清楚。</strong> 一开始我写的 tool 描述是"查天气"，结果 Agent 总是不调用它。改成"查询指定城市的天气情况，输入城市名称，返回温度和天气状况"之后，调用就准确多了。模型的工具调用能力很大程度上取决于你写的描述够不够清楚。</li>
+    <li><strong>LangChain 版本兼容问题。</strong> LangChain 更新很快，网上搜到的教程可能是旧版本的 API。我安装的是最新版，create_tool_calling_agent 的用法和旧版 agent 初始化方式不一样，对着文档调了半天。</li>
+    <li><strong>Token 消耗比想象的多。</strong> 每次 Agent 思考、调用工具、拿到结果再思考，每一步都要消耗 token。一个简单的问答可能比普通对话贵 3-5 倍。开发调试阶段建议用便宜的模型（比如 DeepSeek 就比 GPT 便宜很多）。</li>
+  </ul>
+
+  <h2 id="heading-5">对 Agent 的几点感受</h2>
+  <p>做完这个小项目之后，我对 Agent 有了更实际的认识：</p>
+  <ol>
+    <li><strong>Agent 很强，但不可靠。</strong> 有时候它会调用错误的工具，或者解析工具返回的结果出错。在实际应用里，必须做好容错和兜底。</li>
+    <li><strong>关键在于工具设计。</strong> Agent 的能力上限取决于你给了它什么工具。工具设计得好，Agent 能做很复杂的事情；工具设计得不好，它就是个只会聊天的花瓶。</li>
+    <li><strong>Debug 有点麻烦。</strong> 因为 Agent 的决策过程是不确定的，同样的输入可能每次走不同的路径。设了 verbose=True 能看到思考过程，但还是不好调。</li>
+    <li><strong>适合做自动化，不适合做高精度任务。</strong> 如果任务需要 100% 准确（比如银行转账），用 Agent 风险很大。但如果只是整理信息、查资料、生成报告这类"做到 80% 就能用"的任务，Agent 非常合适。</li>
+  </ol>
+
+  <p>下一步我打算给 Agent 多加几个工具，比如文件读写、网页抓取，然后试试能不能让它自动帮我写周报。等做出来了再分享经验。</p>
+  </div>
+
+  <div class="article-footer">
+    <a href="/"><i class="fas fa-arrow-left"></i> 返回主页</a>
+    <span style="color:var(--text-dim);margin:0 12px">·</span>
+    <a href="https://wordpress.jythcloud.cn" target="_blank">团队博客 <i class="fas fa-external-link-alt"></i></a>
+  </div>
+</div>
+<!-- Image zoom overlay -->
+<div class="img-overlay" id="imgOverlay" onclick="this.classList.remove('show')"><img id="imgZoom" src="" alt=""></div>
+<!-- Back to top button -->
+<button class="article-top-btn" id="articleTop" onclick="window.scrollTo({top:0,behavior:'smooth'})"><i class="fas fa-arrow-up"></i></button>
+</body>
+</html>

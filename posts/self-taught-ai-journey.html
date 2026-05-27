@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<link rel="stylesheet" href="/static/style.css">
+<link rel="stylesheet" href="https://cdnjs.loli.net/ajax/libs/font-awesome/6.5.1/css/all.min.css" media="print" onload="this.media='all'">
+<title>大二自学 AI 一年复盘 · JYTHCloud</title>
+<meta name="description" content="四个阶段、十二个月，一个在校生的自学 AI 全记录">
+</head>
+<body>
+
+<div class="article-progress"><div class="bar" id="progressBar"></div></div>
+<script>
+// Progress bar
+window.addEventListener('scroll',function(){var h=document.documentElement;var p=(h.scrollTop/(h.scrollHeight-h.clientHeight))*100;document.getElementById('progressBar').style.width=p+'%'});
+// Code copy
+function copyCode(btn){var codeBlock=btn.closest('.code-block');var text=codeBlock.textContent.replace(/复制$/, '').trim();navigator.clipboard.writeText(text).then(function(){btn.innerHTML='<i class="fas fa-check"></i> 已复制';setTimeout(function(){btn.innerHTML='<i class="far fa-copy"></i> 复制'},2000)})}
+// Image zoom
+document.querySelectorAll('.article-body img').forEach(function(i){i.addEventListener('click',function(e){e.stopPropagation();document.getElementById('imgZoom').src=this.src;document.getElementById('imgOverlay').classList.add('show')})});
+// Back to top visibility
+window.addEventListener('scroll',function(){var btn=document.getElementById('articleTop');if(btn){btn.classList.toggle('show',window.scrollY>400)}});
+</script>
+
+<div class="article-container">
+  <a href="/" class="article-back"><i class="fas fa-arrow-left"></i> 返回主页</a>
+
+  <div class="article-hero-img">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 740 360" width="100%" height="100%" viewBox="0 0 740 360">
+      <defs>
+        <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#0f172a"/><stop offset="100%" stop-color="#1e1b4b"/></linearGradient>
+        <!-- Stage colors -->
+        <linearGradient id="s1g" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#3b82f6"/><stop offset="100%" stop-color="#60a5fa"/></linearGradient>
+        <linearGradient id="s2g" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#8b5cf6"/><stop offset="100%" stop-color="#a78bfa"/></linearGradient>
+        <linearGradient id="s3g" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#ec4899"/><stop offset="100%" stop-color="#f472b6"/></linearGradient>
+        <linearGradient id="s4g" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#10b981"/><stop offset="100%" stop-color="#34d399"/></linearGradient>
+        <filter id="glow"><feGaussianBlur stdDeviation="3" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        <filter id="shadow"><feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="rgba(0,0,0,0.3)"/></filter>
+      </defs>
+      <rect width="740" height="360" fill="url(#bg)"/>
+      <!-- Ambient glow circles -->
+      <circle cx="100" cy="320" r="160" fill="rgba(59,130,246,0.05)"/>
+      <circle cx="640" cy="50" r="140" fill="rgba(16,185,129,0.05)"/>
+      <circle cx="370" cy="180" r="120" fill="rgba(139,92,246,0.04)"/>
+
+      <!-- Title -->
+      <text x="370" y="42" text-anchor="middle" fill="rgba(255,255,255,0.08)" font-size="14" font-family="sans-serif" letter-spacing="6">SELF-TAUGHT AI · 12-MONTH ROADMAP</text>
+
+      <!-- ===== Progress line (horizontal axis) ===== -->
+      <line x1="68" y1="220" x2="695" y2="220" stroke="#1e293b" stroke-width="3" stroke-linecap="round"/>
+      <!-- Progress fill -->
+      <line x1="68" y1="220" x2="680" y2="220" stroke="url(#s4g)" stroke-width="3" stroke-linecap="round" opacity="0.6"/>
+      <!-- Milestone dots on line -->
+      <circle cx="68" cy="220" r="4" fill="#3b82f6" filter="url(#glow)"/>
+      <circle cx="245" cy="220" r="4" fill="#8b5cf6" filter="url(#glow)"/>
+      <circle cx="422" cy="220" r="4" fill="#ec4899" filter="url(#glow)"/>
+      <circle cx="680" cy="220" r="4" fill="#10b981" filter="url(#glow)"/>
+
+      <!-- Arrow at end -->
+      <polygon points="680,213 695,220 680,227" fill="#10b981"/>
+
+      <!-- Month labels -->
+      <text x="68" y="238" text-anchor="middle" fill="#475569" font-size="9" font-family="sans-serif">第 1 月</text>
+      <text x="245" y="238" text-anchor="middle" fill="#475569" font-size="9" font-family="sans-serif">第 3 月</text>
+      <text x="422" y="238" text-anchor="middle" fill="#475569" font-size="9" font-family="sans-serif">第 6 月</text>
+      <text x="680" y="238" text-anchor="middle" fill="#475569" font-size="9" font-family="sans-serif">第 12 月</text>
+
+      <!-- ===== Stage 1: 打好基础 ===== -->
+      <g filter="url(#shadow)">
+        <rect x="35" y="78" width="130" height="56" rx="16" fill="rgba(59,130,246,0.12)" stroke="rgba(59,130,246,0.4)" stroke-width="1.5"/>
+        <rect x="35" y="78" width="130" height="4" rx="2" fill="url(#s1g)"/>
+        <!-- Icon: book -->
+        <text x="57" y="112" text-anchor="middle" fill="#60a5fa" font-size="16">📘</text>
+        <text x="100" y="106" text-anchor="middle" fill="#e2e8f0" font-size="11" font-family="sans-serif" font-weight="bold">打好基础</text>
+        <text x="100" y="122" text-anchor="middle" fill="#64748b" font-size="9" font-family="sans-serif">Python · Pandas · NumPy</text>
+      </g>
+      <!-- Connector arrow 1→2 -->
+      <line x1="168" y1="146" x2="200" y2="118" stroke="#334155" stroke-width="1.5" stroke-dasharray="4,3"/>
+      <polygon points="200,115 208,118 200,121" fill="#475569"/>
+
+      <!-- ===== Stage 2: 机器学习 ===== -->
+      <g filter="url(#shadow)">
+        <rect x="210" y="60" width="130" height="56" rx="16" fill="rgba(139,92,246,0.12)" stroke="rgba(139,92,246,0.4)" stroke-width="1.5"/>
+        <rect x="210" y="60" width="130" height="4" rx="2" fill="url(#s2g)"/>
+        <text x="232" y="94" text-anchor="middle" fill="#a78bfa" font-size="16">🤖</text>
+        <text x="275" y="88" text-anchor="middle" fill="#e2e8f0" font-size="11" font-family="sans-serif" font-weight="bold">机器学习</text>
+        <text x="275" y="104" text-anchor="middle" fill="#64748b" font-size="9" font-family="sans-serif">吴恩达 · Scikit-learn</text>
+      </g>
+      <!-- Connector arrow 2→3 -->
+      <line x1="343" y1="128" x2="375" y2="100" stroke="#334155" stroke-width="1.5" stroke-dasharray="4,3"/>
+      <polygon points="375,97 383,100 375,103" fill="#475569"/>
+
+      <!-- ===== Stage 3: 深度学习 ===== -->
+      <g filter="url(#shadow)">
+        <rect x="380" y="42" width="130" height="56" rx="16" fill="rgba(236,72,153,0.12)" stroke="rgba(236,72,153,0.4)" stroke-width="1.5"/>
+        <rect x="380" y="42" width="130" height="4" rx="2" fill="url(#s3g)"/>
+        <text x="402" y="76" text-anchor="middle" fill="#f472b6" font-size="16">🧠</text>
+        <text x="445" y="70" text-anchor="middle" fill="#e2e8f0" font-size="11" font-family="sans-serif" font-weight="bold">深度学习</text>
+        <text x="445" y="86" text-anchor="middle" fill="#64748b" font-size="9" font-family="sans-serif">PyTorch · Transformers</text>
+      </g>
+      <!-- Connector arrow 3→4 -->
+      <line x1="513" y1="110" x2="550" y2="138" stroke="#334155" stroke-width="1.5" stroke-dasharray="4,3"/>
+      <polygon points="550,141 558,138 550,135" fill="#475569"/>
+
+      <!-- ===== Stage 4: 工程化实战 ===== -->
+      <g filter="url(#shadow)">
+        <rect x="555" y="78" width="130" height="56" rx="16" fill="rgba(16,185,129,0.12)" stroke="rgba(16,185,129,0.4)" stroke-width="1.5"/>
+        <rect x="555" y="78" width="130" height="4" rx="2" fill="url(#s4g)"/>
+        <text x="577" y="112" text-anchor="middle" fill="#34d399" font-size="16">🚀</text>
+        <text x="620" y="106" text-anchor="middle" fill="#e2e8f0" font-size="11" font-family="sans-serif" font-weight="bold">工程化实战</text>
+        <text x="620" y="122" text-anchor="middle" fill="#64748b" font-size="9" font-family="sans-serif">Flask · Docker · Nginx</text>
+      </g>
+
+      <!-- ===== Vertical time axis ===== -->
+      <text x="30" y="280" fill="#475569" font-size="8" font-family="sans-serif" letter-spacing="2">时间</text>
+      <line x1="30" y1="262" x2="30" y2="288" stroke="#475569" stroke-width="1" marker-end="url(#arrow-small)"/>
+
+      <!-- ===== Staircase visual (left-bottom to right-top) ===== -->
+      <polyline points="50,310 90,280 130,280 170,250 210,250 250,220 290,220 330,190 370,190 410,160 450,160 490,130 530,130 570,100 610,100 650,70 690,70" fill="none" stroke="rgba(96,165,250,0.08)" stroke-width="2" stroke-dasharray="6,6"/>
+
+      <!-- Bottom stats -->
+      <text x="370" y="320" text-anchor="middle" fill="rgba(255,255,255,0.04)" font-size="48" font-family="sans-serif" font-weight="900" letter-spacing="4">AI</text>
+      <text x="370" y="348" text-anchor="middle" fill="rgba(148,163,184,0.25)" font-size="10" font-family="sans-serif" letter-spacing="3">基础 → 机器学习 → 深度学习 → 工程化</text>
+    </svg>
+  </div>
+
+  <h1 class="article-title">大二自学 AI 一年，我给自己的学习路线做了个复盘</h1>
+  <div class="article-meta">
+    <span><i class="far fa-calendar-alt"></i> 2026-05-26</span>
+    <span><i class="fas fa-tag"></i> 学习笔记 · 自学 · 复盘</span>
+    <span><i class="far fa-clock"></i> 阅读约 8 分钟</span>
+  </div>
+
+  <div class="article-body">
+  <div class="article-toc">
+    <div class="article-toc-title"><i class="fas fa-list"></i> 目录</div>
+    <ul class="article-toc-list">
+      <li><a href="#heading-1"><span class="toc-num">01</span>第一阶段：打好基础（第 1-2 个月）</a></li>
+      <li><a href="#heading-2"><span class="toc-num">02</span>第二阶段：机器学习入门（第 3-5 个月）</a></li>
+      <li><a href="#heading-3"><span class="toc-num">03</span>第三阶段：深度学习探索（第 6-8 个月）</a></li>
+      <li><a href="#heading-4"><span class="toc-num">04</span>第四阶段：工程化实战（第 9-12 个月）</a></li>
+      <li><a href="#heading-5"><span class="toc-num">05</span>一年来的数据统计</a></li>
+      <li><a href="#heading-6"><span class="toc-num">06</span>给自学者的 5 条建议</a></li>
+      <li><a href="#heading-7"><span class="toc-num">07</span>写在最后</a></li>
+    </ul>
+  </div>
+
+
+  <p>一年前的这个时候，我还是个连 Pandas 的 DataFrame 都要现查文档的大二学生。对 AI 的印象停留在"ChatGPT 很牛，但怎么做的我不懂"。一年后的今天，我不敢说自己有多厉害，但至少能独立完成一个从数据处理到模型训练再到部署上线的完整流程了。</p>
+
+  <p>这篇复盘文章，我会按时间线梳理我自学的四个阶段，每个阶段用的资源、踩过的坑，以及最后总结的 5 条自学者建议。希望能给想自学 AI 的同学一些参考。</p>
+
+  <div class="highlight">
+    <strong>📌 太长不看版：</strong>打好基础（2 个月 Pandas + NumPy + Kaggle）→ 机器学习入门（3 个月吴恩达 + Scikit-learn）→ 深度学习探索（3 个月 PyTorch + Transformers）→ 工程化实战（4 个月 Flask + Docker + Nginx 部署）。如果你也在自学，可以直接跳到最后看<a href="#tips" style="color:var(--accent)">给自学者的 5 条建议</a>。
+  </div>
+
+  <h2 id="heading-1">第一阶段：打好基础（第 1-2 个月）</h2>
+
+  <p><span class="tag">Pandas</span> <span class="tag">NumPy</span> <span class="tag">Kaggle</span></p>
+
+  <p>虽然大一上过 Python 课，但课程内容基本就是输出"Hello World"、写个九九乘法表。真正处理数据的那些库——NumPy、Pandas、Matplotlib——学校根本不教。</p>
+
+  <p>这个阶段我没有买任何课，全是免费资源：</p>
+
+  <ul>
+    <li><strong>Pandas：</strong>先刷了官方 <code class="inline-code">10 minutes to pandas</code>，然后是 <code class="inline-code">Pandas 中文文档</code> 里常用的部分（read_csv、groupby、merge、apply 这些）。不求记住所有 API，够用就行。</li>
+    <li><strong>NumPy：</strong>重点看了数组操作、广播机制、矩阵运算。深度学习的输入全是 Tensor，但理念和 NumPy 的 ndarray 很接近，所以这部分花的时间不多。</li>
+    <li><strong>Kaggle 实战：</strong>找了一些入门级的数据集（Titanic、House Prices），试着读入数据、做 EDA、画几张图。不求建模型，只要跑通"数据→分析→可视化"这个流程就行。</li>
+  </ul>
+
+  <div class="highlight">
+    <strong>💡 这个阶段的体会：</strong>不要追求"学完所有 API 再动手"。我当时的策略是——遇到不会的操作就查文档/Stack Overflow，查完记下来，下次遇到类似问题直接翻笔记。在实战中学习效率远高于通读文档。
+  </div>
+
+  <h2 id="heading-2">第二阶段：机器学习入门（第 3-5 个月）</h2>
+
+  <p><span class="tag">吴恩达</span> <span class="tag">Scikit-learn</span> <span class="tag">监督学习</span></p>
+
+  <p>从"会用 Pandas 处理数据"到"理解机器学习算法"，这中间有一道不小的门槛。很多人在这一步放弃了——因为数学太劝退。</p>
+
+  <h3>课程选择</h3>
+
+  <p>我选了吴恩达的 <strong>Machine Learning Specialization</strong>（Coursera）。网上评价两极分化：有人说太浅，有人说入门无敌。以我现在的眼光看，它确实偏向概念性，数学推导不够深，但<strong>作为第一门课，它非常合格</strong>。吴恩达把每个算法的直觉讲得很清楚——什么时候用、优缺点是什么、怎么调参，三个月的学习让我建立了完整的知识框架。</p>
+
+  <h3>动手实践</h3>
+
+  <p>学完课程后，我用 Scikit-learn 做了几个小项目巩固：</p>
+
+  <ul>
+    <li><strong>线性回归：</strong>用 California Housing 数据集做房价预测，对比不同特征工程的 RMSE 差异。</li>
+    <li><strong>逻辑回归 + 决策树：</strong>做鸢尾花分类，可视化决策边界。</li>
+    <li><strong>K-Means 聚类：</strong>对电商用户消费数据做 RFM 分群。</li>
+    <li><strong>随机森林 vs SVM：</strong>在一个二分类数据集上对比不同模型的效果。</li>
+  </ul>
+
+  <div class="highlight">
+    <strong>⚠️ 一个常见的误区：</strong>很多人觉得"不搞懂所有数学推导就不能调库"。这是错的。我的做法是：先 70% 理解概念 + 调库跑通，遇到性能瓶颈再回去补数学。如果一上来就死磕矩阵求导和概率论，三个月后你可能还在看理论，什么项目都没做过。
+  </div>
+
+  <h2 id="heading-3">第三阶段：深度学习探索（第 6-8 个月）</h2>
+
+  <p><span class="tag">PyTorch</span> <span class="tag">Transformers</span> <span class="tag">NLP</span></p>
+
+  <p>机器学习基础打牢后，我开始进入深度学习领域。这个阶段对我来说是最兴奋的——因为终于能接触到"真正的 AI"了。</p>
+
+  <h3>PyTorch 入门</h3>
+
+  <p>为什么选 PyTorch 而不是 TensorFlow？两个原因：一是学术界和工业界的主流都在往 PyTorch 迁移；二是 HuggingFace 的 Transformers 库基于 PyTorch，学完就能直接用预训练模型。我用的是官方 <code class="inline-code">PyTorch 60-minute Blitz</code>，然后看了 <strong>d2l.ai（动手学深度学习）</strong> 的 PyTorch 版本，把前几章关于 CNN 和 RNN 的代码敲了一遍。</p>
+
+  <h3>Transformer 与大模型</h3>
+
+  <p>这是 2024-2025 年 AI 领域最重要的内容，没有之一。我花了很多时间理解 Transformer 架构：</p>
+
+  <ul>
+    <li><strong>论文阅读：</strong>读了 "Attention Is All You Need"——第一次看只理解了大概 30%。后来又读了两遍，配合图解文章才逐渐清晰。</li>
+    <li><strong>图解视频：</strong>B 站上 3Blue1Brown 的注意力机制视频、李沐老师的 Transformer 论文精读，都看了不止一遍。</li>
+    <li><strong>HuggingFace：</strong>学会了用 <code class="inline-code">transformers</code> 库加载预训练模型做推理和微调。当时第一次调通一个对话模型的感觉——真的很有成就感。</li>
+  </ul>
+
+  <div class="highlight">
+    <strong>💡 Transformer 的学习建议：</strong>不用追求一次性完全理解。我的节奏是——第一遍看大致框架，知道 QKV 是什么；第二遍关注注意力计算细节；第三遍理解多头注意力、位置编码。每多看一遍，理解就深一层。
+  </div>
+
+  <h2 id="heading-4">第四阶段：工程化实战（第 9-12 个月）</h2>
+
+  <p><span class="tag">Flask</span> <span class="tag">Docker</span> <span class="tag">Nginx</span> <span class="tag">部署</span></p>
+
+  <p>学完模型训练和推理，我发现另一个问题：模型在 Jupyter Notebook 里跑得好好的，怎么让别人也能用？这就是工程化的价值所在。这个阶段我花了 4 个月，从一个只会写 Python 脚本的人，变成了能独立部署一个 Web 服务的人。</p>
+
+  <h3>Flask 构建 API</h3>
+
+  <p>用 Flask 把训练好的模型包装成一个 RESTful API，写了一个简单的文本分类服务。学到了路由设计、请求校验、错误处理的套路。</p>
+
+  <div class="code-block">
+  <button class="code-copy-btn" onclick="copyCode(this)"><i class="far fa-copy"></i> 复制</button>
+<span class="comment"># app.py - 一个简单的模型服务</span>
+<span class="keyword">from</span> flask <span class="keyword">import</span> Flask, request, jsonify
+<span class="keyword">import</span> torch
+<span class="keyword">from</span> transformers <span class="keyword">import</span> pipeline
+
+app = Flask(__name__)
+classifier = pipeline(<span class="string">"sentiment-analysis"</span>)
+
+@app.route(<span class="string">"/predict"</span>, methods=[<span class="string">"POST"</span>])
+<span class="keyword">def</span> predict():
+    data = request.get_json()
+    text = data.get(<span class="string">"text"</span>, <span class="string">""</span>)
+    result = classifier(text)[<span class="number">0</span>]
+    <span class="keyword">return</span> jsonify(result)
+
+<span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:
+    app.run(host=<span class="string">"0.0.0.0"</span>, port=<span class="number">5000</span>)
+  </div>
+
+  <h3>Docker 容器化</h3>
+
+  <p>学会了写 Dockerfile 和 docker-compose，把应用和依赖打包成镜像。解决了"在我电脑上能跑啊"这个经典问题。</p>
+
+  <div class="code-block">
+  <button class="code-copy-btn" onclick="copyCode(this)"><i class="far fa-copy"></i> 复制</button>
+<span class="comment"># Dockerfile</span>
+<span class="keyword">FROM</span> python:<span class="number">3.10</span>-slim
+
+WORKDIR /app
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY . .
+
+CMD [<span class="string">"python"</span>, <span class="string">"app.py"</span>]
+  </div>
+
+  <h3>Nginx 反向代理 + HTTPS</h3>
+
+  <p>最后用 Nginx 做反向代理，配置了 SSL 证书（Let's Encrypt），把服务暴露到公网。学会了进程管理（supervisor/systemd）和日志管理。</p>
+
+  <div class="highlight">
+    <strong>📌 工程化的意义：</strong>很多自学者只关注模型本身，忽略了如何让别人用上你的模型。学会把模型部署成可用的服务，这个能力在找实习和工作时非常有价值。
+  </div>
+
+  <h2 id="heading-5">一年来的数据统计</h2>
+
+  <table>
+    <thead>
+      <tr>
+        <th>维度</th>
+        <th>数据</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>完成的课程</td>
+        <td>4 门（吴恩达 ML × 1 + Mooc 课程 × 2 + d2l 部分章节）</td>
+      </tr>
+      <tr>
+        <td>写的代码量</td>
+        <td>约 8000+ 行 Python（含练习和项目）</td>
+      </tr>
+      <tr>
+        <td>做的项目</td>
+        <td>6 个（3 个 ML 小项目 + 2 个 DL 实验 + 1 个完整部署项目）</td>
+      </tr>
+      <tr>
+        <td>踩过的坑</td>
+        <td>数不清，但每一个都让我学到了东西</td>
+      </tr>
+      <tr>
+        <td>放弃的念头</td>
+        <td>至少 3 次（数学看不懂、模型不收敛、Nginx 配不通……）</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <hr>
+
+  <h2 id="tips">给自学者的 5 条建议</h2>
+
+  <p>一年下来，踩坑无数，以下是我觉得最有价值的五条经验：</p>
+
+  <h3>1. 先跑通，再理解</h3>
+  <p>这是最重要的一条。很多人学 AI 死在第一步——试图把所有数学推导搞懂再动手。我的经验是：先在 60%-70% 的理解程度下把代码跑起来，有了感性的认识，再回头看理论。理论是用来解释实践的，不是前置条件。</p>
+
+  <h3>2. 做项目，不要只刷课</h3>
+  <p>看完一个视频或一个章节，立刻动手做一个相关的小项目。哪怕只是把课程里的例子用自己的数据跑一遍，也比只看不做有效十倍。项目才是检验是否真正理解的唯一标准。</p>
+
+  <h3>3. 不要追求完美，学会"够用就好"</h3>
+  <p>你的第一个模型准确率 60% 很正常，第一个 API 可能有安全漏洞，第一个 Docker 镜像可能很大。这都没关系。先把流程跑通，再迭代优化。完美主义是自学最大的敌人。</p>
+
+  <h3>4. 善用社区和搜索引擎</h3>
+  <p>你遇到的大多数问题，网络上都已经有人解决过了。Stack Overflow、GitHub Issues、知乎、技术博客——学会精准地搜索问题是一项非常重要的能力。另外，加入一些学习社群（微信群、Discord、Reddit 的 ML 板块），在遇到困难时有人交流会好很多。</p>
+
+  <h3>5. 保持节奏，不要跟风</h3>
+  <p>AI 领域每天都有新东西出来：新模型、新框架、新论文。你不可能什么都学。我的策略是：70% 的时间巩固基础知识（Python、ML 基础、深度学习核心概念），30% 的时间了解前沿动态。基础打牢了，学新东西会很快。</p>
+
+  <hr>
+
+  <h2 id="heading-7">写在最后</h2>
+
+  <p>一年前，我看着各种大佬的学习路线，觉得遥不可及。一年后的今天，虽然离"大佬"还差得很远，但我至少可以说一句：<strong>自学 AI 这件事，真的没有那么难</strong>。</p>
+
+  <p>关键在于开始，然后保持下去。你不需要一开始就很厉害，只需要比昨天的自己进步一点点。</p>
+
+  <p>如果你也在自学的路上，或者打算开始，希望这篇文章能给你一点参考和鼓励。有问题欢迎在评论区交流——虽然我也不是大佬，但踩过的坑可以帮你少走一些弯路。</p>
+
+  <blockquote>
+    <strong>共勉。</strong> 一年后的你，会感谢现在开始努力的自己。
+  </blockquote>
+
+  </div><!-- /article-body -->
+
+  <div class="article-footer">
+    <a href="/"><i class="fas fa-arrow-left"></i> 返回主页</a>
+  </div>
+
+</div><!-- /article-container -->
+
+<!-- Image zoom overlay -->
+<div class="img-overlay" id="imgOverlay" onclick="this.classList.remove('show')"><img id="imgZoom" src="" alt=""></div>
+<!-- Back to top button -->
+<button class="article-top-btn" id="articleTop" onclick="window.scrollTo({top:0,behavior:'smooth'})"><i class="fas fa-arrow-up"></i></button>
+</body>
+</html>

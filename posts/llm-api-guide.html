@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<link rel="stylesheet" href="/static/style.css">
+<link rel="stylesheet" href="https://cdnjs.loli.net/ajax/libs/font-awesome/6.5.1/css/all.min.css" media="print" onload="this.media='all'">
+<title>大模型 API 调用入门：我的第一个对话机器人 · JYTHCloud</title>
+<meta name="description" content="一个在校生从零开始调用大模型 API 的实战记录，包括注册账号、调试 Prompt、写第一个对话机器人的完整过程。">
+
+</head>
+<body>
+
+<div class="article-progress"><div class="bar" id="progressBar"></div></div>
+<script>
+// Progress bar
+window.addEventListener('scroll',function(){var h=document.documentElement;var p=(h.scrollTop/(h.scrollHeight-h.clientHeight))*100;document.getElementById('progressBar').style.width=p+'%'});
+// Code copy
+function copyCode(btn){var codeBlock=btn.closest('.code-block');var text=codeBlock.textContent.replace(/复制$/, '').trim();navigator.clipboard.writeText(text).then(function(){btn.innerHTML='<i class="fas fa-check"></i> 已复制';setTimeout(function(){btn.innerHTML='<i class="far fa-copy"></i> 复制'},2000)})}
+// Image zoom
+document.querySelectorAll('.article-body img').forEach(function(i){i.addEventListener('click',function(e){e.stopPropagation();document.getElementById('imgZoom').src=this.src;document.getElementById('imgOverlay').classList.add('show')})});
+// Back to top visibility
+window.addEventListener('scroll',function(){var btn=document.getElementById('articleTop');if(btn){btn.classList.toggle('show',window.scrollY>400)}});
+</script>
+<div class="article-container">
+  <a href="/" class="article-back"><i class="fas fa-arrow-left"></i> 返回主页</a>
+  
+  <div class="article-hero-img">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 740 360" width="100%" height="100%" viewBox="0 0 740 360">
+      <defs>
+        <linearGradient id="bgl" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#0f172a"/>
+          <stop offset="100%" stop-color="#1e1b4b"/>
+        </linearGradient>
+        <!-- Cloud gradients -->
+        <linearGradient id="cloud1" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#3b82f6"/>
+          <stop offset="100%" stop-color="#1d4ed8"/>
+        </linearGradient>
+        <linearGradient id="cloud2" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#a78bfa"/>
+          <stop offset="100%" stop-color="#7c3aed"/>
+        </linearGradient>
+        <linearGradient id="cloud3" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#f472b6"/>
+          <stop offset="100%" stop-color="#db2777"/>
+        </linearGradient>
+        <!-- Lightning gradient -->
+        <linearGradient id="bolt" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#fbbf24"/>
+          <stop offset="100%" stop-color="#f59e0b"/>
+        </linearGradient>
+        <!-- Arrow marker -->
+        <marker id="arrowl" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><path d="M0,0 L10,4 L0,8 Z" fill="#94a3b8"/></marker>
+        <marker id="arrowl-resp" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><path d="M0,0 L10,4 L0,8 Z" fill="#a78bfa"/></marker>
+        <!-- Glow filter -->
+        <filter id="glow">
+          <feGaussianBlur stdDeviation="2" result="blur"/>
+          <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+      </defs>
+      <rect width="740" height="360" fill="url(#bgl)"/>
+
+      <!-- Subtle background grid -->
+      <g stroke="rgba(255,255,255,0.03)" stroke-width="1">
+        <line x1="0" y1="90" x2="740" y2="90"/>
+        <line x1="0" y1="180" x2="740" y2="180"/>
+        <line x1="0" y1="270" x2="740" y2="270"/>
+      </g>
+
+      <!-- Background glow -->
+      <circle cx="120" cy="180" r="100" fill="rgba(59,130,246,0.04)"/>
+      <circle cx="370" cy="180" r="100" fill="rgba(167,139,250,0.04)"/>
+      <circle cx="620" cy="180" r="100" fill="rgba(244,114,182,0.04)"/>
+
+      <!-- ===== Node 1: 用户 (cloud shape) ===== -->
+      <g transform="translate(30,105)">
+        <!-- Cloud body -->
+        <ellipse cx="80" cy="55" rx="80" ry="35" fill="url(#cloud1)" opacity="0.15"/>
+        <path d="M20,55 Q20,30 45,25 Q50,5 80,10 Q105,5 115,20 Q145,18 145,45 Q150,65 125,65 L35,65 Q15,65 20,55 Z" fill="url(#cloud1)" opacity="0.2" stroke="#3b82f6" stroke-width="1.5"/>
+        <!-- Icon -->
+        <text x="80" y="35" text-anchor="middle" fill="#60a5fa" font-size="18" font-family="sans-serif">👤</text>
+        <text x="80" y="58" text-anchor="middle" fill="#60a5fa" font-size="14" font-family="sans-serif" font-weight="bold">用户</text>
+        <text x="80" y="75" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="monospace">User</text>
+        <!-- Request text bubble -->
+        <rect x="20" y="80" width="120" height="22" rx="8" fill="rgba(96,165,250,0.12)" stroke="rgba(96,165,250,0.2)" stroke-width="1"/>
+        <text x="80" y="94" text-anchor="middle" fill="#60a5fa" font-size="9" font-family="monospace">"写一首关于AI的诗"</text>
+      </g>
+
+      <!-- Arrow: 用户 → API (request) -->
+      <line x1="195" y1="155" x2="255" y2="155" stroke="#94a3b8" stroke-width="2.5" marker-end="url(#arrowl)"/>
+      <!-- Lightning bolt on arrow -->
+      <g transform="translate(220,135)" filter="url(#glow)">
+        <polygon points="8,0 2,12 8,12 4,22 14,8 8,8 12,0" fill="url(#bolt)" opacity="0.6"/>
+      </g>
+      <text x="225" y="132" text-anchor="middle" fill="#fbbf24" font-size="8" font-family="sans-serif" opacity="0.7">POST</text>
+
+      <!-- ===== Node 2: API (cloud shape) ===== -->
+      <g transform="translate(265,105)">
+        <ellipse cx="70" cy="55" rx="70" ry="35" fill="url(#cloud2)" opacity="0.15"/>
+        <path d="M15,55 Q15,30 40,25 Q45,5 75,10 Q100,5 110,20 Q140,18 140,45 Q145,65 120,65 L30,65 Q10,65 15,55 Z" fill="url(#cloud2)" opacity="0.2" stroke="#a78bfa" stroke-width="1.5"/>
+        <text x="75" y="35" text-anchor="middle" fill="#a78bfa" font-size="18" font-family="sans-serif">⚡</text>
+        <text x="75" y="58" text-anchor="middle" fill="#a78bfa" font-size="14" font-family="sans-serif" font-weight="bold">API</text>
+        <text x="75" y="75" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="monospace">Gateway</text>
+        <!-- Code snippet decoration -->
+        <rect x="15" y="80" width="110" height="20" rx="6" fill="rgba(167,139,250,0.1)" stroke="rgba(167,139,250,0.15)" stroke-width="1"/>
+        <text x="70" y="93" text-anchor="middle" fill="#c084fc" font-size="8" font-family="monospace">auth / routing</text>
+      </g>
+
+      <!-- Arrow: API → 模型 -->
+      <line x1="410" y1="155" x2="470" y2="155" stroke="#94a3b8" stroke-width="2.5" marker-end="url(#arrowl)"/>
+      <text x="440" y="148" text-anchor="middle" fill="#94a3b8" font-size="8" font-family="monospace">forward</text>
+
+      <!-- ===== Node 3: 模型 (cloud shape, larger) ===== -->
+      <g transform="translate(480,95)">
+        <ellipse cx="85" cy="65" rx="85" ry="40" fill="url(#cloud3)" opacity="0.15"/>
+        <path d="M20,65 Q20,35 50,30 Q55,5 95,10 Q115,5 130,20 Q165,18 165,50 Q170,75 140,75 L40,75 Q15,75 20,65 Z" fill="url(#cloud3)" opacity="0.2" stroke="#f472b6" stroke-width="1.5"/>
+        <text x="90" y="45" text-anchor="middle" fill="#f472b6" font-size="18" font-family="sans-serif">🧠</text>
+        <text x="90" y="70" text-anchor="middle" fill="#f472b6" font-size="14" font-family="sans-serif" font-weight="bold">大模型</text>
+        <text x="90" y="88" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="monospace">DeepSeek / GPT</text>
+        <!-- Inference glow dots -->
+        <circle cx="30" cy="95" r="2" fill="#f472b6" opacity="0.4"/>
+        <circle cx="50" cy="100" r="2" fill="#f472b6" opacity="0.6"/>
+        <circle cx="70" cy="102" r="2" fill="#f472b6" opacity="0.8"/>
+        <circle cx="90" cy="103" r="2" fill="#f472b6" opacity="0.6"/>
+        <circle cx="110" cy="100" r="2" fill="#f472b6" opacity="0.4"/>
+      </g>
+
+      <!-- Response arrow: 模型 → API → 用户 (curved path back) -->
+      <path d="M580,190 L410,230 L220,230" fill="none" stroke="#a78bfa" stroke-width="2" stroke-dasharray="8,4" marker-end="url(#arrowl-resp)" opacity="0.6"/>
+      <text x="410" y="222" text-anchor="middle" fill="#a78bfa" font-size="9" font-family="monospace">← 响应 streaming</text>
+
+      <!-- ===== Code snippet at bottom ===== -->
+      <g transform="translate(50,260)">
+        <!-- Terminal bar -->
+        <rect x="0" y="0" width="380" height="28" rx="6" fill="#1e293b"/>
+        <rect x="0" y="0" width="380" height="28" rx="6" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+        <circle cx="12" cy="14" r="4" fill="#ef4444" opacity="0.8"/>
+        <circle cx="26" cy="14" r="4" fill="#f59e0b" opacity="0.8"/>
+        <circle cx="40" cy="14" r="4" fill="#22c55e" opacity="0.8"/>
+        <text x="55" y="18" fill="#64748b" font-size="9" font-family="monospace">API 调用示例</text>
+        <!-- Code lines -->
+        <rect x="0" y="28" width="380" height="65" rx="0 0 6 6" fill="#0f172a" opacity="0.8"/>
+        <text x="12" y="48" fill="#22c55e" font-size="10" font-family="monospace">$</text>
+        <text x="24" y="48" fill="#94a3b8" font-size="10" font-family="monospace">curl https://api.deepseek.com/chat/completions</text>
+        <text x="12" y="64" fill="#60a5fa" font-size="10" font-family="monospace">  -H "Authorization: Bearer sk-***"</text>
+        <text x="12" y="80" fill="#c084fc" font-size="10" font-family="monospace">  -d '{"model":"deepseek-chat","messages":[...]}'</text>
+      </g>
+
+      <!-- Small floating data packets (decorative) -->
+      <circle cx="480" cy="120" r="3" fill="#f472b6" opacity="0.15"/>
+      <circle cx="500" cy="115" r="2" fill="#f472b6" opacity="0.2"/>
+      <circle cx="520" cy="118" r="2.5" fill="#f472b6" opacity="0.15"/>
+
+      <text x="370" y="62" text-anchor="middle" fill="rgba(96,165,250,0.06)" font-size="48" font-family="sans-serif" font-weight="900" letter-spacing="3">API</text>
+    </svg>
+  </div>
+
+  <h1 class="article-title">大模型 API 调用入门：我的第一个对话机器人</h1>
+  <div class="article-meta">
+    <span><i class="far fa-calendar-alt"></i> 2026-05-26</span>
+    <span><i class="fas fa-tag"></i> <span class="tag">大模型</span> <span class="tag">API</span> <span class="tag">Python</span></span>
+    <span><i class="far fa-clock"></i> 阅读约 6 分钟</span>
+  </div>
+
+  <div class="article-body">
+  <div class="article-toc">
+    <div class="article-toc-title"><i class="fas fa-list"></i> 目录</div>
+    <ul class="article-toc-list">
+      <li><a href="#heading-1"><span class="toc-num">01</span>第一步：选模型</a></li>
+      <li><a href="#heading-2"><span class="toc-num">02</span>第二步：用 Python 封装一下</a></li>
+      <li><a href="#heading-3"><span class="toc-num">03</span>第三步：加上下文，变成真正的对话</a></li>
+      <li><a href="#heading-4"><span class="toc-num">04</span>第四步：调 Prompt 才是最难的部分</a></li>
+      <li><a href="#heading-5"><span class="toc-num">05</span>一些个人体会</a></li>
+    </ul>
+  </div>
+
+  <p>上学期刚开始接触大模型的时候，我看了很多教程，什么 Prompt Engineering、RAG、Agent 之类的，概念一堆，但实际动手的时候还是不知道怎么下手。这篇文章记录了我从零开始调通第一个大模型 API 的完整过程，希望能帮到同样在自学的同学。</p>
+
+  <h2 id="heading-1">第一步：选模型</h2>
+  <p>说实话，最开始我也纠结过到底用哪个。GPT-4o 很强但贵，Claude 写代码好但国内调用不方便。最后选的是 DeepSeek 的 API——原因很简单：<strong>注册送额度、文档中文、国内网络直接调</strong>。对于学生党来说，这三点就够了。</p>
+  <p>申请好 API Key 之后，我先用 curl 试了一下能不能通：</p>
+  <div class="code-block">
+  <button class="code-copy-btn" onclick="copyCode(this)"><i class="far fa-copy"></i> 复制</button>
+    <span class="comment"># 先测试连接</span><br>
+    curl https://api.deepseek.com/v1/chat/completions \<br>
+    &nbsp;&nbsp;-H "Authorization: Bearer sk-xxxx" \<br>
+    &nbsp;&nbsp;-H "Content-Type: application/json" \<br>
+    &nbsp;&nbsp;-d '{<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;"model": "deepseek-chat",<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;"messages": [{"role": "user", "content": "你好，请用一句话介绍自己"}]<br>
+    &nbsp;&nbsp;}'
+  </div>
+  <p>第一次看到终端里返回那个 JSON 包着的回复时，确实挺激动的。虽然只是最简单的对话，但这是"真正的 AI"在回复我，而不是什么训练好的对话模板。</p>
+
+  <h2 id="heading-2">第二步：用 Python 封装一下</h2>
+  <p>每次敲 curl 肯定不现实。我用 Python 写了一个简单的函数，把 API 调用包装起来：</p>
+  <div class="code-block">
+  <button class="code-copy-btn" onclick="copyCode(this)"><i class="far fa-copy"></i> 复制</button>
+    import requests<br><br>
+    def chat(prompt, api_key="sk-xxxx"):<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;url = "https://api.deepseek.com/v1/chat/completions"<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;headers = {<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"Authorization": f"Bearer {api_key}",<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"Content-Type": "application/json"<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;}<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;data = {<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"model": "deepseek-chat",<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"messages": [{"role": "user", "content": prompt}]<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;}<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;resp = requests.post(url, json=data, headers=headers)<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;return resp.json()["choices"][0]["message"]["content"]<br><br>
+    print(chat("帮我解释一下什么是 API？用小学生能听懂的话"))
+  </div>
+  <p>跑通的那一刻确实挺有成就感的。虽然代码只有十几行，但这是我第一次真正"调用"一个大模型。</p>
+
+  <div class="highlight">
+    <strong>💡 踩坑记录：</strong>第一次调的时候忘了传 model 参数，报错说 model 是必填项。API 文档上写了，但我当时没仔细看。所以看文档真的很重要，别上来就复制代码跑。
+  </div>
+
+  <h2 id="heading-3">第三步：加上下文，变成真正的对话</h2>
+  <p>上面的代码每次只能问一个问题，模型不会记得前面说了什么。要实现真正的对话，需要把历史消息也传进去：</p>
+  <div class="code-block">
+  <button class="code-copy-btn" onclick="copyCode(this)"><i class="far fa-copy"></i> 复制</button>
+    messages = []<br><br>
+    def chat_with_history(user_input):<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;messages.append({"role": "user", "content": user_input})<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;resp = requests.post(url, json={"model": model, "messages": messages})<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;reply = resp.json()["choices"][0]["message"]["content"]<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;messages.append({"role": "assistant", "content": reply})<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;return reply
+  </div>
+  <p>这里有个问题值得注意：<strong>messages 越长，API 消耗的 token 就越多</strong>。在开发环境调一调没关系，但如果想做个面向用户的聊天应用，必须做上下文裁剪，比如只保留最近的几轮对话。这个我是后来踩坑才知道的。</p>
+
+  <h2 id="heading-4">第四步：调 Prompt 才是最难的部分</h2>
+  <p>API 调通只是第一步。真正花时间的，是怎么让模型输出你想要的格式和内容。</p>
+  <p>比如我想让模型输出 JSON 格式的结构化数据：</p>
+  <div class="code-block">
+  <button class="code-copy-btn" onclick="copyCode(this)"><i class="far fa-copy"></i> 复制</button>
+    prompt = """请从以下文本中提取信息，<br>
+    以 JSON 格式返回：<br>
+    {<br>
+    &nbsp;&nbsp;"人物": "xxx",<br>
+    &nbsp;&nbsp;"时间": "xxx",<br>
+    &nbsp;&nbsp;"地点": "xxx",<br>
+    &nbsp;&nbsp;"事件": "xxx"<br>
+    }<br>
+    文本：xxxx"""
+  </div>
+  <p>看起来简单，但实际调试的时候你会发现：有时候它不按格式输出、有时候字段名变了、有时候多出来没让你提取的东西……只能一遍遍改提示词试。Prompt 调优本质上就是试错的过程，没什么捷径。</p>
+
+  <h2 id="heading-5">一些个人体会</h2>
+  <p>学大模型 API 调用，最有价值的部分其实是学会"让模型按你的要求做事"。这比想象中难，也很有意思。下面几条是我自学过程中觉得比较重要的：</p>
+  <ol>
+    <li><strong>先调通再优化。</strong> 不要一开始就想做一个完美的产品，先让 API 返回一句话，你就已经迈出第一步了。</li>
+    <li><strong>动手试比看教程强十倍。</strong> 看十篇 Prompt Engineering 的文章，不如自己改一次提示词跑一遍看看输出。</li>
+    <li><strong>官方文档是第一手资料。</strong> 很多问题在文档里都有答案，比去论坛问快多了。</li>
+    <li><strong>从简单开始。</strong> 先在命令行里跑通，再写 Web 界面，再做应用。不要一上来就想搞什么高级功能。</li>
+  </ol>
+  <p>下一步我打算试试接入知识库，做一个能回答课程相关问题的问答机器人。等做出来了再来分享。</p>
+  </div>
+
+  <div class="article-footer">
+    <a href="/"><i class="fas fa-arrow-left"></i> 返回主页</a>
+    <span style="color:var(--text-dim);margin:0 12px">·</span>
+    <a href="https://wordpress.jythcloud.cn" target="_blank">团队博客 <i class="fas fa-external-link-alt"></i></a>
+  </div>
+</div>
+<!-- Image zoom overlay -->
+<div class="img-overlay" id="imgOverlay" onclick="this.classList.remove('show')"><img id="imgZoom" src="" alt=""></div>
+<!-- Back to top button -->
+<button class="article-top-btn" id="articleTop" onclick="window.scrollTo({top:0,behavior:'smooth'})"><i class="fas fa-arrow-up"></i></button>
+</body>
+</html>

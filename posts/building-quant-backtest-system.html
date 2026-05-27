@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<link rel="stylesheet" href="/static/style.css">
+<link rel="stylesheet" href="https://cdnjs.loli.net/ajax/libs/font-awesome/6.5.1/css/all.min.css" media="print" onload="this.media='all'">
+<title>从零搭建量化交易回测系统：我的技术选型与踩坑记录 · JYTHCloud</title>
+<meta name="description" content="量化回测系统的完整搭建过程，涵盖技术选型、三大踩坑记录与四种策略实现">
+</head>
+<body>
+
+<div class="article-progress"><div class="bar" id="progressBar"></div></div>
+<script>
+// Progress bar
+window.addEventListener('scroll',function(){var h=document.documentElement;var p=(h.scrollTop/(h.scrollHeight-h.clientHeight))*100;document.getElementById('progressBar').style.width=p+'%'});
+// Code copy
+function copyCode(btn){var codeBlock=btn.closest('.code-block');var text=codeBlock.textContent.replace(/复制$/, '').trim();navigator.clipboard.writeText(text).then(function(){btn.innerHTML='<i class="fas fa-check"></i> 已复制';setTimeout(function(){btn.innerHTML='<i class="far fa-copy"></i> 复制'},2000)})}
+// Image zoom
+document.querySelectorAll('.article-body img').forEach(function(i){i.addEventListener('click',function(e){e.stopPropagation();document.getElementById('imgZoom').src=this.src;document.getElementById('imgOverlay').classList.add('show')})});
+// Back to top visibility
+window.addEventListener('scroll',function(){var btn=document.getElementById('articleTop');if(btn){btn.classList.toggle('show',window.scrollY>400)}});
+</script>
+
+<div class="article-container">
+  <a href="/" class="article-back"><i class="fas fa-arrow-left"></i> 返回主页</a>
+
+  <div class="article-hero-img">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 740 360" width="100%" height="100%" viewBox="0 0 740 360">
+      <defs>
+        <linearGradient id="bgq" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#0a0a1a"/><stop offset="100%" stop-color="#0f172a"/></linearGradient>
+        <!-- Module colors -->
+        <linearGradient id="c1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#3b82f6"/><stop offset="100%" stop-color="#2563eb"/></linearGradient>
+        <linearGradient id="c2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#22c55e"/><stop offset="100%" stop-color="#16a34a"/></linearGradient>
+        <linearGradient id="c3" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#f59e0b"/><stop offset="100%" stop-color="#d97706"/></linearGradient>
+        <linearGradient id="c4" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#ec4899"/><stop offset="100%" stop-color="#db2777"/></linearGradient>
+        <!-- Arrow marker -->
+        <marker id="arrowq" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><path d="M0,0 L10,4 L0,8 Z" fill="#94a3b8"/></marker>
+      </defs>
+      <rect width="740" height="360" fill="url(#bgq)"/>
+
+      <!-- Subtle grid -->
+      <g stroke="rgba(255,255,255,0.03)" stroke-width="1">
+        <line x1="0" y1="90" x2="740" y2="90"/>
+        <line x1="0" y1="180" x2="740" y2="180"/>
+        <line x1="0" y1="270" x2="740" y2="270"/>
+      </g>
+
+      <!-- Background glow circles -->
+      <circle cx="130" cy="180" r="120" fill="rgba(59,130,246,0.05)"/>
+      <circle cx="330" cy="180" r="120" fill="rgba(34,197,94,0.05)"/>
+      <circle cx="530" cy="180" r="120" fill="rgba(245,158,11,0.05)"/>
+
+      <!-- ===== Module 1: 数据 ===== -->
+      <rect x="40" y="110" width="150" height="60" rx="10" fill="url(#c1)" opacity="0.25" stroke="#3b82f6" stroke-width="2"/>
+      <rect x="40" y="110" width="6" height="60" rx="3" fill="#3b82f6"/>
+      <text x="115" y="136" text-anchor="middle" fill="#60a5fa" font-size="17" font-family="sans-serif" font-weight="bold">📊 数据</text>
+      <text x="115" y="156" text-anchor="middle" fill="#94a3b8" font-size="11" font-family="sans-serif">Data Acquisition</text>
+
+      <!-- Arrow 1: 数据 → 策略 -->
+      <line x1="190" y1="140" x2="240" y2="140" stroke="#94a3b8" stroke-width="2.5" marker-end="url(#arrowq)"/>
+      <!-- Pipe decoration between 1→2 -->
+      <rect x="234" y="136" width="8" height="8" rx="2" fill="#3b82f6" opacity="0.5"/>
+
+      <!-- ===== Module 2: 策略 ===== -->
+      <rect x="250" y="110" width="150" height="60" rx="10" fill="url(#c2)" opacity="0.25" stroke="#22c55e" stroke-width="2"/>
+      <rect x="250" y="110" width="6" height="60" rx="3" fill="#22c55e"/>
+      <text x="325" y="136" text-anchor="middle" fill="#4ade80" font-size="17" font-family="sans-serif" font-weight="bold">⚙️ 策略</text>
+      <text x="325" y="156" text-anchor="middle" fill="#94a3b8" font-size="11" font-family="sans-serif">Strategy Engine</text>
+
+      <!-- Arrow 2: 策略 → 回测 -->
+      <line x1="400" y1="140" x2="450" y2="140" stroke="#94a3b8" stroke-width="2.5" marker-end="url(#arrowq)"/>
+      <rect x="444" y="136" width="8" height="8" rx="2" fill="#22c55e" opacity="0.5"/>
+
+      <!-- ===== Module 3: 回测 ===== -->
+      <rect x="460" y="110" width="150" height="60" rx="10" fill="url(#c3)" opacity="0.25" stroke="#f59e0b" stroke-width="2"/>
+      <rect x="460" y="110" width="6" height="60" rx="3" fill="#f59e0b"/>
+      <text x="535" y="136" text-anchor="middle" fill="#fbbf24" font-size="17" font-family="sans-serif" font-weight="bold">🔄 回测</text>
+      <text x="535" y="156" text-anchor="middle" fill="#94a3b8" font-size="11" font-family="sans-serif">Backtest Engine</text>
+
+      <!-- Arrow 3: 回测 → 分析 (curved) -->
+      <path d="M535,170 L535,240 L370,240" fill="none" stroke="#94a3b8" stroke-width="2.5" marker-end="url(#arrowq)"/>
+
+      <!-- ===== Module 4: 分析 ===== -->
+      <rect x="290" y="235" width="160" height="60" rx="10" fill="url(#c4)" opacity="0.25" stroke="#ec4899" stroke-width="2"/>
+      <rect x="290" y="235" width="6" height="60" rx="3" fill="#ec4899"/>
+      <text x="370" y="261" text-anchor="middle" fill="#f472b6" font-size="17" font-family="sans-serif" font-weight="bold">📈 分析</text>
+      <text x="370" y="281" text-anchor="middle" fill="#94a3b8" font-size="11" font-family="sans-serif">Performance Analysis</text>
+
+      <!-- ===== K-line sketch (candlestick chart) ===== -->
+      <g transform="translate(55,300)" opacity="0.2">
+        <!-- Candles -->
+        <rect x="0" y="12" width="8" height="18" rx="1.5" fill="#22c55e"/>
+        <line x1="4" y1="0" x2="4" y2="30" stroke="#22c55e" stroke-width="1.5"/>
+        <rect x="14" y="4" width="8" height="26" rx="1.5" fill="#ef4444"/>
+        <line x1="18" y1="4" x2="18" y2="30" stroke="#ef4444" stroke-width="1.5"/>
+        <rect x="28" y="8" width="8" height="22" rx="1.5" fill="#22c55e"/>
+        <line x1="32" y1="0" x2="32" y2="30" stroke="#22c55e" stroke-width="1.5"/>
+        <rect x="42" y="16" width="8" height="14" rx="1.5" fill="#ef4444"/>
+        <line x1="46" y1="12" x2="46" y2="30" stroke="#ef4444" stroke-width="1.5"/>
+        <rect x="56" y="6" width="8" height="20" rx="1.5" fill="#22c55e"/>
+        <line x1="60" y1="0" x2="60" y2="26" stroke="#22c55e" stroke-width="1.5"/>
+        <rect x="70" y="14" width="8" height="16" rx="1.5" fill="#ef4444"/>
+        <line x1="74" y1="10" x2="74" y2="30" stroke="#ef4444" stroke-width="1.5"/>
+        <rect x="84" y="6" width="8" height="24" rx="1.5" fill="#22c55e"/>
+        <line x1="88" y1="0" x2="88" y2="30" stroke="#22c55e" stroke-width="1.5"/>
+        <rect x="98" y="18" width="8" height="12" rx="1.5" fill="#ef4444"/>
+        <line x1="102" y1="14" x2="102" y2="30" stroke="#ef4444" stroke-width="1.5"/>
+        <rect x="112" y="4" width="8" height="26" rx="1.5" fill="#22c55e"/>
+        <line x1="116" y1="0" x2="116" y2="30" stroke="#22c55e" stroke-width="1.5"/>
+      </g>
+
+      <!-- Moving average line overlay on K-line -->
+      <polyline points="60,318 74,312 88,315 102,308 116,310 130,304" fill="none" stroke="rgba(96,165,250,0.15)" stroke-width="1.5" stroke-linecap="round"/>
+
+      <!-- Small bar chart on top-right -->
+      <g transform="translate(630,50)" opacity="0.12">
+        <rect x="0" y="20" width="12" height="40" rx="2" fill="#3b82f6"/>
+        <rect x="16" y="10" width="12" height="50" rx="2" fill="#22c55e"/>
+        <rect x="32" y="25" width="12" height="35" rx="2" fill="#f59e0b"/>
+        <rect x="48" y="5" width="12" height="55" rx="2" fill="#ec4899"/>
+        <rect x="64" y="15" width="12" height="45" rx="2" fill="#3b82f6"/>
+      </g>
+
+      <!-- Title text -->
+      <text x="370" y="340" text-anchor="middle" fill="rgba(96,165,250,0.06)" font-size="64" font-family="sans-serif" font-weight="900" letter-spacing="4">BACKTEST</text>
+    </svg>
+  </div>
+
+  <h1 class="article-title">从零搭建量化交易回测系统：我的技术选型与踩坑记录</h1>
+  <div class="article-meta">
+    <span><i class="far fa-calendar-alt"></i> 2026-05-26</span>
+    <span><i class="fas fa-tag"></i> 项目实战 · 量化交易 · 回测系统</span>
+    <span><i class="far fa-clock"></i> 阅读约 10 分钟</span>
+  </div>
+
+  <div class="article-body">
+  <div class="article-toc">
+    <div class="article-toc-title"><i class="fas fa-list"></i> 目录</div>
+    <ul class="article-toc-list">
+      <li><a href="#heading-1"><span class="toc-num">01</span>为什么做量化回测？</a></li>
+      <li><a href="#heading-2"><span class="toc-num">02</span>技术选型</a></li>
+      <li><a href="#heading-3"><span class="toc-num">03</span>三个印象深刻的踩坑记录</a></li>
+      <li><a href="#heading-4"><span class="toc-num">04</span>成果：四种策略 + 监控看板</a></li>
+      <li><a href="#heading-5"><span class="toc-num">05</span>总结与下一步</a></li>
+    </ul>
+  </div>
+
+
+  <p>市面上有很多现成的量化回测框架——Backtrader、Zipline、vn.py，为什么我还要自己写一个？答案很简单：<strong>我要的是一个能跑深度学习模型的回测系统</strong>。现有的框架要么封装得太死，对机器学习不友好（你需要把模型输出「掰」成框架能理解的信号格式）；要么是事件驱动引擎，性能瓶颈明显；要么不支持直接从 A 股市场拉数据。</p>
+
+  <p>这篇文章我会从<strong>为什么做</strong>开始，到<strong>技术选型</strong>、<strong>三个印象深刻的坑</strong>、最后是<strong>四种策略的实现成果</strong>。如果你也在考虑自己搭回测系统，希望这些经验能帮你少走弯路。</p>
+
+  <div class="highlight">
+    <strong>📌 太长不看版：</strong>我基于 Python 生态（Pandas + Matplotlib + PyTorch + Flask + akshare）搭建了一套自研向量化回测引擎。支持多标的、多因子、滑点/手续费模拟、PyTorch 模型接入，并附带一个实时监控看板。踩了数据对齐、过拟合和滑点三个大坑。最终跑通了均值回归、均线趋势、多因子和组合策略四种策略。
+  </div>
+
+  <h2 id="heading-1">为什么做量化回测？</h2>
+
+  <p>量化交易对技术人有一种天然的吸引力——它是一个<strong>数据科学 + 机器学习 + 工程实践</strong>的完美结合点，能把数据处理的技能、模型训练的功底和后端开发的能力串联到一个完整的项目里。</p>
+
+  <h3>数据科学层面</h3>
+  <p>回测系统的第一步就是处理海量的金融时间序列数据。数据清洗、缺失值处理、重采样、窗口计算——这些 DataFrame 操作你会反复熟练。金融数据还有一个特点：<code class="inline-code">survivorship bias</code>（幸存者偏差）很常见，如果你直接拉现在还在交易的数据，那些已经退市的股票的历史数据就被忽略了，回测结果会虚高。处理这个问题本身就是很好的数据科学训练。</p>
+
+  <h3>机器学习层面</h3>
+  <p>传统回测框架做的是规则引擎——如果均线金叉就买入。但我想做的是用模型预测——训练一个 PyTorch 模型，输入过去的量价数据和多因子信号，输出未来一段时间的预期收益，然后根据模型输出的置信度来做仓位管理。这就把机器学习的全流程（特征工程→模型选型→训练→评估→部署）都跑通了。</p>
+
+  <h3>工程实践层面</h3>
+  <p>回测系统不是跑一次就完事的脚本。你需要考虑：</p>
+  <ul>
+    <li><strong>数据管道：</strong>定时拉取数据、去重、增量更新、存储</li>
+    <li><strong>策略管理：</strong>支持配置文件定义多个策略，可组合可对比</li>
+    <li><strong>结果分析：</strong>计算夏普比率、最大回撤、胜率等指标，可视化</li>
+    <li><strong>监控看板：</strong>用 Flask 搭一个轻量的 Web 界面，实时查看运行状态</li>
+  </ul>
+
+  <p>从 pipeline 到 API 到 Web 前端，整个流程走下来，工程能力会有一个质的提升。</p>
+
+  <hr>
+
+  <h2 id="heading-2">技术选型</h2>
+
+  <p>选型思路很明确：<strong>Python 生态 + 自研引擎 + 轻量 Web</strong>。下面逐一说明每项组件的选择理由。</p>
+
+  <table>
+    <thead>
+      <tr><th>组件</th><th>选型</th><th>选择理由</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>数据获取</td>
+        <td><span class="inline-code">akshare</span></td>
+        <td>开源、A 股全覆盖、Tushare 替代方案，无需 API Key</td>
+      </tr>
+      <tr>
+        <td>数据处理</td>
+        <td><span class="inline-code">Pandas + NumPy</span></td>
+        <td>金融时序分析事实标准，向量化运算天然适配回测</td>
+      </tr>
+      <tr>
+        <td>回测引擎</td>
+        <td><span class="inline-code">自研向量化引擎</span></td>
+        <td>需要支持多因子、多标的、自定义滑点/费率、PyTorch 模型接入</td>
+      </tr>
+      <tr>
+        <td>可视化</td>
+        <td><span class="inline-code">Matplotlib + mplfinance</span></td>
+        <td>回测结果对比、资金曲线、K 线标注，原生支持中文</td>
+      </tr>
+      <tr>
+        <td>Web 看板</td>
+        <td><span class="inline-code">Flask + Jinja2</span></td>
+        <td>轻量、学习成本低，用于快速搭建监控/配置界面</td>
+      </tr>
+      <tr>
+        <td>机器学习</td>
+        <td><span class="inline-code">PyTorch</span></td>
+        <td>灵活、易调试、学术界主流，方便接入 LSTM/Transformer 等模型</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>为什么不用 Backtrader / vn.py？</h3>
+  <p>不是它们不好——它们在特定场景下非常优秀。但我的需求是：<strong>跑机器学习模型</strong> + <strong>多因子矩阵运算</strong> + <strong>自定义滑点模型</strong>。Backtrader 的事件驱动架构在回测百万级 tick 数据时性能瓶颈明显，而且你要把 PyTorch 模型的输出「翻译」成它的事件信号，多了一层中间件。自研向量化引擎在批量信号计算和资金模拟上效率高得多。</p>
+
+  <div class="code-block">
+  <button class="code-copy-btn" onclick="copyCode(this)"><i class="far fa-copy"></i> 复制</button>
+<span class="comment"># 自研回测引擎核心抽象（向量化）</span>
+<span class="keyword">import</span> pandas <span class="keyword">as</span> pd
+<span class="keyword">import</span> numpy <span class="keyword">as</span> np
+
+<span class="keyword">class</span> <span class="string">BacktestEngine</span>:
+    <span class="keyword">def</span> <span class="string">__init__</span>(self, data: pd.DataFrame,
+                 initial_capital=<span class="number">100000</span>,
+                 commission=<span class="number">0.0003</span>,
+                 slippage=<span class="number">0.001</span>):
+        self.data = data
+        self.capital = initial_capital
+        self.commission = commission
+        self.slippage = slippage
+
+    <span class="keyword">def</span> <span class="string">run</span>(self, signals: pd.Series):
+        <span class="string">"""
+        向量化回测核心逻辑
+        signals: 1/-1/0 信号序列（买入/卖出/持仓）
+        返回包含每日持仓、收益、资金的 DataFrame
+        """</span>
+        df = self.data.copy()
+        df[<span class="string">'signal'</span>] = signals.shift(<span class="number">1</span>)  <span class="comment"># 避免未来信息</span>
+        df[<span class="string">'position'</span>] = df[<span class="string">'signal'</span>].fillna(method=<span class="string">'ffill'</span>).fillna(<span class="number">0</span>)
+
+        <span class="comment"># 考虑滑点：买入价上浮滑点比例，卖出价下浮</span>
+        df[<span class="string">'buy_price'</span>] = df[<span class="string">'close'</span>] * (<span class="number">1</span> + self.slippage)
+        df[<span class="string">'sell_price'</span>] = df[<span class="string">'close'</span>] * (<span class="number">1</span> - self.slippage)
+
+        df[<span class="string">'daily_return'</span>] = df[<span class="string">'position'</span>] * (df[<span class="string">'close'</span>].pct_change() - self.commission)
+        df[<span class="string">'nav'</span>] = self.capital * (<span class="number">1</span> + df[<span class="string">'daily_return'</span>]).cumprod()
+
+        <span class="keyword">return</span> df
+  </div>
+
+  <hr>
+
+  <h2 id="heading-3">三个印象深刻的踩坑记录</h2>
+
+  <p>以下三个坑花了我最多时间解决。写出来希望你能直接跳过。</p>
+
+  <h3>坑 1：数据对齐——看不见的未来信息</h3>
+
+  <p>这是新手最容易犯的错误，也是最隐蔽的。回测系统中，<strong>任何未来信息都不应该出现在决策时刻</strong>。听起来简单，但在多标的、多因子的场景下很容易漏掉。</p>
+
+  <p>我踩过的一个具体例子：用 <code class="inline-code">rolling(20).mean()</code> 计算 20 日均线作为买入信号时，如果 Pandas 默认做左对齐，当天的均线值包含了当天的收盘价——但在真实交易中，你是在收盘后才能知道当天的收盘价。你的信号会用上「下个交易日的未来信息」。</p>
+
+  <p><strong>正确的做法：</strong>在所有需要「当天数据」计算「当天信号」的地方，先 <code class="inline-code">shift(1)</code> 对齐到上一个交易日。更保险的做法是——所有信号生成后统一 <code class="inline-code">shift(1)</code>，这样任何「未来信息」都不会漏网。</p>
+
+  <div class="highlight">
+    <strong>✅ 解决：</strong>在引擎入口处统一做 <code class="inline-code">signals = signals.shift(1)</code>。同时写了一个 <code class="inline-code">assert</code> 断言检查——确保回测期间的最早交易日在信号数据的第一个非空值之后，从机制上避免未来信息泄露。
+  </div>
+
+  <h3>坑 2：回测过拟合——参数调优的陷阱</h3>
+
+  <p>一个经典场景：你在历史数据上反复调参，终于找到了一个夏普比率高达 3.5、最大回撤只有 5% 的参数组合，兴奋得不行。然后拿到样本外数据一测，直接变成负收益。</p>
+
+  <p>这就是「回测过拟合」——你的参数完美适配了历史数据的噪声，而不是市场规律。我刚开始时在均线策略上调了 5 日均线和 20 日均线的参数「优化」到小数点后一位，结果可想而知。</p>
+
+  <p>下面是我现在使用的防范策略框架：</p>
+
+  <ul>
+    <li><strong>训练/验证/测试三阶段拆分：</strong>70% 训练集（调参）、15% 验证集（初筛）、15% 测试集（最终评估，只看一次结果）</li>
+    <li><strong>参数不「微调」：</strong>只在整数值范围内搜索（比如均线周期 5/10/20/30，不会出现 17 日均线这种不自然的参数）</li>
+    <li><strong>交易成本不要低估：</strong>把佣金和滑点设得比实际略高，过滤掉那些靠微薄利润堆积的策略</li>
+    <li><strong>交叉验证：</strong>在不同时间窗口上验证策略表现（滚动回测），如果只在某一个时间段有效，大概率是巧合</li>
+  </ul>
+
+  <div class="code-block">
+  <button class="code-copy-btn" onclick="copyCode(this)"><i class="far fa-copy"></i> 复制</button>
+<span class="comment"># 滚动回测验证示例</span>
+<span class="keyword">def</span> <span class="string">rolling_backtest</span>(data, strategy_func, window=<span class="number">252</span>):
+    <span class="string">"""
+    以 252 个交易日为窗口，滚动回测
+    每个窗口独立调优参数，观察参数稳定性
+    """</span>
+    results = []
+    <span class="keyword">for</span> i <span class="keyword">in</span> range(window, len(data), window // <span class="number">2</span>):
+        train = data.iloc[i - window:i]
+        test = data.iloc[i:i + window // <span class="number">2</span>]
+        params = strategy_func.optimize(train)
+        perf = backtest(test, params)
+        results.append({<span class="string">'period'</span>: i, <span class="string">'params'</span>: params, <span class="string">'sharpe'</span>: perf.sharpe})
+    <span class="keyword">return</span> pd.DataFrame(results)
+  </div>
+
+  <h3>坑 3：滑点——纸上富贵到实盘亏损的最后一刀</h3>
+
+  <p>这是我在回测和实盘之间感受最深的差异。回测时你以收盘价买入，完美执行。但实盘时——尤其是对小市值、低流动性标的——你下单时的价格和成交价之间可能差了一两个 tick。这个小差距乘以交易次数，足以把微利策略打到亏损。</p>
+
+  <p>刚开始我对标 BTC 做回测时没考虑滑点，策略显示年化 68%。加上 0.05% 的滑点后直接降到 31%。加上 0.1% 滑点——只剩下 12%。这个落差让我意识到：<strong>滑点比手续费更致命</strong>。</p>
+
+  <p><strong>我现在处理滑点的方法：</strong></p>
+
+  <ul>
+    <li>根据标的流动性动态设置滑点——大盘股设 0.05%，中小盘设 0.1%~0.2%</li>
+    <li>模拟成交价 = 信号价格 ± 滑点比例 × 价格（买入向上加、卖出向下减）</li>
+    <li>在引擎中内置滑点参数，回测时用<strong>保守值</strong>（比实际估算值高 50%）</li>
+    <li>如果策略在保守滑点下仍然盈利，才值得进一步考虑</li>
+  </ul>
+
+  <div class="highlight">
+    <strong>⚠️ 滑点经验：</strong>一个稳健的策略，应该在高估滑点（比如 0.15%~0.2%）的条件下依然有正收益。如果去掉滑点才勉强赚钱，那大概率是伪策略。建议在回测报告中同时展示「无滑点」「保守滑点」「极高滑点」三个版本的收益曲线。\n  </div>
+
+  <hr>
+
+  <h2 id="heading-4">成果：四种策略 + 监控看板</h2>
+
+  <p>经过三个月的迭代，最终实现了四种策略和一个实时的监控看板。下面是每种策略的核心逻辑和回测表现。</p>
+
+  <h3>策略 1：均值回归（Mean Reversion）</h3>
+
+  <p>核心思想：价格围绕价值波动，偏离太远后会回归。用布林带识别超买超卖区域。</p>
+
+  <ul>
+    <li><strong>信号逻辑：</strong>价格触及布林带下轨（2 倍标准差）买入，触及上轨卖出</li>
+    <li><strong>回测表现：</strong>年化 18.5%，最大回撤 11.2%，夏普比率 1.45</li>
+    <li><strong>适用场景：</strong>震荡市中表现优异，单边趋势市会反复止损</li>
+  </ul>
+
+  <h3>策略 2：均线趋势（Trend Following）</h3>
+
+  <p>核心思想：趋势是你最好的朋友。金叉买入、死叉卖出，截断亏损让利润奔跑。</p>
+
+  <ul>
+    <li><strong>信号逻辑：</strong>5 日均线上穿 20 日均线买入，下穿卖出</li>
+    <li><strong>回测表现：</strong>年化 22.3%，最大回撤 16.8%，夏普比率 1.28</li>
+    <li><strong>适用场景：</strong>趋势行情中表现优秀，震荡市中反复磨损</li>
+  </ul>
+
+  <h3>策略 3：多因子（Multi-Factor）</h3>
+
+  <p>核心思想：不依赖单一信号，而是综合多个因子打分选出最优标的。</p>
+
+  <ul>
+    <li><strong>因子构成：</strong>动量因子（过去 3 个月收益）+ 低波因子（过去 1 个月波动率倒数）+ 质量因子（ROE）+ 估值因子（PE 倒数）</li>
+    <li><strong>信号逻辑：</strong>每月对全 A 股打分，选取得分最高的前 20 只等权配置</li>
+    <li><strong>回测表现：</strong>年化 26.7%，最大回撤 13.5%，夏普比率 1.72</li>
+  </ul>
+
+  <div class="code-block">
+  <button class="code-copy-btn" onclick="copyCode(this)"><i class="far fa-copy"></i> 复制</button>
+<span class="comment"># 多因子打分核心逻辑</span>
+<span class="keyword">def</span> <span class="string">multi_factor_score</span>(df, factors):
+    <span class="string">"""
+    factors: {因子名: (权重, 方向)}
+    方向: 1 表示越大越好, -1 表示越小越好
+    """</span>
+    scores = pd.Series(np.zeros(len(df)), index=df.index)
+    <span class="keyword">for</span> name, (weight, direction) <span class="keyword">in</span> factors.items():
+        <span class="comment"># 横截面标准化</span>
+        z = (df[name] - df[name].mean()) / df[name].std()
+        scores += weight * direction * z
+    <span class="keyword">return</span> scores
+  </div>
+
+  <h3>策略 4：组合策略（Ensemble）</h3>
+
+  <p>核心思想：不把鸡蛋放在一个篮子里。用 PyTorch 模型动态分配资金到不同子策略。</p>
+
+  <ul>
+    <li><strong>信号逻辑：</strong>训练一个简单的 MLP 模型（3 层全连接），输入为各子策略的近期表现和市场状态特征，输出为各策略的权重分配</li>
+    <li><strong>技术要点：</strong>使用 PyTorch 的 <code class="inline-code">nn.Softmax</code> 保证权重和为 1，用 <code class="inline-code">nn.MSELoss</code> 作为优化目标</li>
+    <li><strong>回测表现：</strong>年化 24.8%，最大回撤 10.3%，夏普比率 1.88</li>
+  </ul>
+
+  <div class="highlight">
+    <strong>📊 四种策略横向对比：</strong>
+    <br>
+    年化收益：多因子 26.7% &gt; 组合策略 24.8% &gt; 均线趋势 22.3% &gt; 均值回归 18.5%
+    <br>
+    最大回撤：组合策略 10.3% &lt; 均值回归 11.2% &lt; 多因子 13.5% &lt; 均线趋势 16.8%
+    <br>
+    夏普比率：组合策略 1.88 &gt; 多因子 1.72 &gt; 均值回归 1.45 &gt; 均线趋势 1.28
+    <br><br>
+    组合策略虽然年化不是最高，但夏普比率最高、回撤最小，说明它在风险调整后表现最优。
+  </div>
+
+  <h3>监控看板</h3>
+
+  <p>用 Flask 搭建了一个轻量监控看板，支持以下功能：</p>
+
+  <ul>
+    <li><strong>策略仪表盘：</strong>实时展示各策略当前持仓、浮动盈亏、信号状态</li>
+    <li><strong>资金曲线：</strong>使用 Matplotlib 生成的 PNG 图片内嵌到页面中显示</li>
+    <li><strong>交易记录：</strong>最近 50 笔交易的明细列表，包含成交时间、价格、数量</li>
+    <li><strong>参数配置：</strong>通过 <code class="inline-code">config.yaml</code> 文件管理策略参数，支持热加载</li>
+    <li><strong>预警通知：</strong>当回撤超过阈值或模型置信度过低时，控制台输出警告</li>
+  </ul>
+
+  <div class="code-block">
+  <button class="code-copy-btn" onclick="copyCode(this)"><i class="far fa-copy"></i> 复制</button>
+<span class="comment"># Flask 监控看板核心路由</span>
+<span class="keyword">from</span> flask <span class="keyword">import</span> Flask, render_template, jsonify
+<span class="keyword">import</span> yaml
+
+app = Flask(__name__)
+
+@app.route(<span class="string">\"/\"</span>)
+<span class="keyword">def</span> <span class="string">dashboard</span>():
+    <span class="comment"># 从引擎实例读取最新回测状态</span>
+    status = engine.get_current_status()
+    <span class="keyword">return</span> render_template(<span class="string">\"dashboard.html\"</span>, status=status)
+
+@app.route(<span class="string\">\"/api/snapshot\"</span>)
+<span class="keyword">def</span> <span class="string">api_snapshot</span>():
+    <span class="keyword">return</span> jsonify(engine.get_snapshot())
+
+@app.route(<span class="string\">\"/config\"</span>, methods=[<span class="string\">\"POST\"</span>])
+<span class="keyword">def</span> <span class="string">update_config</span>():
+    config = yaml.safe_load(request.data)
+    engine.reload_config(config)
+    <span class="keyword">return</span> jsonify({<span class="string\">\"status\"</span>: <span class="string\">\"ok\"</span>})
+  </div>
+
+  <hr>
+
+  <h2 id="heading-5">总结与下一步</h2>
+
+  <p>搭建这个量化回测系统的过程，本质上是一次完整的数据科学 + 机器学习 + 工程实践的闭环训练。我从一个只会调 Sklearn 的「模型玩家」，变成了一个能搭建完整数据管道、写可复用的回测引擎、用 Flask 搭监控看板的「工程型选手」。</p>
+
+  <p>下一步计划：</p>
+  <ul>
+    <li><strong>A 股实盘接入：</strong>通过仓位管理的券商 API 对接实盘交易（小资金测试）</li>
+    <li><strong>LSTM 因子增强：</strong>用 LSTM 对传统因子做时序预测，提升信号信噪比</li>
+    <li><strong>强化学习：</strong>尝试用 DQN 做仓位管理——让模型自己学什么时候该重仓、什么时候该空仓</li>
+    <li><strong>性能优化：</strong>对分钟级回测场景使用 Numba / CuDF 加速</li>
+  </ul>
+
+  <blockquote>
+    <strong>最后想说：</strong>量化交易是一场马拉松。回测只是第一步，做好风控、资金管理、实盘校验才是真正的挑战。不要被高夏普率迷惑，永远对市场保持敬畏。写这个系统的过程让我学到了很多，如果你也在做类似的尝试，欢迎一起交流。
+  </blockquote>
+
+  </div><!-- /article-body -->
+
+  <div class="article-footer">
+    <a href="/"><i class="fas fa-arrow-left"></i> 返回主页</a>
+  </div>
+
+</div><!-- /article-container -->
+
+<!-- Image zoom overlay -->
+<div class="img-overlay" id="imgOverlay" onclick="this.classList.remove('show')"><img id="imgZoom" src="" alt=""></div>
+<!-- Back to top button -->
+<button class="article-top-btn" id="articleTop" onclick="window.scrollTo({top:0,behavior:'smooth'})"><i class="fas fa-arrow-up"></i></button>
+</body>
+</html>

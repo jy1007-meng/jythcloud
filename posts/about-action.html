@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<link rel="stylesheet" href="/static/style.css">
+<link rel="stylesheet" href="https://cdnjs.loli.net/ajax/libs/font-awesome/6.5.1/css/all.min.css" media="print" onload="this.media='all'">
+<title>课余时间我们在做什么 · JYTHCloud</title>
+<meta name="description" content="大学生课余自学AI技术、数据分析、服务器运维的真实实践经历——LLM API调用、Pandas数据分析、Docker部署，从课堂到实战的每一步。">
+</head>
+<body>
+
+<div class="article-progress"><div class="bar" id="progressBar"></div></div>
+<script>
+// Progress bar
+window.addEventListener('scroll',function(){var h=document.documentElement;var p=(h.scrollTop/(h.scrollHeight-h.clientHeight))*100;document.getElementById('progressBar').style.width=p+'%'});
+// Code copy
+function copyCode(btn){var codeBlock=btn.closest('.code-block');var text=codeBlock.textContent.replace(/复制$/, '').trim();navigator.clipboard.writeText(text).then(function(){btn.innerHTML='<i class="fas fa-check"></i> 已复制';setTimeout(function(){btn.innerHTML='<i class="far fa-copy"></i> 复制'},2000)})}
+// Image zoom
+document.querySelectorAll('.article-body img').forEach(function(i){i.addEventListener('click',function(e){e.stopPropagation();document.getElementById('imgZoom').src=this.src;document.getElementById('imgOverlay').classList.add('show')})});
+// Back to top visibility
+window.addEventListener('scroll',function(){var btn=document.getElementById('articleTop');if(btn){btn.classList.toggle('show',window.scrollY>400)}});
+</script>
+
+<div class="article-container">
+  <a href="/" class="article-back"><i class="fas fa-arrow-left"></i> 返回主页</a>
+
+  <div class="article-hero-img">
+    <img src="/posts/about-action.svg" alt="我们在做什么" style="width:100%;height:100%;object-fit:cover">
+  </div>
+
+  <h1 class="article-title">课余时间我们在做什么</h1>
+  <div class="article-meta">
+    <span><i class="far fa-calendar-alt"></i> 2026-05-27</span>
+    <span><i class="fas fa-tag"></i> 关于我们</span>
+    <span><i class="far fa-clock"></i> 阅读约 6 分钟</span>
+  </div>
+
+  <div class="article-body">
+  <div class="article-toc">
+    <div class="article-toc-title"><i class="fas fa-list"></i> 目录</div>
+    <ul class="article-toc-list">
+      <li><a href="#heading-1"><span class="toc-num">01</span>从第一行 API 调用到搭建知识库</a></li>
+      <li><a href="#heading-2"><span class="toc-num">02</span>数据分析实战：从课堂作业到真实的业务洞察</a></li>
+      <li><a href="#heading-3"><span class="toc-num">03</span>从零学 Docker：一台服务器和无数个不眠夜</a></li>
+      <li><a href="#heading-4"><span class="toc-num">04</span>写博客的价值：把知识真正"焊"进脑子里</a></li>
+      <li><a href="#heading-5"><span class="toc-num">05</span>每天进步一点点</a></li>
+    </ul>
+  </div>
+
+
+    <p>大学生活里有一个容易被忽略的事实：<strong>课堂只占了每周不到四分之一的时间。</strong>剩下的大把时间——晚自习、周末、假期——你在做什么，决定了四年后你和别人的差距在哪。</p>
+
+    <p>有人用课余时间刷剧打游戏，有人做兼职赚生活费，也有人选择打开电脑，开始自学课堂上不教但行业里真正在用的东西。我们属于第三类。这篇文章想分享的，不是什么天才学霸的故事，而是三个普通大学生用课余时间自学 <span class="tag">AI</span> <span class="tag">数据分析</span> <span class="tag">运维</span> 的真实历程——有成功的经验，也有踩过的坑。</p>
+
+    <div class="highlight">
+      <strong>⏰ 一个简单的算术：</strong>大学四年 ≈ 1460天。假设每天能额外投入2小时课余学习时间，四年就是2920小时。按"一万小时定律"算，这差不多是成为一个领域专家所需时间的30%。关键在于——你愿意把这些时间花在哪里？
+    </div>
+
+    <h2 id="heading-1">从第一行 API 调用到搭建知识库</h2>
+
+    <p>大二上学期，ChatGPT 已经火了大半年。我和大多数人一样，每天用它查资料、改作文、写代码。但有一天我在实验室发呆时突然意识到一个问题：<strong>我到底是在"用"AI，还是在"消费"AI？</strong></p>
+
+    <p>一个真正的开发者，应该能通过代码调用AI的能力，把它嵌入到自己的系统里。于是我打开了 OpenAI 的开发者文档，注册账号、绑定信用卡、申请 API Key。那个下午我在图书馆从两点坐到七点，写了人生中第一个调用大模型 API 的脚本：</p>
+
+    <div class="code-block">
+  <button class="code-copy-btn" onclick="copyCode(this)"><i class="far fa-copy"></i> 复制</button>
+      <span class="comment"># 第一次成功调用 LLM API</span><br><br>
+      <span class="keyword">from</span> openai <span class="keyword">import</span> OpenAI<br>
+      <span class="keyword">import</span> json<br><br>
+      client = OpenAI(api_key=<span class="string">"sk-your-key-here"</span>)<br><br>
+      response = client.chat.completions.create(<br>
+      &nbsp;&nbsp;  model=<span class="string">"gpt-4o-mini"</span>,<br>
+      &nbsp;&nbsp;  messages=[<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;    {<span class="string">"role"</span>: <span class="string">"system"</span>, <span class="string">"content"</span>: <span class="string">"你是一个数据分析助手，请根据用户输入返回JSON格式的回复。"</span>},<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;    {<span class="string">"role"</span>: <span class="string">"user"</span>, <span class="string">"content"</span>: <span class="string">"分析一下这份销售数据中增长最快的三个品类"</span>}<br>
+      &nbsp;&nbsp;  ],<br>
+      &nbsp;&nbsp;  response_format={ <span class="string">"type"</span>: <span class="string">"json_object"</span> },<br>
+      &nbsp;&nbsp;  temperature=<span class="number">0.3</span><br>
+      )<br><br>
+      result = json.loads(response.choices[<span class="number">0</span>].message.content)<br>
+      print(result)
+    </div>
+
+    <p>那段时间我每天晚上花1-2小时研究 Prompt Engineering。从最基础的"把问题说清楚"，到后来学会用 <strong>Chain-of-Thought（思维链）</strong>引导模型逐步推理，再到用 Few-shot 示例提升输出质量——这些书上没有专门教过，全是靠读官方文档、刷 <span class="inline-code">OpenAI Cookbook</span>、在 GitHub 上看别人项目的 issue 学来的。</p>
+
+    <p>到了大三上学期，我开始研究更进阶的方向——<strong>RAG（检索增强生成）</strong>。简单说就是：把本地文档切成小块存入向量数据库，大模型在回答问题时先检索相关片段，再基于这些片段生成答案。这在做私域知识库问答时特别有用。</p>
+
+    <div class="code-block">
+  <button class="code-copy-btn" onclick="copyCode(this)"><i class="far fa-copy"></i> 复制</button>
+      <span class="comment"># 基于 LangChain + Chroma 的简易 RAG 实现</span><br><br>
+      <span class="keyword">from</span> langchain_community.vectorstores <span class="keyword">import</span> Chroma<br>
+      <span class="keyword">from</span> langchain_openai <span class="keyword">import</span> OpenAIEmbeddings, ChatOpenAI<br>
+      <span class="keyword">from</span> langchain.text_splitter <span class="keyword">import</span> RecursiveCharacterTextSplitter<br>
+      <span class="keyword">from</span> langchain.chains <span class="keyword">import</span> RetrievalQA<br><br>
+      <span class="comment"># 1. 加载文档并切分</span><br>
+      raw_text = open(<span class="string">"course_notes.txt"</span>).read()<br>
+      splitter = RecursiveCharacterTextSplitter(chunk_size=<span class="number">500</span>, chunk_overlap=<span class="number">50</span>)<br>
+      chunks = splitter.split_text(raw_text)<br><br>
+      <span class="comment"># 2. 存入向量数据库</span><br>
+      embeddings = OpenAIEmbeddings(model=<span class="string">"text-embedding-3-small"</span>)<br>
+      vectordb = Chroma.from_texts(chunks, embeddings)<br><br>
+      <span class="comment"># 3. 构建检索问答链</span><br>
+      qa_chain = RetrievalQA.from_chain_type(<br>
+      &nbsp;&nbsp;  llm=ChatOpenAI(model=<span class="string">"gpt-4o-mini"</span>),<br>
+      &nbsp;&nbsp;  retriever=vectordb.as_retriever(search_kwargs={<span class="string">"k"</span>: <span class="number">3</span>})<br>
+      )<br><br>
+      <span class="comment"># 4. 提问</span><br>
+      answer = qa_chain.invoke(<span class="string">"什么是梯度下降？请结合课堂笔记回答"</span>)<br>
+      print(answer[<span class="string">"result"</span>])
+    </div>
+
+    <p>当第一个 RAG 问答系统跑通的时候，那种成就感难以形容——<strong>你可以问它任何关于你笔记内容的问题，它真的能准确回答。</strong>我用这个方法做了一个自己的课程知识库，期末复习时省了不少翻笔记的时间。</p>
+
+    <h2 id="heading-2">数据分析实战：从课堂作业到真实的业务洞察</h2>
+
+    <p>数据分析课的期末考试很简单——给一份清洗好的数据集，用 Pandas 做几个聚合操作，画两张图就完事了。但真正在课外做数据分析项目时发现，<strong>现实世界中80%的时间根本不是在"分析"，而是在"清洗"。</strong></p>
+
+    <p>大三寒假，我从 Kaggle 上找了一份美国二手车交易数据集（约 42 万条记录），想做一个完整的分析项目。打开 CSV 的第一眼就傻眼了——缺失值、重复记录、格式不一致、异常值……好的数据分析从来不是从"跑模型"开始的，而是从<strong>和 dirty data 搏斗</strong>开始的。</p>
+
+    <div class="code-block">
+  <button class="code-copy-btn" onclick="copyCode(this)"><i class="far fa-copy"></i> 复制</button>
+      <span class="comment"># 真实世界的数据清洗流程</span><br><br>
+      <span class="keyword">import</span> pandas <span class="keyword">as</span> pd<br>
+      <span class="keyword">import</span> numpy <span class="keyword">as</span> np<br><br>
+      df = pd.read_csv(<span class="string">"used_cars.csv"</span>)<br>
+      print(<span class="string">f"原始数据: {df.shape}"</span>)<br><br>
+      <span class="comment"># 1. 删除完全重复的记录</span><br>
+      df = df.drop_duplicates()<br><br>
+      <span class="comment"># 2. 处理缺失值——需要具体分析每列</span><br>
+      df[<span class="string">"price"</span>] = df[<span class="string">"price"</span>].fillna(df[<span class="string">"price"</span>].median())&nbsp;&nbsp;<span class="comment"># 价格用中位数填充</span><br>
+      df = df.dropna(subset=[<span class="string">"year"</span>, <span class="string">"model"</span>])&nbsp;&nbsp;<span class="comment"># 年份和车型缺失的直接剔除</span><br><br>
+      <span class="comment"># 3. 异常值过滤——价格不可能为负或超过100万美元</span><br>
+      df = df[(df[<span class="string">"price"</span>] > <span class="number">500</span>) & (df[<span class="string">"price"</span>] < <span class="number">200000</span>)]<br><br>
+      <span class="comment"># 4. 特征工程：根据车龄和里程计算"性价比"指标</span><br>
+      current_year = <span class="number">2024</span><br>
+      df[<span class="string">"age"</span>] = current_year - df[<span class="string">"year"</span>]<br>
+      df[<span class="string">"price_per_mile"</span>] = df[<span class="string">"price"</span>] / (df[<span class="string">"mileage"</span>] + <span class="number">1</span>)<br>
+      df[<span class="string">"high_value"</span>] = np.where(df[<span class="string">"price_per_mile"</span>] > df[<span class="string">"price_per_mile"</span>].quantile(<span class="number">0.75</span>), <span class="number">1</span>, <span class="number">0</span>)<br><br>
+      print(<span class="string">f"清洗后: {df.shape}"</span>)<br>
+      print(df.groupby(<span class="string">"manufacturer"</span>)[<span class="string">"price"</span>].agg([<span class="string">"count"</span>, <span class="string">"mean"</span>, <span class="string">"median"</span>]).head(<span class="number">10</span>))
+    </div>
+
+    <p>做完清洗之后，我用 Matplotlib 和 Seaborn 做了十几张可视化图表，发现了一些很有意思的规律：</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>分析维度</th>
+          <th>发现</th>
+          <th>可能的解释</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>品牌保值率</td>
+          <td>丰田、本田3年车龄折旧率仅约22%</td>
+          <td>日系车可靠性口碑好，二手车市场需求大</td>
+        </tr>
+        <tr>
+          <td>颜色与价格</td>
+          <td>白色和黑色二手车平均售价比其他颜色高8-12%</td>
+          <td>主流颜色流通性好，供需两旺</td>
+        </tr>
+        <tr>
+          <td>里程影响</td>
+          <td>里程每增加1万英里，价格平均下降约3.5%</td>
+          <td>线性关系，可作为定价参考基线</td>
+        </tr>
+        <tr>
+          <td>地域差异</td>
+          <td>加州二手车价格比全国平均高15%</td>
+          <td>加州对新车上牌要求严格，部分买家转向二手车</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>这个项目前后花了我两周的课余时间（每天晚上2-3小时）。做完之后我把分析过程和核心结论整理成了一篇博客文章发在知乎上，意外地收到了300多个赞和几十条评论——很多人说"这比很多数据分析课的案例真实多了"。<strong>这件事让我意识到：用真实数据讲一个好故事，比堆砌技术术语有价值得多。</strong></p>
+
+    <div class="highlight">
+      <strong>📊 做数据分析项目的一点心得：</strong><br>
+      不要一开始就想做"高大上"的机器学习模型。先学会把数据清洗干净，把统计描述做准确，把可视化的故事讲清楚——做到这三点，你已经比大多数只会跑模型的初学者强了。模型是锦上添花，数据质量才是雪中送炭。
+    </div>
+
+    <h2 id="heading-3">从零学 Docker：一台服务器和无数个不眠夜</h2>
+
+    <p>如果说 AI 和数据分析让我觉得"技术真有意思"，那服务器运维的经历则让我明白了一件事：<strong>能跑在别人电脑上的代码，和能在公网上稳定运行的服务，中间隔着一个银河系的距离。</strong></p>
+
+    <p>大二下学期，我和室友合租了一台学生特惠的云服务器（2核4G，一年不到三百块）。我们想在上面部署一个自己的 Web 项目。最初的想法很简单——把代码传到服务器上，装个 Python，<span class="inline-code">python app.py</span> 就跑起来了。结果现实给了我们一记响亮的耳光：</p>
+
+    <ul>
+      <li><strong>环境冲突</strong>：服务器上原有的 Python 3.8 和项目需要的 3.11 版本打架，装个依赖报一堆错</li>
+      <li><strong>进程管理</strong>：SSH 一断开，程序就挂了。后来才知道要用 <span class="inline-code">nohup</span> 或者 <span class="inline-code">screen</span></li>
+      <li><strong>端口暴露</strong>：程序跑在 5000 端口，但外网根本访问不到——防火墙没配</li>
+      <li><strong>域名解析</strong>：搞懂了 A 记录和 CNAME 的区别，但配置完 SSL 证书后才发现有个中间证书没传</li>
+    </ul>
+
+    <p>第一个项目从"能跑"到"能稳定访问"，花了我整整一个周末。也就是从那天起，我下定决心学 Docker。</p>
+
+    <div class="code-block">
+  <button class="code-copy-btn" onclick="copyCode(this)"><i class="far fa-copy"></i> 复制</button>
+      <span class="comment"># 一个简单的 Dockerfile 示例</span><br><br>
+      <span class="comment"># 使用Python 3.11 作为基础镜像</span><br>
+      <span class="keyword">FROM</span> python:<span class="number">3.11</span>-slim<br><br>
+      <span class="comment"># 设置工作目录</span><br>
+      <span class="keyword">WORKDIR</span> /app<br><br>
+      <span class="comment"># 先复制依赖文件，利用 Docker 缓存层</span><br>
+      <span class="keyword">COPY</span> requirements.txt .<br>
+      <span class="keyword">RUN</span> pip install --no-cache-dir -r requirements.txt<br><br>
+      <span class="comment"># 再复制项目代码</span><br>
+      <span class="keyword">COPY</span> . .<br><br>
+      <span class="comment"># 暴露端口</span><br>
+      <span class="keyword">EXPOSE</span> <span class="number">8000</span><br><br>
+      <span class="comment"># 启动命令</span><br>
+      <span class="keyword">CMD</span> [<span class="string">"uvicorn"</span>, <span class="string">"main:app"</span>, <span class="string">"--host"</span>, <span class="string">"0.0.0.0"</span>, <span class="string">"--port"</span>, <span class="string">"8000"</span>]
+    </div>
+
+    <p>再用 <span class="inline-code">docker-compose.yml</span> 把多个服务编排起来——Web应用、MySQL数据库、Redis缓存，一键启动：</p>
+
+    <div class="code-block">
+  <button class="code-copy-btn" onclick="copyCode(this)"><i class="far fa-copy"></i> 复制</button>
+      <span class="comment"># docker-compose.yml 多服务编排</span><br><br>
+      <span class="keyword">version</span>: <span class="string">'3.8'</span><br><br>
+      <span class="keyword">services</span>:<br>
+      &nbsp;&nbsp;  web:<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;    build: .<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;    ports:<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;      - <span class="string">"8000:8000"</span><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;    depends_on:<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;      - db<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;      - redis<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;    environment:<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;      - DATABASE_URL=postgresql://user:pass@db:5432/myapp<br><br>
+      &nbsp;&nbsp;  db:<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;    image: postgres:<span class="number">15</span><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;    volumes:<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;      - pgdata:/var/lib/postgresql/data<br><br>
+      &nbsp;&nbsp;  redis:<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;    image: redis:<span class="number">7</span>-alpine<br><br>
+      <span class="keyword">volumes</span>:<br>
+      &nbsp;&nbsp;  pgdata:
+    </div>
+
+    <p>配置 Nginx 反向代理同样踩了不少坑。那段时间我床头贴着一张便签，写着一句话：<strong>"配置完 Nginx 之后记得 <span class="inline-code">nginx -t</span> 检查语法，别直接 restart。"</strong>——这是某次把整个站点搞崩了半小时后写下的教训。</p>
+
+    <div class="code-block">
+  <button class="code-copy-btn" onclick="copyCode(this)"><i class="far fa-copy"></i> 复制</button>
+      <span class="comment"># Nginx 配置片段（最终能用的版本）</span><br><br>
+      server {<br>
+      &nbsp;&nbsp;  listen <span class="number">443</span> ssl http2;<br>
+      &nbsp;&nbsp;  server_name jythcloud.com;<br><br>
+      &nbsp;&nbsp;  ssl_certificate /etc/letsencrypt/live/jythcloud.com/fullchain.pem;<br>
+      &nbsp;&nbsp;  ssl_certificate_key /etc/letsencrypt/live/jythcloud.com/privkey.pem;<br><br>
+      &nbsp;&nbsp;  location / {<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;    proxy_pass http://localhost:<span class="number">8000</span>;<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;    proxy_set_header Host $host;<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;    proxy_set_header X-Real-IP $remote_addr;<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;    proxy_set_header X-Forwarded-Proto $scheme;<br>
+      &nbsp;&nbsp;  }<br>
+      }<br><br>
+      server {<br>
+      &nbsp;&nbsp;  listen <span class="number">80</span>;<br>
+      &nbsp;&nbsp;  server_name jythcloud.com;<br>
+      &nbsp;&nbsp;  return <span class="number">301</span> https://$server_name$request_uri;<br>
+      }
+    </div>
+
+    <blockquote>
+      <strong>🐳 关于 Docker 学习的真心话：</strong><br>
+      刚开始学 Docker 的时候觉得没必要——"虚拟机不也能用吗？"但当你需要在三台服务器上部署同一个项目，或者需要回滚到某个历史版本，或者同事的 Windows 和你 Mac 上的环境不一样时——Docker 的"一次构建，到处运行"才真正体现出价值。入门门槛不高，花两个周末看官方文档 + 做一个小项目就能上手。强烈建议所有做 Web 开发的同学至少掌握到 docker-compose 级别。
+    </blockquote>
+
+    <h2 id="heading-4">写博客的价值：把知识真正"焊"进脑子里</h2>
+
+    <p>从开始自学到现在，我写了一百多篇技术博客。这件事最初只是出于一个简单的原因：<strong>我发现自己学了就忘。</strong>学新框架的时候特别兴奋，花了一周啃完文档，写了两天 demo，然后一个月没碰——再打开就什么都想不起来了。</p>
+
+    <p>于是我开始要求自己：每学一个技术点，必须写一篇博客。这个习惯后来被证明是我自学过程中<strong>最正确的一个决定</strong>。原因有三：</p>
+
+    <ol>
+      <li><strong>费曼学习法的实践。</strong>当你试图把一个概念解释给其他人听时，你会发现很多你以为"懂了"的东西其实根本没懂。写博客的过程就是一个自我检验的过程——写不出来，说明还没真会。</li>
+      <li><strong>建立个人知识库。</strong>人的大脑不适合存储细节，只适合存储索引。博客就是我大脑的"外接硬盘"。遇到同样的问题，翻自己的博客比重新 Google 快得多——因为那本来就是你自己消化过的知识。</li>
+      <li><strong>意外的"社交货币"。 </strong>前面提到那篇数据分析的文章发在知乎上收到了不少关注，后来陆续有人通过博客联系我，讨论技术问题、邀请合作、甚至有人通过博客找到了实习机会。认真写的内容，总会被看到。</li>
+    </ol>
+
+    <div class="highlight">
+      <strong>📝 给想开始写博客的同学们三个建议：</strong><br>
+      1. 不要追求完美——第一篇文章能写500字就算胜利，写得多了自然会有进步。<br>
+      2. 写你正在学的东西——不是为了"输出"而写，而是为了"搞懂"而写。目标读者是"两周后的自己"。<br>
+      3. 用代码块和截图——纯文字的技术博客没人看得下去，配图 + 可运行的代码片段让文章价值翻倍。
+    </div>
+
+    <p>下面这张表是我自己总结的"课余自学投入产出比"——不一定准确，但至少能帮你在迷茫的时候做个参考：</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>学习方向</th>
+          <th>入门时间</th>
+          <th>核心资源</th>
+          <th>可做的第一个项目</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>LLM API / Prompt</strong></td>
+          <td>1-2 周</td>
+          <td>官方文档 · OpenAI Cookbook</td>
+          <td>智能客服机器人 / 文章摘要工具</td>
+        </tr>
+        <tr>
+          <td><strong>RAG 知识库</strong></td>
+          <td>2-3 周</td>
+          <td>LangChain 文档 · LlamaIndex</td>
+          <td>课程笔记问答系统</td>
+        </tr>
+        <tr>
+          <td><strong>Pandas 数据分析</strong></td>
+          <td>2-4 周</td>
+          <td>Kaggle 数据集 · 官方 Cheat Sheet</td>
+          <td>任意公开数据集的探索性分析</td>
+        </tr>
+        <tr>
+          <td><strong>Docker 容器化</strong></td>
+          <td>1-2 周</td>
+          <td>Docker 官方文档 · 阮一峰教程</td>
+          <td>把自己的 Web 项目打包部署</td>
+        </tr>
+        <tr>
+          <td><strong>Nginx / 服务器</strong></td>
+          <td>1-2 周</td>
+          <td>DigitalOcean 教程 · Nginx 官方文档</td>
+          <td>配置 HTTPS + 反向代理</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2 id="heading-5">每天进步一点点</h2>
+
+    <p>写到最后，我想分享一个最朴素的感悟。</p>
+
+    <p>从开始自学到现在，快两年了。这两年里，我见过太多人刚开始的时候雄心万丈，买了一大堆课程、收藏了几十个教程、关注了一堆技术博主——然后两周之后就没然后了。<strong>原因不是能力不够，而是想要的太多，行动的太少。</strong></p>
+
+    <p>我自己也经历过这样的阶段。后来我给自己定了一条很简单的规则：<strong>每天只做一件事——写一段代码，或者读一篇技术文章，或者写500字博客。不论多忙，至少完成一件。</strong></p>
+
+    <p>不贪多，不求快，只是保持每天的"动"。这个原则听起来简单得甚至有点蠢，但坚持了两个月之后回头看，效果惊人——GitHub 上多了几十次 commit，博客多了几十篇文章，更重要的是，<strong>那种"每天进步一点点"的确定感，比任何短暂的热情都更能支撑你走下去。</strong></p>
+
+    <div class="highlight">
+      <strong>💡 用一句话总结这两年的感受：</strong><br><br>
+      课堂上教会你的是"知识是什么"，<br>
+      课余自学的过程中你才会明白"知识能做什么"。<br><br>
+      而"能做什么"和"正在做什么"之间，只差一个决定——<br>
+      <strong>一个现在就开始的决定。</strong>
+    </div>
+
+    <p style="text-align:center;color:var(--text-dim);margin-top:40px;">
+      课余时间你在做什么？<br>
+      如果还没有开始，现在就是最好的时间。<br>
+      不需要很厉害才能开始，但需要开始才能变得厉害。
+    </p>
+
+    <hr>
+
+    <p style="text-align:center;font-size:0.9rem;color:var(--text-mid);">
+      📬 如果你也在自学AI/数据分析/运维相关方向，<br>
+      欢迎通过主页联系我们，一起交流学习路上遇到的坑。
+    </p>
+
+  </div>
+
+  <div class="article-footer">
+    <a href="/"><i class="fas fa-arrow-left"></i> 返回主页</a>
+  </div>
+</div>
+
+<!-- Image zoom overlay -->
+<div class="img-overlay" id="imgOverlay" onclick="this.classList.remove('show')"><img id="imgZoom" src="" alt=""></div>
+<!-- Back to top button -->
+<button class="article-top-btn" id="articleTop" onclick="window.scrollTo({top:0,behavior:'smooth'})"><i class="fas fa-arrow-up"></i></button>
+</body>
+</html>

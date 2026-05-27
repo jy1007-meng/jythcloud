@@ -1,0 +1,25 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyc
+*.backup
+
+# 备份
+backups/
+backup_*/
+
+# API 数据
+api/database.db
+api/database.db.backup
+
+# 系统
+.user.ini
+.htaccess
+
+# 环境
+.env
+*.local
+
+# 日志
+*.log
