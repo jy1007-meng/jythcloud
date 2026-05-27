@@ -37,19 +37,32 @@ jobs:
           key: ${{ secrets.SERVER_SSH_KEY }}
           port: ${{ secrets.SERVER_PORT || 22 }}
           script: |
+            # 确保 Nginx 运行
+            if ! pgrep -x nginx > /dev/null; then
+              echo "⚠️ Nginx 未运行，正在启动..."
+              /www/server/nginx/sbin/nginx
+              sleep 1
+            fi
+
             # 重启 Flask API
-            if pgrep -f 'python3 /www/wwwroot/jythcloud/api/app.py'; then
+            if pgrep -f 'python3 /www/wwwroot/jythcloud/api/app.py' > /dev/null 2>&1; then
               pkill -f 'python3 /www/wwwroot/jythcloud/api/app.py'
               sleep 2
             fi
             cd /www/wwwroot/jythcloud/api && nohup python3 app.py > /tmp/flask.log 2>&1 &
-            sleep 2
+            sleep 3
+
+            # 健康检查
             HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:5002/api/status 2>/dev/null || echo "000")
             if [ "$HTTP_CODE" = "200" ]; then
               echo "✅ Flask 启动成功 (HTTP $HTTP_CODE)"
             else
-              echo "⚠️ Flask 状态码: $HTTP_CODE，检查日志: cat /tmp/flask.log"
+              echo "⚠️ Flask 状态码: $HTTP_CODE，日志: $(cat /tmp/flask.log 2>/dev/null || echo '无日志')"
             fi
+
+            # 验证网站可访问
+            SITE_CODE=$(curl -sk -o /dev/null -w "%{http_code}" https://jythcloud.cn/ 2>/dev/null || echo "000")
+            echo "🌐 网站状态: HTTP $SITE_CODE"
             echo "✅ 部署完成: $(date '+%Y-%m-%d %H:%M:%S')"
           timeout: 60s
           command_timeout: 10m
