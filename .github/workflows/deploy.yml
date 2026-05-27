@@ -44,7 +44,7 @@ jobs:
             fi
             cd /www/wwwroot/jythcloud/api && nohup python3 app.py > /tmp/flask.log 2>&1 &
             sleep 2
-            HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:5000/api/status 2>/dev/null || echo "000")
+            HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:5002/api/status 2>/dev/null || echo "000")
             if [ "$HTTP_CODE" = "200" ]; then
               echo "✅ Flask 启动成功 (HTTP $HTTP_CODE)"
             else
