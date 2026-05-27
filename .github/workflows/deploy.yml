@@ -26,6 +26,7 @@ jobs:
           port: ${{ secrets.SERVER_PORT || 22 }}
           script: |
             cd ${{ secrets.DEPLOY_PATH || '/www/wwwroot/jythcloud' }}
+            git remote set-url origin https://github.com/jy1007-meng/jythcloud.git
             git pull origin main
             # 重启 Flask API
             if pgrep -f 'python3 /www/wwwroot/jythcloud/app.py'; then
@@ -33,4 +34,12 @@ jobs:
               sleep 2
             fi
             cd /www/wwwroot/jythcloud && nohup python3 app.py > /tmp/flask.log 2>&1 &
-            echo "✅ 部署完成: $(date)"
+            sleep 2
+            if curl -s -o /dev/null -w "%{http_code}" http://localhost:5000/api/status | grep -q 200; then
+              echo "✅ Flask 启动成功！"
+            else
+              echo "⚠️ Flask 启动中，请手动检查：cat /tmp/flask.log"
+            fi
+            echo "✅ 部署完成: $(date '+%Y-%m-%d %H:%M:%S')"
+          timeout: 120s
+          command_timeout: 60m
