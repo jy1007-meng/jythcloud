@@ -23,3 +23,6 @@ api/database.db.backup
 
 # 日志
 *.log
+
+# 构建输出
+dist/
