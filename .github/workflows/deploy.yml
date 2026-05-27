@@ -21,7 +21,7 @@ jobs:
         uses: easingthemes/ssh-deploy@main
         with:
           SSH_PRIVATE_KEY: ${{ secrets.SERVER_SSH_KEY }}
-          ARGS: "-avz --delete --exclude='.git' --exclude='__pycache__' --exclude='frontend/node_modules' --exclude='frontend/src' --exclude='*.pyc'"
+          ARGS: "-avz --delete --exclude='.git' --exclude='__pycache__' --exclude='frontend/node_modules' --exclude='frontend/src' --exclude='*.pyc' --exclude='.user.ini'"
           SOURCE: "."
           REMOTE_HOST: ${{ secrets.SERVER_HOST }}
           REMOTE_USER: ${{ secrets.SERVER_USER }}
